@@ -2,6 +2,7 @@
 using System;
 using Godot;
 using Halcyon.Entities.ActorStates;
+using Halcyon.Entities.Data;
 using Halcyon.Utilities;
 
 namespace Halcyon.Entities
@@ -17,22 +18,16 @@ namespace Halcyon.Entities
         [Export] private AnimatedSprite2D _sprite;
 
 
-        /// <summary> How quickly our movement increases each frame. </summary>
+        /// <summary> The persistent data for an actor entity. </summary>
         [ExportGroup("Settings")]
-        [Export] private Single _moveAcceleration = 300f;
-
-        /// <summary> Our maximum movement speed while walking. </summary>
-        [Export] private Single _walkMaxSpeed = 1000f;
-
-        /// <summary> Our maximum movement speed while sprinting. </summary>
-        [Export] private Single _sprintingMaxSpeed = 2000f;
+        [Export] public ActorData Data { get; private set; } = new ActorData();
 
 
+        /// <summary> A reference to the actor's state machine. </summary>
         public ActorStateMachine StateMachine;
 
-        private Direction _currentDirection = Direction.S;
 
-
+        /// <inheritdoc/>
         public override void _Ready()
         {
             StateMachine = new ActorStateMachine(this);
@@ -40,17 +35,20 @@ namespace Halcyon.Entities
         }
 
 
+        /// <inheritdoc/>
         public override void _PhysicsProcess(Double delta)
         {
-            Velocity *= (Single)delta;
-            MoveAndSlide();
+            //Velocity *= (Single)delta;
+            Boolean isCollision = MoveAndSlide();
+            if (isCollision)
+            {
+                KinematicCollision2D collision = GetLastSlideCollision();
+            }
         }
 
 
+        /// <inheritdoc/>
         public void SetAnimation(String name, Direction direction) => _sprite.Animation = $"{name}_{direction.ToString().ToLower()}";
-
-
-        public Vector2 GetDirection() => Velocity.Normalized();
 
 
         /// <inheritdoc/>

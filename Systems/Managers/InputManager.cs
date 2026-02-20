@@ -11,6 +11,9 @@ namespace Halcyon.Managers
     {
         [Export] private ActorEntity _playerEntity;
 
+        /// <summary> The currently queued command for the actor. </summary>
+        private ActorCommand _currentCommand;
+
         /// <summary> The current direction being input by the player. </summary>
         private Vector2 _direction = Vector2.Zero;
 
@@ -21,18 +24,16 @@ namespace Halcyon.Managers
         /// <inheritdoc/>
         public override void _PhysicsProcess(Double delta)
         {
+            _currentCommand = new IdleCommand(_direction);
             Vector2 direction = Input.GetVector("action_move_w", "action_move_e", "action_move_n", "action_move_s");
 
             if (direction != Vector2.Zero)
             {
-                _direction = Input.GetVector("action_move_w", "action_move_e", "action_move_n", "action_move_s");
-                _playerEntity.StateMachine.HandleCommand(new WalkCommand(_direction));
-            }
-            else
-            {
-                _playerEntity.StateMachine.HandleCommand(new IdleCommand(_direction));
+                _direction = direction;
+                _currentCommand = new WalkCommand(_direction);
             }
 
+            _playerEntity.StateMachine.HandleCommand(_currentCommand);
         }
 
 

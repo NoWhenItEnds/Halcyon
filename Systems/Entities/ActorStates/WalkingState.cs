@@ -21,8 +21,9 @@ namespace Halcyon.Entities.ActorStates
         {
             ENTITY.SetAnimation(AnimationPrefix, direction.ToDirection());
 
-            Single maxSpeed = 1000;
-            ENTITY.Velocity += direction * 1000;
+            Single maxSpeed = ENTITY.Data.SpeedStat.CurrentValue * 10;
+            Vector2 acceleration = direction * (maxSpeed * 0.25f);
+            ENTITY.Velocity += acceleration;
             Single velocityX = Math.Clamp(ENTITY.Velocity.X, -maxSpeed, maxSpeed);
             Single velocityY = Math.Clamp(ENTITY.Velocity.Y, -maxSpeed, maxSpeed);
             ENTITY.Velocity = new Vector2(velocityX, velocityY);
