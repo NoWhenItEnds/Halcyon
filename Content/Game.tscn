@@ -1,6 +1,17 @@
 [gd_scene format=3 uid="uid://crlm3rqbcrpaq"]
 
 [ext_resource type="Script" uid="uid://1loggxq60a1k" path="res://Systems/Managers/GameManager.cs" id="1_k1v7w"]
+[ext_resource type="Script" uid="uid://4njdou13jsyc" path="res://Systems/Managers/InputManager.cs" id="2_33ift"]
+[ext_resource type="PackedScene" uid="uid://xws1hp5pruba" path="res://Content/Prefabs/Entities/ActorEntity.tscn" id="3_hls3d"]
 
 [node name="Game" type="Node" unique_id=1019238872]
 script = ExtResource("1_k1v7w")
+
+[node name="Input Manager" type="Node" parent="." unique_id=1729517724 node_paths=PackedStringArray("_playerEntity")]
+script = ExtResource("2_33ift")
+_playerEntity = NodePath("../ActorEntity")
+
+[node name="ActorEntity" parent="." unique_id=140002473 instance=ExtResource("3_hls3d")]
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1288146291]
+zoom = Vector2(2.035, 2.035)
