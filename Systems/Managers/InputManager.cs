@@ -1,6 +1,6 @@
+#nullable disable warnings
 using System;
 using Godot;
-using Halcyon.Entities;
 using Halcyon.Entities.ActorCommands;
 using Halcyon.Utilities.Singletons;
 
@@ -9,7 +9,11 @@ namespace Halcyon.Managers
     /// <summary> A manager for converting player input to a controlled entity / UI. </summary>
     public partial class InputManager : SingletonNode<InputManager>
     {
-        [Export] private ActorEntity _playerEntity;
+        /// <summary> A reference to the game world's actor manager singleton. </summary>
+        private ActorManager _actorManager;
+
+        /// <summary> A reference to the game world's camera manager singleton. </summary>
+        private CameraManager _cameraManager;
 
         /// <summary> The currently queued command for the actor. </summary>
         private ActorCommand? _currentCommand = null;
@@ -19,6 +23,14 @@ namespace Halcyon.Managers
 
         /// <summary> Whether the player is currently using a controller for input. </summary>
         private Boolean _isUsingController = false;
+
+
+        /// <inheritdoc/>
+        public override void _Ready()
+        {
+            _actorManager = ActorManager.Instance;
+            _cameraManager = CameraManager.Instance;
+        }
 
 
         /// <inheritdoc/>
@@ -50,7 +62,10 @@ namespace Halcyon.Managers
                 //_currentCommand = new SprintCommand(direction);
             }
 
-            _playerEntity.StateMachine.HandleCommand(_currentCommand);
+            _actorManager.PlayerActor.StateMachine.HandleCommand(_currentCommand);
+
+            // TODO - Probably not.
+            _cameraManager.SetPosition(_actorManager.PlayerActor.GlobalPosition);
         }
 
 
