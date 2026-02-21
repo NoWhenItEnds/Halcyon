@@ -22,20 +22,20 @@ namespace Halcyon.Entities.ActorStates
         {
             // Set the initial state.
             ActorState initialState = new IdlingState(entity)
-                .WithTransition<WalkCommand, WalkingState>();
-                //.WithTransition<SprintingState>(StateEvent.SPRINT);
+                .WithTransition<WalkCommand, WalkingState>()
+                .WithTransition<SprintCommand, SprintingState>();
 
             CurrentState = initialState;
 
             STATES.Add(initialState);
 
             STATES.Add(new WalkingState(entity)
-                .WithTransition<IdleCommand, IdlingState>());
-                //.WithTransition<SprintingState>(StateEvent.SPRINT));
+                .WithTransition<IdleCommand, IdlingState>()
+                .WithTransition<SprintCommand, SprintingState>());
 
-            /*STATES.Add(new SprintingState(entity)
-                .WithTransition<IdlingState>(StateEvent.IDLE)
-                .WithTransition<WalkingState>(StateEvent.WALK));*/
+            STATES.Add(new SprintingState(entity)
+                .WithTransition<IdleCommand, IdlingState>()
+                .WithTransition<WalkCommand, WalkingState>());
         }
 
 

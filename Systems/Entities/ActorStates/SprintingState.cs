@@ -4,19 +4,19 @@ using System;
 
 namespace Halcyon.Entities.ActorStates
 {
-    /// <summary> The actor is walking across the ground. </summary>
-    public class WalkingState : ActorState
+    /// <summary> The actor is running, potentially for their life. </summary>
+    public class SprintingState : ActorState
     {
         /// <inheritdoc/>
-        public override String AnimationPrefix { get; } = "walk";
+        public override String AnimationPrefix { get; } = "run";
 
         /// <summary> How fast the walking movement speed is. </summary>
-        private readonly Single MOVE_SPEED = 500f;
+        private readonly Single MOVE_SPEED = 1000f;
 
 
-        /// <summary> The entity is walking across the ground. </summary>
+        /// <summary> The actor is running, potentially for their life. </summary>
         /// <param name="entity"> A reference to the entity. </param>
-        public WalkingState(ActorEntity entity) : base(entity) { }
+        public SprintingState(ActorEntity entity) : base(entity) { }
 
 
         /// <inheritdoc/>

@@ -38,7 +38,7 @@ namespace Halcyon.Entities
         /// <inheritdoc/>
         public override void _PhysicsProcess(Double delta)
         {
-            //Velocity *= (Single)delta;
+            Velocity *= (Single)delta;
             Boolean isCollision = MoveAndSlide();
             if (isCollision)
             {
