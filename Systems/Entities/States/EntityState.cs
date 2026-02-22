@@ -11,21 +11,21 @@ namespace Halcyon.Entities.States
         public Func<Boolean> CanTransition { get; protected set; } = () => true;
 
 
+        /// <summary> A reference to the entity. </summary>
+        protected virtual Entity _entity { get; }
+
         /// <summary> The prefix of the animations to use for this state. </summary>
-        protected virtual String _animationPrefix { get; init; } = String.Empty;
+        protected virtual String _animationPrefix { get; } = String.Empty;
 
         /// <summary> A map of the commands to the state they transition into. </summary>
         protected readonly Dictionary<Type, Type> TRANSITIONS = new Dictionary<Type, Type>();
-
-        /// <summary> A reference to the entity. </summary>
-        protected readonly Entity ENTITY;
 
 
         /// <summary> The basic data object representing an entity's potential state. </summary>
         /// <param name="entity"> A reference to the entity. </param>
         public EntityState(Entity entity)
         {
-            ENTITY = entity;
+            _entity = entity;
         }
 
 

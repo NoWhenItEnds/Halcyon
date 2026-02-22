@@ -2,12 +2,12 @@ using Halcyon.Entities.EntityCommands;
 
 namespace Halcyon.Entities.States.Machines
 {
-    /// <summary> A state machine used for human entities. </summary>
-    public class HumanStateMachine : EntityStateMachine
+    /// <summary> A state machine used for actor entities. </summary>
+    public class ActorStateMachine : EntityStateMachine
     {
-        /// <summary> A state machine used for human entities. </summary>
+        /// <summary> A state machine used for actor entities. </summary>
         /// <param name="entity"> A reference to the entity controlled by the state. </param>
-        public HumanStateMachine(Entity entity)
+        public ActorStateMachine(ActorEntity entity)
         {
             // Set the initial state.
             EntityState initialState = new IdlingState(entity)

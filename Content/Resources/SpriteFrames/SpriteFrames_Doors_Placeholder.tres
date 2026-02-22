@@ -17,7 +17,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_fq4fr")
 }],
 "loop": true,
-"name": &"closed_s",
+"name": &"closed_vertical",
 "speed": 15.0
 }, {
 "frames": [{
@@ -25,6 +25,6 @@ animations = [{
 "texture": SubResource("AtlasTexture_jm58f")
 }],
 "loop": true,
-"name": &"opened_s",
+"name": &"opened_vertical",
 "speed": 15.0
 }]

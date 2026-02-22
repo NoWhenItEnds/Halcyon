@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using Godot;
 using Halcyon.Entities;
+using Halcyon.Entities.States.Machines;
 using Halcyon.Utilities.Singletons;
 
 namespace Halcyon.Managers
@@ -10,9 +11,11 @@ namespace Halcyon.Managers
     /// <summary> The manager for all entities within the game world. </summary>
     public partial class EntityManager : SingletonNode2D<EntityManager>
     {
-        /// <summary> The prefab used for spawning new entities. </summary>
+        /// <summary> The prefab used for spawning new actors. </summary>
         [ExportGroup("Resources")]
-        [Export] private PackedScene _entityPrefab;
+        [Export] private PackedScene _actorPrefab;
+
+        [Export] private SpriteFrames _doorSprites;
 
 
         /// <summary> The entity currently controlled by the player. </summary>
@@ -27,15 +30,15 @@ namespace Halcyon.Managers
         public override void _Ready()
         {
             // Create player.
-            PlayerEntity = _entityPrefab.InstantiateOrNull<Entity>();
-            AddChild(PlayerEntity);
+            TrySpawnActor(Vector2.Zero, out ActorEntity? player);
+            PlayerEntity = player;
 
             Random random = new Random();
 
             for (Int32 i = 0; i < 100; i++)
             {
                 Vector2 position = new Vector2(random.NextSingle() * 1000, random.NextSingle() * 1000);
-                TrySpawnEntity(position, out _);
+                TrySpawnActor(position, out _);
             }
         }
 
@@ -53,17 +56,20 @@ namespace Halcyon.Managers
 
 
 
-        public Boolean TrySpawnEntity(Vector2 position, out Entity? entity)
+        public Boolean TrySpawnActor(Vector2 position, out ActorEntity? entity)
         {
-            entity = _entityPrefab.InstantiateOrNull<Entity>();
+            entity = _actorPrefab.InstantiateOrNull<ActorEntity>();
             EntityController controller = new EntityController(entity);
 
             // Attempt to add the entity to the game world.
             Boolean isSuccess = ENTITIES.TryAdd(entity, controller);
             if (isSuccess)
             {
+                // TODO - Find a better way to handle animation sprite sheets. Use the state machine? How is clothing done?
                 AddChild(entity);
                 entity.GlobalPosition = position;
+                ActorStateMachine stateMachine = new ActorStateMachine(entity);
+                entity.Initialise(stateMachine);
             }
 
             return isSuccess;

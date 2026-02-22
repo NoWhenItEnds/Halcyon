@@ -8,7 +8,7 @@ namespace Halcyon.Entities.States
     public class ClosedState : EntityState
     {
         /// <inheritdoc/>
-        protected override String _animationPrefix { get; init; } = "closed";
+        protected override String _animationPrefix { get; } = "closed";
 
 
         /// <summary> The entity is closed; whatever that means for its specific situation. </summary>
@@ -19,8 +19,8 @@ namespace Halcyon.Entities.States
         /// <inheritdoc/>
         public override void Start(EntityCommand command)
         {
-            ENTITY.Sprite.Animation = $"{_animationPrefix}_s";
-            ENTITY.Velocity = Vector2.Zero;
+            _entity.Sprite.Animation = $"{_animationPrefix}_vertical";
+            _entity.Velocity = Vector2.Zero;
         }
     }
 }

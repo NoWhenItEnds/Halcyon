@@ -9,7 +9,10 @@ namespace Halcyon.Entities.States
     public class SprintingState : EntityState
     {
         /// <inheritdoc/>
-        protected override String _animationPrefix { get; init; } = "sprinting";
+        protected override ActorEntity _entity { get; }
+
+        /// <inheritdoc/>
+        protected override String _animationPrefix { get; } = "sprinting";
 
 
         /// <summary> How fast the walking movement speed is. </summary>
@@ -18,27 +21,30 @@ namespace Halcyon.Entities.States
 
         /// <summary> The entity is running, potentially for their life. </summary>
         /// <param name="entity"> A reference to the entity. </param>
-        public SprintingState(Entity entity) : base(entity) { }
+        public SprintingState(ActorEntity entity) : base(entity)
+        {
+            _entity = entity;
+        }
 
 
         /// <inheritdoc/>
         public override void Start(EntityCommand command)
         {
-            ENTITY.Sprite.Animation = $"{_animationPrefix}_{command.Direction.ToDirection().ToString().ToLower()}";
+            _entity.Sprite.Animation = $"{_animationPrefix}_{command.Direction.ToDirection().ToString().ToLower()}";
 
-            Single speed = ENTITY.Data.SpeedStat.CurrentValue * MOVE_SPEED;
-            ENTITY.Velocity = command.Direction * speed;
+            Single speed = _entity.GetData().SpeedStat.CurrentValue * MOVE_SPEED;
+            _entity.Velocity = command.Direction * speed;
         }
 
 
         /// <inheritdoc/>
         public override void Update(Double delta)
         {
-            ENTITY.Velocity *= (Single)delta;
-            Boolean isCollision = ENTITY.MoveAndSlide();
+            _entity.Velocity *= (Single)delta;
+            Boolean isCollision = _entity.MoveAndSlide();
             if (isCollision)
             {
-                KinematicCollision2D collision = ENTITY.GetLastSlideCollision();
+                KinematicCollision2D collision = _entity.GetLastSlideCollision();
             }
         }
     }
