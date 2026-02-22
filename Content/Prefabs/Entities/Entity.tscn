@@ -1,15 +1,15 @@
 [gd_scene format=3 uid="uid://xws1hp5pruba"]
 
-[ext_resource type="Script" uid="uid://cqwssn4fvlonx" path="res://Systems/Entities/ActorEntity.cs" id="1_3voqp"]
-[ext_resource type="SpriteFrames" uid="uid://cupxsc4dceuuk" path="res://Content/Resources/SpriteFrames/SpriteFrame_Placeholder_Actor.tres" id="2_gr3cw"]
+[ext_resource type="Script" uid="uid://cqwssn4fvlonx" path="res://Systems/Entities/Entity.cs" id="1_j7oyk"]
+[ext_resource type="SpriteFrames" uid="uid://cupxsc4dceuuk" path="res://Content/Resources/SpriteFrames/SpriteFrame_Humans_Placeholder.tres" id="2_r1pii"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_b4jtr"]
 radius = 6.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_gr3cw"]
 
-[node name="ActorEntity" type="CharacterBody2D" unique_id=140002473 node_paths=PackedStringArray("_collisionShape", "_sprite", "_interactionArea", "_nameLabel")]
-script = ExtResource("1_3voqp")
+[node name="Entity" type="CharacterBody2D" unique_id=140002473 node_paths=PackedStringArray("_collisionShape", "_sprite", "_interactionArea", "_nameLabel")]
+script = ExtResource("1_j7oyk")
 _collisionShape = NodePath("CollisionShape2D")
 _sprite = NodePath("AnimatedSprite2D")
 _interactionArea = NodePath("Interaction Area")
@@ -18,7 +18,7 @@ _nameLabel = NodePath("Name Label")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1245385040]
 texture_filter = 3
 position = Vector2(0, -8)
-sprite_frames = ExtResource("2_gr3cw")
+sprite_frames = ExtResource("2_r1pii")
 animation = &"walk_n"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=910154876]

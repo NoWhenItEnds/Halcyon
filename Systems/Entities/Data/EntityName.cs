@@ -7,12 +7,12 @@ namespace Halcyon.Entities.Data
 {
     /// <summary> A person's full name with reference to their personal and clan names. </summary>
     /// <remarks Uses: https://github.com/sigpwned/popular-names-by-country-dataset </remarks>
-    public partial class ActorName : Resource, IEquatable<ActorName>
+    public partial class EntityName : Resource, IEquatable<EntityName>
     {
-        /// <summary> An actor's common, personal name. </summary>
+        /// <summary> An entity's common, personal name. </summary>
         public GivenName FirstName { get; init; } = GivenName.Empty;
 
-        /// <summary> An actor's family / clan name. </summary>
+        /// <summary> An entity's family / clan name. </summary>
         public Surname LastName { get; init; } = Surname.Empty;
 
 
@@ -21,18 +21,18 @@ namespace Halcyon.Entities.Data
 
 
         /// <summary> An empty, default name. </summary>
-        public static ActorName Empty => new ActorName();
+        public static EntityName Empty => new EntityName();
 
 
         /// <summary> Generate a random name. </summary>
         /// <param name="gender"> The gender of the name to generate. A none indicates that all names should be considered. </param>
         /// <returns> The generated name. </returns>
-        public static ActorName Random(NameGender gender)
+        public static EntityName Random(NameGender gender)
         {
             GivenName[] firstNames = CsvExtensions.LoadData<GivenName>("res://Content/Data/Names/ActorFirstNames.csv");
             Surname[] lastNames = CsvExtensions.LoadData<Surname>("res://Content/Data/Names/ActorLastNames.csv");
 
-            return new ActorName
+            return new EntityName
             {
                 FirstName = firstNames.GetRandomElement() ?? GivenName.Empty,
                 LastName = lastNames.GetRandomElement() ?? Surname.Empty
@@ -44,11 +44,11 @@ namespace Halcyon.Entities.Data
 
 
         /// <inheritdoc/>
-        public Boolean Equals(ActorName? other) => other != null ? FirstName.Equals(other.FirstName) && LastName.Equals(other.LastName) : false;
+        public Boolean Equals(EntityName? other) => other != null ? FirstName.Equals(other.FirstName) && LastName.Equals(other.LastName) : false;
     }
 
 
-    /// <summary> An actor's common, personal name. </summary>
+    /// <summary> An entity's common, personal name. </summary>
     public record GivenName : IParseable<GivenName>
     {
         /// <summary> The common Alpha-2 designation of the name's country of origin. </summary>
@@ -101,7 +101,7 @@ namespace Halcyon.Entities.Data
     }
 
 
-    /// <summary> An actor's family / clan name. </summary>
+    /// <summary> An entity's family / clan name. </summary>
     public record Surname : IParseable<Surname>
     {
         /// <summary> The common Alpha-2 designation of the name's country of origin. </summary>

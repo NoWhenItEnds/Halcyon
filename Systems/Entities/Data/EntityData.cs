@@ -3,12 +3,13 @@ using Godot.Collections;
 
 namespace Halcyon.Entities.Data
 {
-    /// <summary> The persistent data for an actor entity. </summary>
+    /// <summary> The persistent data for an entity entity. </summary>
     [GlobalClass]
-    public partial class ActorData : Resource
+    public partial class EntityData : Resource
     {
+        /// <summary> The entity's personal name. </summary>
         [ExportGroup("General")]
-        [Export] public ActorName Name { get; private set; } = ActorName.Random(NameGender.NONE);
+        [Export] public EntityName Name { get; private set; } = EntityName.Random(NameGender.NONE);
 
 
         [ExportGroup("Stats")]
@@ -31,15 +32,15 @@ namespace Halcyon.Entities.Data
         /// <summary> How fast the character moves as a result of their physical attributes. </summary>
         public DerivedStat SpeedStat { get; private set; }
 
-        /// <summary> The actor's physical stamina. Drained by performing physically demanding activities. </summary>
+        /// <summary> The entity's physical stamina. Drained by performing physically demanding activities. </summary>
         public DerivedStat StaminaStat { get; private set; }
 
-        /// <summary> How entertained / satisfied the actor is. </summary>
+        /// <summary> How entertained / satisfied the entity is. </summary>
         public DerivedStat EntertainmentStat { get; private set; }
 
 
-        /// <summary> The persistent data for an actor entity. </summary>
-        public ActorData()
+        /// <summary> The persistent data for an entity entity. </summary>
+        public EntityData()
         {
             SpeedStat = new DerivedStat(() => 0, () => 5 + Strength.CurrentValue + Dexterity.CurrentValue);
             StaminaStat = new DerivedStat(() => 0, () => Vigor.CurrentValue + 3);

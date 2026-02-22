@@ -3,47 +3,47 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Godot;
-using Halcyon.Entities.ActorStates;
 using Halcyon.Entities.Data;
+using Halcyon.Entities.States;
 using Halcyon.Utilities;
 
 namespace Halcyon.Entities
 {
-    /// <summary> An moving, sentient entity within the game world. </summary>
-    public partial class ActorEntity : CharacterBody2D, IEntity, IEquatable<ActorEntity>
+    /// <summary> An interactable entity within the game world. </summary>
+    public partial class Entity : CharacterBody2D, IEquatable<Entity>
     {
         /// <summary> The node that defines the node's collision. </summary>
         [ExportGroup("Nodes")]
         [Export] private CollisionShape2D _collisionShape;
 
-        /// <summary> The sprite representing the actor within the world. </summary>
+        /// <summary> The sprite representing the entity within the world. </summary>
         [Export] private AnimatedSprite2D _sprite;
 
         /// <summary> The area around the entity in which it can interact with other entities. </summary>
         [Export] private Area2D _interactionArea;
 
-        /// <summary> A label displaying the actor's name. </summary>
+        /// <summary> A label displaying the entity's name. </summary>
         /// <remarks To help with debugging. </remarks>
         [Export] private Label _nameLabel;
 
 
-        /// <summary> The persistent data for an actor entity. </summary>
+        /// <summary> The persistent data for an entity. </summary>
         [ExportGroup("Settings")]
-        [Export] public ActorData Data { get; private set; } = new ActorData();
+        [Export] public EntityData Data { get; private set; } = new EntityData();
 
 
-        /// <summary> A reference to the actor's state machine. </summary>
-        public ActorStateMachine StateMachine;
+        /// <summary> A reference to the entity's state machine. </summary>
+        public EntityStateMachine StateMachine;
 
 
-        /// <summary> A set of all the entities that the actor is currently within interactable range of. </summary>
-        private HashSet<IEntity> _nearbyEntities = new HashSet<IEntity>();
+        /// <summary> A set of all the entities that the entity is currently within interactable range of. </summary>
+        private HashSet<Entity> _nearbyEntities = new HashSet<Entity>();
 
 
         /// <inheritdoc/>
         public override void _Ready()
         {
-            StateMachine = new ActorStateMachine(this);
+            StateMachine = new EntityStateMachine(this);
             _interactionArea.BodyEntered += OnInteractionAreaEntered;
             _interactionArea.BodyExited += OnInteractionAreaExited;
 
@@ -68,11 +68,11 @@ namespace Halcyon.Entities
         }
 
 
-        /// <summary> When something enters the actor's area of influence, add it to the nearby entities. </summary>
+        /// <summary> When something enters the entity's area of influence, add it to the nearby entities. </summary>
         /// <param name="body"> The node entering the area. </param>
         private void OnInteractionAreaEntered(Node2D body)
         {
-            if(body is IEntity entity)
+            if(body is Entity entity)
             {
                 _nearbyEntities.Add(entity);
             }
@@ -80,41 +80,32 @@ namespace Halcyon.Entities
 
 
         /// <summary> Remove the leaving node from the nearby entities. </summary>
-        /// <param name="body"> A reference to the node leaving the actor's area of influence. </param>
+        /// <param name="body"> A reference to the node leaving the entity's area of influence. </param>
         private void OnInteractionAreaExited(Node2D body)
         {
-            if (body is IEntity entity)
+            if (body is Entity entity)
             {
                 _nearbyEntities.Remove(entity);
             }
         }
 
 
-        /// <summary> Get a sorted array of all the nearby entities within range of this actor. </summary>
-        /// <returns> A sorted array of all the entities that this actor can currently interact with. </returns>
-        public IEntity[] GetNearbyEntities() => _nearbyEntities.ToArray();
+        /// <summary> Get a sorted array of all the nearby entities within range of this entity. </summary>
+        /// <returns> A sorted array of all the entities that this entity can currently interact with. </returns>
+        public Entity[] GetNearbyEntities() => _nearbyEntities.ToArray();
 
 
-        /// <inheritdoc/>
+        /// <summary> Set the entity's current animation on their sprite. </summary>
+        /// <param name="name"> The identifying name of the animation. </param>
+        /// <param name="direction"> The direction of the animation. </param>
         public void SetAnimation(String name, Direction direction) => _sprite.Animation = $"{name}_{direction.ToString().ToLower()}";
 
-
-        /// <inheritdoc/>
-        public Vector2 GetLocation() => GlobalPosition;
-
-
-        /// <inheritdoc/>
-        public Boolean TryInteractWith(IEntity interactingEntity)
-        {
-            GD.Print($"{GetHashCode()} interacted with {interactingEntity.GetHashCode()}!");
-            return true;
-        }
 
         /// <inheritdoc/>
         public override Int32 GetHashCode() => HashCode.Combine(Data.Name);
 
 
         /// <inheritdoc/>
-        public Boolean Equals(ActorEntity? other) => other != null ? Equals(other) : false;
+        public Boolean Equals(Entity? other) => other != null ? Equals(other) : false;
     }
 }

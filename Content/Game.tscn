@@ -2,16 +2,16 @@
 
 [ext_resource type="Script" uid="uid://1loggxq60a1k" path="res://Systems/Managers/GameManager.cs" id="1_k1v7w"]
 [ext_resource type="Script" uid="uid://4njdou13jsyc" path="res://Systems/Managers/InputManager.cs" id="2_33ift"]
-[ext_resource type="Script" uid="uid://chgnpeipxqoew" path="res://Systems/Managers/ActorManager.cs" id="3_3jj2t"]
-[ext_resource type="PackedScene" uid="uid://xws1hp5pruba" path="res://Content/Prefabs/Entities/ActorEntity.tscn" id="3_hls3d"]
+[ext_resource type="Script" uid="uid://chgnpeipxqoew" path="res://Systems/Managers/EntityManager.cs" id="3_3jj2t"]
+[ext_resource type="PackedScene" uid="uid://xws1hp5pruba" path="res://Content/Prefabs/Entities/Entity.tscn" id="3_mtcwf"]
 [ext_resource type="Script" uid="uid://d3p0v0usaexev" path="res://Systems/Managers/CameraManager.cs" id="5_mtcwf"]
 
 [node name="Game" type="Node" unique_id=1019238872]
 script = ExtResource("1_k1v7w")
 
-[node name="Actor Managers" type="Node2D" parent="." unique_id=1632928520]
+[node name="Entity Managers" type="Node2D" parent="." unique_id=1632928520]
 script = ExtResource("3_3jj2t")
-_actorPrefab = ExtResource("3_hls3d")
+_entityPrefab = ExtResource("3_mtcwf")
 
 [node name="Input Manager" type="Node" parent="." unique_id=1729517724]
 script = ExtResource("2_33ift")

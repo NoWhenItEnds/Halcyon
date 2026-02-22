@@ -1,28 +1,28 @@
 using Godot;
-using Halcyon.Entities.ActorCommands;
+using Halcyon.Entities.EntityCommands;
 using Halcyon.Utilities;
 using System;
 
-namespace Halcyon.Entities.ActorStates
+namespace Halcyon.Entities.States
 {
-    /// <summary> The actor is running, potentially for their life. </summary>
-    public class SprintingState : ActorState
+    /// <summary> The entity is walking across the ground. </summary>
+    public class WalkingState : EntityState
     {
         /// <inheritdoc/>
-        protected override String _animationPrefix { get; init; } = "run";
+        protected override String _animationPrefix { get; init; } = "walk";
 
 
         /// <summary> How fast the walking movement speed is. </summary>
-        private readonly Single MOVE_SPEED = 1000f;
+        private readonly Single MOVE_SPEED = 500f;
 
 
-        /// <summary> The actor is running, potentially for their life. </summary>
+        /// <summary> The entity is walking across the ground. </summary>
         /// <param name="entity"> A reference to the entity. </param>
-        public SprintingState(ActorEntity entity) : base(entity) { }
+        public WalkingState(Entity entity) : base(entity) { }
 
 
         /// <inheritdoc/>
-        public override void Start(ActorCommand command)
+        public override void Start(EntityCommand command)
         {
             ENTITY.SetAnimation(_animationPrefix, command.Direction.ToDirection());
 

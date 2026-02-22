@@ -2,7 +2,7 @@
 using System;
 using Godot;
 using Halcyon.Entities;
-using Halcyon.Entities.ActorCommands;
+using Halcyon.Entities.EntityCommands;
 using Halcyon.Utilities.Singletons;
 
 namespace Halcyon.Managers
@@ -10,14 +10,14 @@ namespace Halcyon.Managers
     /// <summary> A manager for converting player input to a controlled entity / UI. </summary>
     public partial class InputManager : SingletonNode<InputManager>
     {
-        /// <summary> A reference to the game world's actor manager singleton. </summary>
-        private ActorManager _actorManager;
+        /// <summary> A reference to the game world's entity manager singleton. </summary>
+        private EntityManager _entityManager;
 
         /// <summary> A reference to the game world's camera manager singleton. </summary>
         private CameraManager _cameraManager;
 
-        /// <summary> The currently queued command for the actor. </summary>
-        private ActorCommand? _currentCommand = null;
+        /// <summary> The currently queued command for the player entity. </summary>
+        private EntityCommand? _currentCommand = null;
 
         /// <summary> The last direction being input by the player that wasn't zero. </summary>
         private Vector2 _previousDirection = Vector2.Zero;
@@ -29,7 +29,7 @@ namespace Halcyon.Managers
         /// <inheritdoc/>
         public override void _Ready()
         {
-            _actorManager = ActorManager.Instance;
+            _entityManager = EntityManager.Instance;
             _cameraManager = CameraManager.Instance;
         }
 
@@ -62,17 +62,17 @@ namespace Halcyon.Managers
             if (Input.IsActionPressed("action_interact"))
             {
                 // TODO - Need to determine HERE what command to use depending upon input.
-                IEntity[] entities = _actorManager.PlayerActor.GetNearbyEntities();
+                Entity[] entities = _entityManager.PlayerEntity.GetNearbyEntities();
                 if (entities.Length > 0)
                 {
                     _currentCommand = new ExamineCommand(entities[0]);
                 }
             }
 
-            _actorManager.PlayerActor.StateMachine.TryTransitionState(_currentCommand);
+            _entityManager.PlayerEntity.StateMachine.TryTransitionState(_currentCommand);
 
             // TODO - Probably not here.
-            _cameraManager.SetPosition(_actorManager.PlayerActor.GlobalPosition);
+            _cameraManager.SetPosition(_entityManager.PlayerEntity.GlobalPosition);
         }
 
 
