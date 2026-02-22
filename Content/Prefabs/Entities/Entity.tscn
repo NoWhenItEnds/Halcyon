@@ -6,7 +6,7 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_b4jtr"]
 radius = 6.0
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_gr3cw"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_j7oyk"]
 
 [node name="Entity" type="CharacterBody2D" unique_id=140002473 node_paths=PackedStringArray("_collisionShape", "_sprite", "_interactionArea", "_nameLabel")]
 script = ExtResource("1_j7oyk")
@@ -24,10 +24,10 @@ animation = &"walk_n"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=910154876]
 shape = SubResource("CircleShape2D_b4jtr")
 
-[node name="Interaction Area" type="Area2D" parent="." unique_id=1945959455]
+[node name="Interaction Area" type="Area2D" parent="." unique_id=2074331554]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Interaction Area" unique_id=651573820]
-shape = SubResource("CircleShape2D_gr3cw")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Interaction Area" unique_id=243090042]
+shape = SubResource("CircleShape2D_j7oyk")
 
 [node name="Name Label" type="Label" parent="." unique_id=642260124]
 anchors_preset = 5

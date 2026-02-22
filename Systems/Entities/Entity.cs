@@ -106,6 +106,6 @@ namespace Halcyon.Entities
 
 
         /// <inheritdoc/>
-        public Boolean Equals(Entity? other) => other != null ? Equals(other) : false;
+        public Boolean Equals(Entity? other) => other != null ? Data.Name.Equals(other.Data.Name) : false;
     }
 }
