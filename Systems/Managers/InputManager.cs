@@ -61,16 +61,17 @@ namespace Halcyon.Managers
             // Note: these WILL overwrite any other input.
             if (Input.IsActionPressed("action_interact"))
             {
-                IEntity[] interactables = _actorManager.PlayerActor.GetInteractables();
-                if (interactables.Length > 0)
+                // TODO - Need to determine HERE what command to use depending upon input.
+                IEntity[] entities = _actorManager.PlayerActor.GetNearbyEntities();
+                if (entities.Length > 0)
                 {
-                    _currentCommand = new InteractCommand(interactables[0]);
+                    _currentCommand = new ExamineCommand(entities[0]);
                 }
             }
 
             _actorManager.PlayerActor.StateMachine.TryTransitionState(_currentCommand);
 
-            // TODO - Probably not.
+            // TODO - Probably not here.
             _cameraManager.SetPosition(_actorManager.PlayerActor.GlobalPosition);
         }
 

@@ -36,8 +36,8 @@ namespace Halcyon.Entities
         public ActorStateMachine StateMachine;
 
 
-        /// <summary> A set of all the entities that the actor can currently interact with. </summary>
-        private HashSet<IEntity> _interactableEntities = new HashSet<IEntity>();
+        /// <summary> A set of all the entities that the actor is currently within interactable range of. </summary>
+        private HashSet<IEntity> _nearbyEntities = new HashSet<IEntity>();
 
 
         /// <inheritdoc/>
@@ -68,31 +68,31 @@ namespace Halcyon.Entities
         }
 
 
-        /// <summary> When something enters the actor's interactable area, add it to the possible interactions. </summary>
+        /// <summary> When something enters the actor's area of influence, add it to the nearby entities. </summary>
         /// <param name="body"> The node entering the area. </param>
         private void OnInteractionAreaEntered(Node2D body)
         {
             if(body is IEntity entity)
             {
-                _interactableEntities.Add(entity);
+                _nearbyEntities.Add(entity);
             }
         }
 
 
-        /// <summary> Remove the leaving node from the interactables. </summary>
+        /// <summary> Remove the leaving node from the nearby entities. </summary>
         /// <param name="body"> A reference to the node leaving the actor's area of influence. </param>
         private void OnInteractionAreaExited(Node2D body)
         {
             if (body is IEntity entity)
             {
-                _interactableEntities.Remove(entity);
+                _nearbyEntities.Remove(entity);
             }
         }
 
 
-        /// <summary> Get a sorted array of all the interactables within range of this actor. </summary>
+        /// <summary> Get a sorted array of all the nearby entities within range of this actor. </summary>
         /// <returns> A sorted array of all the entities that this actor can currently interact with. </returns>
-        public IEntity[] GetInteractables() => _interactableEntities.ToArray();
+        public IEntity[] GetNearbyEntities() => _nearbyEntities.ToArray();
 
 
         /// <inheritdoc/>

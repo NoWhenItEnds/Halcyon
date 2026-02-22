@@ -53,12 +53,24 @@ namespace Halcyon.Entities.ActorCommands
     }
 
 
-    /// <summary> A command telling the actor to interact with a nearby entity. </summary>
-    public class InteractCommand : ActorCommand
+    /// <summary> A command telling the actor to inspect a nearby entity. </summary>
+    public class ExamineCommand : ActorCommand
     {
-        /// <summary> A command telling the actor to interact with a nearby entity. </summary>
+        /// <summary> A command telling the actor to inspect a nearby entity. </summary>
         /// <param name="targetEntity"> The entity targeted by the command. </param>
-        public InteractCommand(IEntity targetEntity)
+        public ExamineCommand(IEntity targetEntity)
+        {
+            TargetEntity = targetEntity;
+        }
+    }
+
+
+    /// <summary> A command telling the actor to devour, whether by eating or drinking, a nearby entity. </summary>
+    public class ConsumeCommand : ActorCommand
+    {
+        /// <summary> A command telling the actor to devour, whether by eating or drinking, a nearby entity. </summary>
+        /// <param name="targetEntity"> The entity targeted by the command. </param>
+        public ConsumeCommand(IEntity targetEntity)
         {
             TargetEntity = targetEntity;
         }
