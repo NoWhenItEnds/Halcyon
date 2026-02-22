@@ -48,7 +48,7 @@ namespace Halcyon.Entities.ActorStates
         public Boolean TryTransitionState(ActorCommand command)
         {
             Boolean isSuccessful = false;
-            if (CurrentState.TryGetNextState(command, out Type? newState) && newState != null)
+            if (CurrentState.CanTransition() && CurrentState.TryGetNextState(command, out Type? newState) && newState != null)
             {
                 CurrentState.Stop(command);
                 CurrentState = STATES.FirstOrDefault(x => x.GetType() == newState) ??

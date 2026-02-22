@@ -8,7 +8,7 @@ namespace Halcyon.Entities.ActorStates
     public class IdlingState : ActorState
     {
         /// <inheritdoc/>
-        public override String AnimationPrefix { get; } = "idle";
+        protected override String _animationPrefix { get; init; } = "idle";
 
 
         /// <summary> The actor is standing idle, waiting for an action. </summary>
@@ -19,7 +19,7 @@ namespace Halcyon.Entities.ActorStates
         /// <inheritdoc/>
         public override void Start(ActorCommand command)
         {
-            ENTITY.SetAnimation(AnimationPrefix, command.Direction.ToDirection());
+            ENTITY.SetAnimation(_animationPrefix, command.Direction.ToDirection());
             ENTITY.Velocity -= ENTITY.Velocity * 0.5f;
         }
     }

@@ -1,17 +1,18 @@
 using System;
 using System.Collections.Generic;
-using Godot;
 using Halcyon.Entities.ActorCommands;
-using Halcyon.Utilities;
 
 namespace Halcyon.Entities.ActorStates
 {
     /// <summary> The basic data object representing an actor's potential state. </summary>
     public abstract class ActorState : IEquatable<ActorState>
     {
-        /// <summary> The prefix of the animations to use for this state. </summary>
-        public abstract String AnimationPrefix { get; }
+        /// <summary> Whether the state can currently transition. </summary>
+        public Func<Boolean> CanTransition { get; protected set; } = () => true;
 
+
+        /// <summary> The prefix of the animations to use for this state. </summary>
+        protected virtual String _animationPrefix { get; init; } = String.Empty;
 
         /// <summary> A map of the commands to the state they transition into. </summary>
         protected readonly Dictionary<Type, Type> TRANSITIONS = new Dictionary<Type, Type>();

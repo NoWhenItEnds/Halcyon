@@ -9,7 +9,8 @@ namespace Halcyon.Entities.ActorStates
     public class WalkingState : ActorState
     {
         /// <inheritdoc/>
-        public override String AnimationPrefix { get; } = "walk";
+        protected override String _animationPrefix { get; init; } = "walk";
+
 
         /// <summary> How fast the walking movement speed is. </summary>
         private readonly Single MOVE_SPEED = 500f;
@@ -23,7 +24,7 @@ namespace Halcyon.Entities.ActorStates
         /// <inheritdoc/>
         public override void Start(ActorCommand command)
         {
-            ENTITY.SetAnimation(AnimationPrefix, command.Direction.ToDirection());
+            ENTITY.SetAnimation(_animationPrefix, command.Direction.ToDirection());
 
             Single speed = ENTITY.Data.SpeedStat.CurrentValue * MOVE_SPEED;
             ENTITY.Velocity = command.Direction * speed;
