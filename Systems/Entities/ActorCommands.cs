@@ -1,3 +1,4 @@
+#nullable disable warnings
 using Godot;
 
 namespace Halcyon.Entities.ActorCommands
@@ -8,13 +9,11 @@ namespace Halcyon.Entities.ActorCommands
         /// <summary> The direction associated with the command. </summary>
         public Vector2 Direction { get; init; } = Vector2.Zero;
 
+        /// <summary> The global position targeted by the command. </summary>
+        public Vector2 TargetPosition { get; init; } = Vector2.Zero;
 
-        /// <summary> A data object containing a command for an actor. </summary>
-        /// <param name="direction"> The direction vector associated with the command. </param>
-        public ActorCommand(Vector2 direction)
-        {
-            Direction = direction;
-        }
+        /// <summary> The entity targeted by the command. </summary>
+        public IEntity TargetEntity { get; init; }
     }
 
 
@@ -23,7 +22,10 @@ namespace Halcyon.Entities.ActorCommands
     {
         /// <summary> A command telling the actor to stand around and look pretty. </summary>
         /// <param name="direction"> The direction vector associated with the command. </param>
-        public IdleCommand(Vector2 direction) : base(direction) { }
+        public IdleCommand(Vector2 direction)
+        {
+            Direction = direction;
+        }
     }
 
 
@@ -32,7 +34,10 @@ namespace Halcyon.Entities.ActorCommands
     {
         /// <summary> A command telling the actor to walk. </summary>
         /// <param name="direction"> The direction vector associated with the command. </param>
-        public WalkCommand(Vector2 direction) : base(direction) { }
+        public WalkCommand(Vector2 direction)
+        {
+            Direction = direction;
+        }
     }
 
 
@@ -41,6 +46,21 @@ namespace Halcyon.Entities.ActorCommands
     {
         /// <summary> A command telling the actor to sprint. </summary>
         /// <param name="direction"> The direction vector associated with the command. </param>
-        public SprintCommand(Vector2 direction) : base(direction) { }
+        public SprintCommand(Vector2 direction)
+        {
+            Direction = direction;
+        }
+    }
+
+
+    /// <summary> A command telling the actor to interact with a nearby entity. </summary>
+    public class InteractCommand : ActorCommand
+    {
+        /// <summary> A command telling the actor to interact with a nearby entity. </summary>
+        /// <param name="targetEntity"> The entity targeted by the command. </param>
+        public InteractCommand(IEntity targetEntity)
+        {
+            TargetEntity = targetEntity;
+        }
     }
 }

@@ -1,5 +1,7 @@
 #nullable disable warnings
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Godot;
 using Halcyon.Entities.ActorStates;
 using Halcyon.Entities.Data;
@@ -8,7 +10,7 @@ using Halcyon.Utilities;
 namespace Halcyon.Entities
 {
     /// <summary> An moving, sentient entity within the game world. </summary>
-    public partial class ActorEntity : CharacterBody2D, IEntity
+    public partial class ActorEntity : CharacterBody2D, IEntity, IEquatable<ActorEntity>
     {
         /// <summary> The node that defines the node's collision. </summary>
         [ExportGroup("Nodes")]
@@ -16,6 +18,13 @@ namespace Halcyon.Entities
 
         /// <summary> The sprite representing the actor within the world. </summary>
         [Export] private AnimatedSprite2D _sprite;
+
+        /// <summary> The area around the entity in which it can interact with other entities. </summary>
+        [Export] private Area2D _interactionArea;
+
+        /// <summary> A label displaying the actor's name. </summary>
+        /// <remarks To help with debugging. </remarks>
+        [Export] private Label _nameLabel;
 
 
         /// <summary> The persistent data for an actor entity. </summary>
@@ -27,24 +36,63 @@ namespace Halcyon.Entities
         public ActorStateMachine StateMachine;
 
 
+        /// <summary> A set of all the entities that the actor can currently interact with. </summary>
+        private HashSet<IEntity> _interactableEntities = new HashSet<IEntity>();
+
+
         /// <inheritdoc/>
         public override void _Ready()
         {
             StateMachine = new ActorStateMachine(this);
+            _interactionArea.BodyEntered += OnInteractionAreaEntered;
+            _interactionArea.BodyExited += OnInteractionAreaExited;
+
             _sprite.Play();
+            _nameLabel.Text = Data.Name.ToString();
         }
 
 
         /// <inheritdoc/>
         public override void _PhysicsProcess(Double delta)
         {
-            Velocity *= (Single)delta;
-            Boolean isCollision = MoveAndSlide();
-            if (isCollision)
+            // Update the state machine.
+            StateMachine.CurrentState.Update(delta);
+        }
+
+
+        /// <inheritdoc/>
+        public override void _ExitTree()
+        {
+            _interactionArea.BodyEntered -= OnInteractionAreaEntered;
+            _interactionArea.BodyExited -= OnInteractionAreaExited;
+        }
+
+
+        /// <summary> When something enters the actor's interactable area, add it to the possible interactions. </summary>
+        /// <param name="body"> The node entering the area. </param>
+        private void OnInteractionAreaEntered(Node2D body)
+        {
+            if(body is IEntity entity)
             {
-                KinematicCollision2D collision = GetLastSlideCollision();
+                _interactableEntities.Add(entity);
             }
         }
+
+
+        /// <summary> Remove the leaving node from the interactables. </summary>
+        /// <param name="body"> A reference to the node leaving the actor's area of influence. </param>
+        private void OnInteractionAreaExited(Node2D body)
+        {
+            if (body is IEntity entity)
+            {
+                _interactableEntities.Remove(entity);
+            }
+        }
+
+
+        /// <summary> Get a sorted array of all the interactables within range of this actor. </summary>
+        /// <returns> A sorted array of all the entities that this actor can currently interact with. </returns>
+        public IEntity[] GetInteractables() => _interactableEntities.ToArray();
 
 
         /// <inheritdoc/>
@@ -53,5 +101,20 @@ namespace Halcyon.Entities
 
         /// <inheritdoc/>
         public Vector2 GetLocation() => GlobalPosition;
+
+
+        /// <inheritdoc/>
+        public Boolean TryInteractWith(IEntity interactingEntity)
+        {
+            GD.Print($"{GetHashCode()} interacted with {interactingEntity.GetHashCode()}!");
+            return true;
+        }
+
+        /// <inheritdoc/>
+        public override Int32 GetHashCode() => HashCode.Combine(Data.Name);
+
+
+        /// <inheritdoc/>
+        public Boolean Equals(ActorEntity? other) => other != null ? Equals(other) : false;
     }
 }

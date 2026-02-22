@@ -208,7 +208,7 @@ namespace Halcyon.Entities.Data
 
 
         /// <inheritdoc/>
-        public Boolean Equals(Stat? other) => other != null && Name == other.Name;
+        public Boolean Equals(Stat? other) => other != null ? Name == other.Name : false;
     }
 
 

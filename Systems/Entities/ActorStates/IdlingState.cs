@@ -1,5 +1,5 @@
 using System;
-using Godot;
+using Halcyon.Entities.ActorCommands;
 using Halcyon.Utilities;
 
 namespace Halcyon.Entities.ActorStates
@@ -15,10 +15,11 @@ namespace Halcyon.Entities.ActorStates
         /// <param name="entity"> A reference to the entity. </param>
         public IdlingState(ActorEntity entity) : base(entity) { }
 
+
         /// <inheritdoc/>
-        public override void Update(Vector2 direction)
+        public override void Start(ActorCommand command)
         {
-            ENTITY.SetAnimation(AnimationPrefix, direction.ToDirection());
+            ENTITY.SetAnimation(AnimationPrefix, command.Direction.ToDirection());
             ENTITY.Velocity -= ENTITY.Velocity * 0.5f;
         }
     }

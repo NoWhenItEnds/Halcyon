@@ -30,21 +30,14 @@ namespace Halcyon.Entities.ActorStates
             STATES.Add(initialState);
 
             STATES.Add(new WalkingState(entity)
+                .WithTransition<WalkCommand, WalkingState>()
                 .WithTransition<IdleCommand, IdlingState>()
                 .WithTransition<SprintCommand, SprintingState>());
 
             STATES.Add(new SprintingState(entity)
+                .WithTransition<SprintCommand, SprintingState>()
                 .WithTransition<IdleCommand, IdlingState>()
                 .WithTransition<WalkCommand, WalkingState>());
-        }
-
-
-        /// <summary> Handle the input sent to the being by it's controller. </summary>
-        /// <param name="input"> The input data class to interpret. </param>
-        public void HandleCommand(ActorCommand command)
-        {
-            TryTransitionState(command);
-            CurrentState.Update(command.Direction);
         }
 
 
@@ -52,15 +45,15 @@ namespace Halcyon.Entities.ActorStates
         /// <param name="command"> The command triggering the state change. </param>
         /// <returns> Whether there was a successful transition. </returns>
         /// <exception cref="ArgumentNullException"/>
-        private Boolean TryTransitionState(ActorCommand command)
+        public Boolean TryTransitionState(ActorCommand command)
         {
             Boolean isSuccessful = false;
             if (CurrentState.TryGetNextState(command, out Type? newState) && newState != null)
             {
-                CurrentState.Stop();
+                CurrentState.Stop(command);
                 CurrentState = STATES.FirstOrDefault(x => x.GetType() == newState) ??
                     throw new ArgumentNullException("Next transition state doesn't exist on ActorStateMachine.", newState.GetType().ToString());
-                CurrentState.Start();
+                CurrentState.Start(command);
                 isSuccessful = true;
             }
             return isSuccessful;

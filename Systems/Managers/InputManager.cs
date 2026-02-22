@@ -1,6 +1,7 @@
 #nullable disable warnings
 using System;
 using Godot;
+using Halcyon.Entities;
 using Halcyon.Entities.ActorCommands;
 using Halcyon.Utilities.Singletons;
 
@@ -57,12 +58,17 @@ namespace Halcyon.Managers
             }
 
             // Handle complex actions that DON'T require direction.
-            if (Input.IsActionPressed("action_sprint"))
+            // Note: these WILL overwrite any other input.
+            if (Input.IsActionPressed("action_interact"))
             {
-                //_currentCommand = new SprintCommand(direction);
+                IEntity[] interactables = _actorManager.PlayerActor.GetInteractables();
+                if (interactables.Length > 0)
+                {
+                    _currentCommand = new InteractCommand(interactables[0]);
+                }
             }
 
-            _actorManager.PlayerActor.StateMachine.HandleCommand(_currentCommand);
+            _actorManager.PlayerActor.StateMachine.TryTransitionState(_currentCommand);
 
             // TODO - Probably not.
             _cameraManager.SetPosition(_actorManager.PlayerActor.GlobalPosition);

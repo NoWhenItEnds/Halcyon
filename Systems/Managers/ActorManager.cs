@@ -18,17 +18,16 @@ namespace Halcyon.Managers
         public ActorEntity PlayerActor { get; private set; }
 
 
-        /// <summary> A reference to all the actors within the game world. </summary>
-        private readonly HashSet<ActorEntity> ACTORS = new HashSet<ActorEntity>();
+        /// <summary> A reference to all the actors within the game world and their controller, if it has one. </summary>
+        /// <remarks> A null as the value indicates that it doesn't currently have an associated controller. </remarks>
+        private readonly Dictionary<ActorEntity, ActorController?> ACTORS = new Dictionary<ActorEntity, ActorController?>();
 
 
         public override void _Ready()
         {
             // Create player.
-            if (TrySpawnActor(Vector2.Zero, out var playerEntity) && playerEntity != null)
-            {
-                PlayerActor = playerEntity;
-            }
+            PlayerActor = _actorPrefab.InstantiateOrNull<ActorEntity>();
+            AddChild(PlayerActor);
 
             Random random = new Random();
 
@@ -40,12 +39,26 @@ namespace Halcyon.Managers
         }
 
 
+        public override void _PhysicsProcess(Double delta)
+        {
+            foreach (ActorController? controller in ACTORS.Values)
+            {
+                if(controller != null)
+                {
+                    //controller.DoTest(delta);
+                }
+            }
+        }
+
+
+
         public Boolean TrySpawnActor(Vector2 position, out ActorEntity? entity)
         {
             entity = _actorPrefab.InstantiateOrNull<ActorEntity>();
+            ActorController controller = new ActorController(entity);
 
             // Attempt to add the entity to the game world.
-            Boolean isSuccess = ACTORS.Add(entity);
+            Boolean isSuccess = ACTORS.TryAdd(entity, controller);
             if (isSuccess)
             {
                 AddChild(entity);

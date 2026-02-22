@@ -16,5 +16,11 @@ namespace Halcyon.Entities
         /// <summary> Get the entity's current position. </summary>
         /// <returns> The node's current global position. </returns>
         public Vector2 GetLocation();
+
+
+        /// <summary> Attempt to interact with the entity. </summary>
+        /// <param name="interactingEntity"> The entity attempting to interact with this one. </param>
+        /// <returns> Whether the interaction was 'successful'. </returns>
+        public Boolean TryInteractWith(IEntity interactingEntity);
     }
 }

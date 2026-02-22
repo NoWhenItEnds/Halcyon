@@ -7,6 +7,10 @@ namespace Halcyon.Entities.Data
     [GlobalClass]
     public partial class ActorData : Resource
     {
+        [ExportGroup("General")]
+        [Export] public ActorName Name { get; private set; } = ActorName.Random(NameGender.NONE);
+
+
         [ExportGroup("Stats")]
         [ExportSubgroup("Attributes")]
         [Export] public Stat Strength { get; private set; } = new Stat("attribute_strength", 1, 0, 10);

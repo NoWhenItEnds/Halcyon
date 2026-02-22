@@ -4,11 +4,16 @@
 [ext_resource type="SpriteFrames" uid="uid://cupxsc4dceuuk" path="res://Content/Resources/SpriteFrames/SpriteFrame_Placeholder_Actor.tres" id="2_gr3cw"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_b4jtr"]
+radius = 6.0
 
-[node name="ActorEntity" type="CharacterBody2D" unique_id=140002473 node_paths=PackedStringArray("_collisionShape", "_sprite")]
+[sub_resource type="CircleShape2D" id="CircleShape2D_gr3cw"]
+
+[node name="ActorEntity" type="CharacterBody2D" unique_id=140002473 node_paths=PackedStringArray("_collisionShape", "_sprite", "_interactionArea", "_nameLabel")]
 script = ExtResource("1_3voqp")
 _collisionShape = NodePath("CollisionShape2D")
 _sprite = NodePath("AnimatedSprite2D")
+_interactionArea = NodePath("Interaction Area")
+_nameLabel = NodePath("Name Label")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1245385040]
 texture_filter = 3
@@ -18,3 +23,20 @@ animation = &"walk_n"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=910154876]
 shape = SubResource("CircleShape2D_b4jtr")
+
+[node name="Interaction Area" type="Area2D" parent="." unique_id=1945959455]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Interaction Area" unique_id=651573820]
+shape = SubResource("CircleShape2D_gr3cw")
+
+[node name="Name Label" type="Label" parent="." unique_id=642260124]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -35.5
+offset_right = 35.5
+offset_bottom = 23.0
+grow_horizontal = 2
+text = "First Last"
+horizontal_alignment = 1
+vertical_alignment = 1

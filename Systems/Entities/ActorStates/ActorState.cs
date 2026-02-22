@@ -51,19 +51,18 @@ namespace Halcyon.Entities.ActorStates
 
 
         /// <summary> Initialise the actor state. Called once when the state is created. </summary>
-        public virtual void Start() { }
+        /// <param name="command"> The command triggering the state change. </param>
+        public virtual void Start(ActorCommand command) { }
 
 
         /// <summary> Update the actor's state. Called on the physics frame. </summary>
         /// <param name="delta"> The time in second since the last physics frame. </param>
-        public virtual void Update(Vector2 direction)
-        {
-            ENTITY.SetAnimation(AnimationPrefix, direction.ToDirection());
-        }
+        public virtual void Update(Double delta) { }
 
 
         /// <summary> Called just before the state transitions. Does a final cleanup. </summary>
-        public virtual void Stop() { }
+        /// <param name="command"> The command triggering the state change. </param>
+        public virtual void Stop(ActorCommand command) { }
 
 
         /// <inheritdoc/>
