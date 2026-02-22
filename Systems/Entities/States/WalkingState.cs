@@ -9,7 +9,7 @@ namespace Halcyon.Entities.States
     public class WalkingState : EntityState
     {
         /// <inheritdoc/>
-        protected override String _animationPrefix { get; init; } = "walk";
+        protected override String _animationPrefix { get; init; } = "walking";
 
 
         /// <summary> How fast the walking movement speed is. </summary>
@@ -24,7 +24,7 @@ namespace Halcyon.Entities.States
         /// <inheritdoc/>
         public override void Start(EntityCommand command)
         {
-            ENTITY.SetAnimation(_animationPrefix, command.Direction.ToDirection());
+            ENTITY.Sprite.Animation = $"{_animationPrefix}_{command.Direction.ToDirection().ToString().ToLower()}";
 
             Single speed = ENTITY.Data.SpeedStat.CurrentValue * MOVE_SPEED;
             ENTITY.Velocity = command.Direction * speed;

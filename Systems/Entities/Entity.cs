@@ -4,8 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Godot;
 using Halcyon.Entities.Data;
-using Halcyon.Entities.States;
-using Halcyon.Utilities;
+using Halcyon.Entities.States.Machines;
 
 namespace Halcyon.Entities
 {
@@ -14,10 +13,10 @@ namespace Halcyon.Entities
     {
         /// <summary> The node that defines the node's collision. </summary>
         [ExportGroup("Nodes")]
-        [Export] private CollisionShape2D _collisionShape;
+        [Export] public CollisionShape2D Collision { get; private set; }
 
         /// <summary> The sprite representing the entity within the world. </summary>
-        [Export] private AnimatedSprite2D _sprite;
+        [Export] public AnimatedSprite2D Sprite { get; private set; }
 
         /// <summary> The area around the entity in which it can interact with other entities. </summary>
         [Export] private Area2D _interactionArea;
@@ -47,7 +46,7 @@ namespace Halcyon.Entities
             _interactionArea.BodyEntered += OnInteractionAreaEntered;
             _interactionArea.BodyExited += OnInteractionAreaExited;
 
-            _sprite.Play();
+            Sprite.Play();
             _nameLabel.Text = Data.Name.ToString();
         }
 
@@ -93,12 +92,6 @@ namespace Halcyon.Entities
         /// <summary> Get a sorted array of all the nearby entities within range of this entity. </summary>
         /// <returns> A sorted array of all the entities that this entity can currently interact with. </returns>
         public Entity[] GetNearbyEntities() => _nearbyEntities.ToArray();
-
-
-        /// <summary> Set the entity's current animation on their sprite. </summary>
-        /// <param name="name"> The identifying name of the animation. </param>
-        /// <param name="direction"> The direction of the animation. </param>
-        public void SetAnimation(String name, Direction direction) => _sprite.Animation = $"{name}_{direction.ToString().ToLower()}";
 
 
         /// <inheritdoc/>

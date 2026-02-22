@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Halcyon.Entities.EntityCommands;
 
-namespace Halcyon.Entities.States
+namespace Halcyon.Entities.States.Machines
 {
     /// <summary> A machine to control the various states an entity can exist within and move between. </summary>
     public abstract class EntityStateMachine

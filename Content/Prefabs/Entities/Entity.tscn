@@ -8,21 +8,21 @@ radius = 6.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_j7oyk"]
 
-[node name="Entity" type="CharacterBody2D" unique_id=140002473 node_paths=PackedStringArray("_collisionShape", "_sprite", "_interactionArea", "_nameLabel")]
+[node name="Entity" type="CharacterBody2D" unique_id=140002473 node_paths=PackedStringArray("Collision", "Sprite", "_interactionArea", "_nameLabel")]
 script = ExtResource("1_j7oyk")
-_collisionShape = NodePath("CollisionShape2D")
-_sprite = NodePath("AnimatedSprite2D")
+Collision = NodePath("CollisionShape2D")
+Sprite = NodePath("AnimatedSprite2D")
 _interactionArea = NodePath("Interaction Area")
 _nameLabel = NodePath("Name Label")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=910154876]
+shape = SubResource("CircleShape2D_b4jtr")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1245385040]
 texture_filter = 3
 position = Vector2(0, -8)
 sprite_frames = ExtResource("2_r1pii")
-animation = &"walk_n"
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=910154876]
-shape = SubResource("CircleShape2D_b4jtr")
+animation = &"walking_n"
 
 [node name="Interaction Area" type="Area2D" parent="." unique_id=2074331554]
 

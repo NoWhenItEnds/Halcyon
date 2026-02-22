@@ -1,6 +1,6 @@
 using Halcyon.Entities.EntityCommands;
 
-namespace Halcyon.Entities.States
+namespace Halcyon.Entities.States.Machines
 {
     /// <summary> A state machine used for human entities. </summary>
     public class HumanStateMachine : EntityStateMachine

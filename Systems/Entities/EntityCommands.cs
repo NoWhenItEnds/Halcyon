@@ -65,6 +65,18 @@ namespace Halcyon.Entities.EntityCommands
     }
 
 
+    /// <summary> A general command telling the entity to 'use' a nearby entity. </summary>
+    public class UseCommand : EntityCommand
+    {
+        /// <summary> A general command telling the entity to 'use' a nearby entity. </summary>
+        /// <param name="targetEntity"> The entity targeted by the command. </param>
+        public UseCommand(Entity targetEntity)
+        {
+            TargetEntity = targetEntity;
+        }
+    }
+
+
     /// <summary> A command telling the entity to devour, whether by eating or drinking, a nearby entity. </summary>
     public class ConsumeCommand : EntityCommand
     {

@@ -9,7 +9,7 @@ namespace Halcyon.Entities.States
     public class IdlingState : EntityState
     {
         /// <inheritdoc/>
-        protected override String _animationPrefix { get; init; } = "idle";
+        protected override String _animationPrefix { get; init; } = "idling";
 
 
         /// <summary> The entity is standing idle, waiting for an action. </summary>
@@ -20,7 +20,7 @@ namespace Halcyon.Entities.States
         /// <inheritdoc/>
         public override void Start(EntityCommand command)
         {
-            ENTITY.SetAnimation(_animationPrefix, command.Direction.ToDirection());
+            ENTITY.Sprite.Animation = $"{_animationPrefix}_{command.Direction.ToDirection().ToString().ToLower()}";
             ENTITY.Velocity = Vector2.Zero;
         }
     }
