@@ -1,3 +1,4 @@
+#nullable disable warnings
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -5,40 +6,15 @@ using Halcyon.Entities.EntityCommands;
 
 namespace Halcyon.Entities.States
 {
-    /// <summary> A state machine for entity states. </summary>
-    public class EntityStateMachine
+    /// <summary> A machine to control the various states an entity can exist within and move between. </summary>
+    public abstract class EntityStateMachine
     {
         /// <summary> The current state of the state machine. </summary>
-        public EntityState CurrentState { get; private set; }
+        public EntityState CurrentState { get; protected set; }
 
 
         /// <summary> All the possible states the state machine can transition to. </summary>
-        private readonly HashSet<EntityState> STATES = new HashSet<EntityState>();
-
-
-        /// <summary> A state machine for entity states. </summary>
-        /// <param name="entity"> A reference to the entity controlled by the state. </param>
-        public EntityStateMachine(Entity entity)
-        {
-            // Set the initial state.
-            EntityState initialState = new IdlingState(entity)
-                .WithTransition<WalkCommand, WalkingState>()
-                .WithTransition<SprintCommand, SprintingState>();
-
-            CurrentState = initialState;
-
-            STATES.Add(initialState);
-
-            STATES.Add(new WalkingState(entity)
-                .WithTransition<WalkCommand, WalkingState>()
-                .WithTransition<IdleCommand, IdlingState>()
-                .WithTransition<SprintCommand, SprintingState>());
-
-            STATES.Add(new SprintingState(entity)
-                .WithTransition<SprintCommand, SprintingState>()
-                .WithTransition<IdleCommand, IdlingState>()
-                .WithTransition<WalkCommand, WalkingState>());
-        }
+        protected readonly HashSet<EntityState> STATES = new HashSet<EntityState>();
 
 
         /// <summary> Attempt to transition from one state to another. </summary>

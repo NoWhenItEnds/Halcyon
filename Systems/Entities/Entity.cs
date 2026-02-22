@@ -43,7 +43,7 @@ namespace Halcyon.Entities
         /// <inheritdoc/>
         public override void _Ready()
         {
-            StateMachine = new EntityStateMachine(this);
+            StateMachine = new HumanStateMachine(this);
             _interactionArea.BodyEntered += OnInteractionAreaEntered;
             _interactionArea.BodyExited += OnInteractionAreaExited;
 
