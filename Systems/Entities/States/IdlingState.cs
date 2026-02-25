@@ -22,6 +22,7 @@ namespace Halcyon.Entities.States
         {
             _entity.Sprite.Animation = $"{_animationPrefix}_{command.Direction.ToDirection().ToString().ToLower()}";
             _entity.Velocity = Vector2.Zero;
+            _entity.LayeredSprite.Play(command.Direction.ToDirection());
         }
     }
 }

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Godot;
+using Halcyon.Animations;
 using Halcyon.Entities.Data;
 using Halcyon.Entities.States.Machines;
 
@@ -17,6 +18,8 @@ namespace Halcyon.Entities
 
         /// <summary> The sprite representing the entity within the world. </summary>
         [Export] public AnimatedSprite2D Sprite { get; private set; }
+
+        [Export] public LayeredSprite2D LayeredSprite { get; private set; }
 
         /// <summary> The area around the entity in which it can interact with other entities. </summary>
         [Export] protected Area2D _interactionArea;
