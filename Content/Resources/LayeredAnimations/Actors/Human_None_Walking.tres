@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="LayeredAnimation" format=3 uid="uid://4vy3iv108upk"]
+
+[ext_resource type="Texture2D" uid="uid://cst72m2e8ix6o" path="res://Content/Sprites/Entities/Humans/Placeholders/walk.png" id="1_hxjrh"]
+[ext_resource type="Script" uid="uid://yak566enobof" path="res://Systems/Animations/LayeredAnimation.cs" id="2_n1ny8"]
+
+[resource]
+script = ExtResource("2_n1ny8")
+EntityKind = "human"
+Animation = 2
+Layer = 1
+Texture = ExtResource("1_hxjrh")
+metadata/_custom_type_script = "uid://yak566enobof"

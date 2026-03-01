@@ -14,11 +14,11 @@ namespace Halcyon.Entities
 
 
         /// <summary> A reference to the entity's state machine. </summary>
-        private ActorStateMachine _stateMachine;
+        private HumanStateMachine _stateMachine;
 
         public override void Initialise(EntityStateMachine stateMachine)
         {
-            if (stateMachine is ActorStateMachine machine)
+            if (stateMachine is HumanStateMachine machine)
             {
                 Sprite.Stop();
                 _stateMachine = machine;
@@ -33,6 +33,6 @@ namespace Halcyon.Entities
 
         public override ActorData GetData() => _data;
 
-        public override ActorStateMachine GetStateMachine() => _stateMachine;
+        public override HumanStateMachine GetStateMachine() => _stateMachine;
     }
 }

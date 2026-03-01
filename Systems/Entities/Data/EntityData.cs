@@ -8,7 +8,10 @@ namespace Halcyon.Entities.Data
     {
         /// <summary> The entity's personal name. </summary>
         [ExportGroup("General")]
-        [Export] public EntityName Name { get; private set; } = EntityName.Random(NameGender.NONE);
+        [Export] public EntityName Name { get; set; } = EntityName.Random(EntityGender.NONE);
+
+        /// <summary> The current gender / sex of the entity. </summary>
+        [Export] public EntityGender Gender { get; set; } = EntityGender.NONE;
 
 
         /// <summary> The persistent data for an entity. </summary>

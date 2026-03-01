@@ -68,7 +68,7 @@ namespace Halcyon.Managers
                 // TODO - Find a better way to handle animation sprite sheets. Use the state machine? How is clothing done?
                 AddChild(entity);
                 entity.GlobalPosition = position;
-                ActorStateMachine stateMachine = new ActorStateMachine(entity);
+                HumanStateMachine stateMachine = new HumanStateMachine(entity);
                 entity.Initialise(stateMachine);
             }
 

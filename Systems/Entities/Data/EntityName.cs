@@ -27,7 +27,7 @@ namespace Halcyon.Entities.Data
         /// <summary> Generate a random name. </summary>
         /// <param name="gender"> The gender of the name to generate. A none indicates that all names should be considered. </param>
         /// <returns> The generated name. </returns>
-        public static EntityName Random(NameGender gender)
+        public static EntityName Random(EntityGender gender)
         {
             GivenName[] firstNames = CsvExtensions.LoadData<GivenName>("res://Content/Data/Names/ActorFirstNames.csv");
             Surname[] lastNames = CsvExtensions.LoadData<Surname>("res://Content/Data/Names/ActorLastNames.csv");
@@ -61,7 +61,7 @@ namespace Halcyon.Entities.Data
         public String Romanised { get; init; } = String.Empty;
 
         /// <summary> The name's gender. </summary>
-        public NameGender Gender { get; init; } = NameGender.NONE;
+        public EntityGender Gender { get; init; } = EntityGender.NONE;
 
 
         /// <summary> An empty, default name. </summary>
@@ -76,16 +76,16 @@ namespace Halcyon.Entities.Data
             Int32 localisedIndex = header.IndexOf("Localized Name");
             Int32 romanisedIndex = header.IndexOf("Romanized Name");
 
-            NameGender gender = NameGender.NONE;
+            EntityGender gender = EntityGender.NONE;
             if (genderIndex != -1)
             {
                 switch (data[genderIndex])
                 {
                     case "M":
-                        gender = NameGender.MALE;
+                        gender = EntityGender.MALE;
                         break;
                     case "F":
-                        gender = NameGender.FEMALE;
+                        gender = EntityGender.FEMALE;
                         break;
                 }
             }
@@ -132,14 +132,5 @@ namespace Halcyon.Entities.Data
                 Romanised = countryIndex != -1 ? data[romanisedIndex] : String.Empty
             };
         }
-    }
-
-
-    /// <summary> The name's gender. </summary>
-    public enum NameGender
-    {
-        NONE,
-        MALE,
-        FEMALE
     }
 }

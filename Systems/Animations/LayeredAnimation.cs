@@ -1,4 +1,6 @@
+#nullable disable warnings
 using Godot;
+using Halcyon.Entities.Data;
 using Halcyon.Utilities;
 using System;
 
@@ -9,30 +11,15 @@ namespace Halcyon.Animations
     [Tool]
     public partial class LayeredAnimation : Resource
     {
-        /// <summary> The identifying name of the animation. </summary>
-        /// <example> Actor_Human / Prop_Door_Oak </example>
-        [Export] public String Name
-        {
-            get => _name;
-            set
-            {
-                _name = value;
-                EmitChanged();
-            }
-        }
-        private String _name = String.Empty;
+        /// <summary> The identifying race / type of the entity in the animation. </summary>
+        /// <example> human / door / chest </example>
+        [Export] public String EntityKind { get; set; } = String.Empty;
+
+        /// <summary> The gender of the entity in the animation. </summary>
+        [Export] public EntityGender Gender { get; set; } = EntityGender.NONE;
 
         /// <summary> The kind of animation the resource represents. </summary>
-        [Export] public AnimationKind Animation
-        {
-            get => _animation;
-            set
-            {
-                _animation = value;
-                EmitChanged();
-            }
-        }
-        private AnimationKind _animation = AnimationKind.NONE;
+        [Export] public AnimationKind Animation { get; set; } = AnimationKind.NONE;
 
         /// <summary> The kind of layer the texture occupies. </summary>
         [Export] public LayerKind Layer
@@ -95,14 +82,6 @@ namespace Halcyon.Animations
 
 
         /// <summary> A correctly formatted texture with metadata to be used on a layered sprite. </summary>
-        public LayeredAnimation()
-        {
-            /*
-            ArgumentNullException.ThrowIfNullOrWhiteSpace(Name);
-            ArgumentNullException.ThrowIfNull(Texture);
-            ArgumentOutOfRangeException.ThrowIfNegativeOrZero(HFrames);
-            ArgumentOutOfRangeException.ThrowIfNegativeOrZero(VFrameOrder.Count);
-            */
-        }
+        public LayeredAnimation() { }
     }
 }
