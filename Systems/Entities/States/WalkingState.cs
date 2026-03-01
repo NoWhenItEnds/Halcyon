@@ -1,4 +1,5 @@
 using Godot;
+using Halcyon.Animations;
 using Halcyon.Entities.EntityCommands;
 using Halcyon.Utilities;
 using System;
@@ -12,7 +13,7 @@ namespace Halcyon.Entities.States
         protected override ActorEntity _entity { get; }
 
         /// <inheritdoc/>
-        protected override String _animationPrefix { get; } = "walking";
+        protected override AnimationKind _animationKind { get; } = AnimationKind.WALKING;
 
 
         /// <summary> How fast the walking movement speed is. </summary>
@@ -30,10 +31,12 @@ namespace Halcyon.Entities.States
         /// <inheritdoc/>
         public override void Start(EntityCommand command)
         {
-            _entity.Sprite.Animation = $"{_animationPrefix}_{command.Direction.ToDirection().ToString().ToLower()}";
-
             Single speed = _entity.GetData().SpeedStat.CurrentValue * MOVE_SPEED;
             _entity.Velocity = command.Direction * speed;
+
+            // Handle animation.
+            _entity.LayeredSprite.Animations = GetCurrentAnimations();
+            _entity.LayeredSprite.Play(command.Direction.ToDirection());
         }
 
 
@@ -47,5 +50,9 @@ namespace Halcyon.Entities.States
                 KinematicCollision2D collision = _entity.GetLastSlideCollision();
             }
         }
+
+
+        /// <inheritdoc/>
+        public override void Stop(EntityCommand command) { }
     }
 }

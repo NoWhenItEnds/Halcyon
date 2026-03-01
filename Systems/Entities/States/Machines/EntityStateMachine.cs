@@ -30,6 +30,7 @@ namespace Halcyon.Entities.States.Machines
                 CurrentState = STATES.FirstOrDefault(x => x.GetType() == newState) ??
                     throw new ArgumentNullException($"Next transition state doesn't exist on this {GetType()}.", newState.GetType().ToString());
                 CurrentState.Start(command);
+
                 isSuccessful = true;
             }
             return isSuccessful;

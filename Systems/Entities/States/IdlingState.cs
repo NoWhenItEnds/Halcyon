@@ -1,5 +1,5 @@
-using System;
 using Godot;
+using Halcyon.Animations;
 using Halcyon.Entities.EntityCommands;
 using Halcyon.Utilities;
 
@@ -9,7 +9,7 @@ namespace Halcyon.Entities.States
     public class IdlingState : EntityState
     {
         /// <inheritdoc/>
-        protected override String _animationPrefix { get; } = "idling";
+        protected override AnimationKind _animationKind { get; } = AnimationKind.IDLING;
 
 
         /// <summary> The entity is standing idle, waiting for an action. </summary>
@@ -20,8 +20,10 @@ namespace Halcyon.Entities.States
         /// <inheritdoc/>
         public override void Start(EntityCommand command)
         {
-            _entity.Sprite.Animation = $"{_animationPrefix}_{command.Direction.ToDirection().ToString().ToLower()}";
             _entity.Velocity = Vector2.Zero;
+
+            // Handle animation.
+            _entity.LayeredSprite.Animations = GetCurrentAnimations();
             _entity.LayeredSprite.Play(command.Direction.ToDirection());
         }
     }

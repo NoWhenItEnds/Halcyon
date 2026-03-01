@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using Halcyon.Animations;
 using Halcyon.Entities.EntityCommands;
 
 namespace Halcyon.Entities.States
@@ -14,11 +16,14 @@ namespace Halcyon.Entities.States
         /// <summary> A reference to the entity. </summary>
         protected virtual Entity _entity { get; }
 
-        /// <summary> The prefix of the animations to use for this state. </summary>
-        protected virtual String _animationPrefix { get; } = String.Empty;
+        /// <summary> The kind of the animations to use for this state. </summary>
+        protected virtual AnimationKind _animationKind { get; } = AnimationKind.NONE;
 
         /// <summary> A map of the commands to the state they transition into. </summary>
         protected readonly Dictionary<Type, Type> TRANSITIONS = new Dictionary<Type, Type>();
+
+        /// <summary> A reference to the project's resource library. </summary>
+        private readonly Halcyon.Managers.ResourceManager RESOURCE_MANAGER = Halcyon.Managers.ResourceManager.Instance;
 
 
         /// <summary> The basic data object representing an entity's potential state. </summary>
@@ -63,7 +68,14 @@ namespace Halcyon.Entities.States
 
         /// <summary> Called just before the state transitions. Does a final cleanup. </summary>
         /// <param name="command"> The command triggering the state change. </param>
-        public virtual void Stop(EntityCommand command) { }
+        public virtual void Stop(EntityCommand command) { _entity.LayeredSprite.Stop(); }
+
+        protected Godot.Collections.Array<LayeredAnimation> GetCurrentAnimations()
+        {
+            // TODO - Implement.
+            IEnumerable<LayeredAnimation> animations = RESOURCE_MANAGER.LayeredAnimations.Where(x => x.Animation == _animationKind);
+            return new Godot.Collections.Array<LayeredAnimation>(animations);
+        }
 
 
         /// <inheritdoc/>

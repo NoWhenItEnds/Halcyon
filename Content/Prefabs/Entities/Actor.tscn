@@ -2,9 +2,9 @@
 
 [ext_resource type="Script" uid="uid://clwl85v3du5gh" path="res://Systems/Entities/ActorEntity.cs" id="1_mg5f6"]
 [ext_resource type="SpriteFrames" uid="uid://cupxsc4dceuuk" path="res://Content/Resources/SpriteFrames/SpriteFrame_Humans_Placeholder.tres" id="2_7bsuo"]
-[ext_resource type="Script" uid="uid://wicx646b2jrm" path="res://Systems/Animations/LayeredSprite2D.cs" id="3_7bsuo"]
-[ext_resource type="Script" uid="uid://yak566enobof" path="res://Systems/Animations/LayeredAnimation.cs" id="4_y3smg"]
-[ext_resource type="Resource" uid="uid://byjkyidyydoea" path="res://Content/Resources/Animations/Actor_Human_Idling.tres" id="5_qt4fa"]
+[ext_resource type="PackedScene" uid="uid://bgwlsx4cao5b2" path="res://Content/Prefabs/Nodes/LayeredSprite2D.tscn" id="3_qt4fa"]
+[ext_resource type="Script" uid="uid://yak566enobof" path="res://Systems/Animations/LayeredAnimation.cs" id="4_82l45"]
+[ext_resource type="Resource" uid="uid://b880fe164oj2j" path="res://Content/Resources/LayeredAnimations/Actor_Human_Idling.tres" id="5_cnwr2"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_b4jtr"]
 radius = 6.0
@@ -46,7 +46,5 @@ text = "First Last"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="LayeredSprite2D" type="Node2D" parent="." unique_id=1147601880]
-script = ExtResource("3_7bsuo")
-Animations = Array[ExtResource("4_y3smg")]([ExtResource("5_qt4fa")])
-metadata/_custom_type_script = "uid://wicx646b2jrm"
+[node name="LayeredSprite2D" parent="." unique_id=1018287596 instance=ExtResource("3_qt4fa")]
+Animations = Array[ExtResource("4_82l45")]([ExtResource("5_cnwr2")])

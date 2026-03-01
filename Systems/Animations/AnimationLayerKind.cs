@@ -6,11 +6,10 @@ namespace Halcyon.Animations
         NONE,
         BODY,
         FACE,
-        LEGS,
-        CHEST,
-        HAIR,
+        LOWER,
+        UPPER,
+        HEAD,
         ACCESSORY,
-        COAT,
-        BACK
+        COAT
     }
 }
