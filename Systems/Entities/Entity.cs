@@ -90,7 +90,7 @@ namespace Halcyon.Entities
 
             // Initialise the data if this node wasn't spawned in (was hand-placed in the editor).
             // TODO - Only run this if we're not in the editor.
-            if(Data != null)
+            if (Data != null)
             {
                 Data.Initialise(this);
                 _nameLabel.Text = Data.Name.ToString();

@@ -6,18 +6,19 @@ namespace Halcyon.Entities.States.Machines
     public class DoorStateMachine : EntityStateMachine
     {
         /// <summary> A state machine used for doors of all kinds. </summary>
-        /// <param name="entity"> A reference to the entity controlled by the state. </param>
-        public DoorStateMachine(Entity entity)
+        /// <param name="entity"> A reference to the entity controlled by the machine. </param>
+        public DoorStateMachine(Entity entity) : base(entity)
         {
-            EntityState closedState = new ClosedState(entity)
-                .WithTransition<UseCommand, OpenedState>();
-
-            CurrentState = closedState;
-
-            STATES.Add(closedState);
-
             STATES.Add(new OpenedState(entity)
                 .WithTransition<UseCommand, ClosedState>());
+        }
+
+
+        /// <inheritdoc/>
+        protected override EntityState BuildDefaultState(Entity entity)
+        {
+            return new ClosedState(entity)
+                .WithTransition<UseCommand, OpenedState>();
         }
     }
 }

@@ -4,13 +4,13 @@
 [ext_resource type="Script" uid="uid://v7x86t3saxu2" path="res://Systems/Entities/Data/EntityName.cs" id="2_gtpkd"]
 [ext_resource type="Script" uid="uid://ctiyfn3vct7m6" path="res://Systems/Entities/Data/ActorData.cs" id="3_d5jyk"]
 
-[sub_resource type="Resource" id="Resource_d1ryh"]
+[sub_resource type="Resource" id="Resource_e6ndi"]
 script = ExtResource("1_e6ndi")
 Name = "attribute_dexterity"
 MaxValue = 10
 BaseValue = 1
 
-[sub_resource type="Resource" id="Resource_4po1a"]
+[sub_resource type="Resource" id="Resource_gtpkd"]
 script = ExtResource("1_e6ndi")
 Name = "attribute_intellect"
 MaxValue = 10
@@ -19,19 +19,19 @@ BaseValue = 1
 [sub_resource type="Resource" id="Resource_aqyly"]
 script = ExtResource("2_gtpkd")
 
-[sub_resource type="Resource" id="Resource_rctqx"]
+[sub_resource type="Resource" id="Resource_d5jyk"]
 script = ExtResource("1_e6ndi")
 Name = "attribute_presence"
 MaxValue = 10
 BaseValue = 1
 
-[sub_resource type="Resource" id="Resource_ctdr8"]
+[sub_resource type="Resource" id="Resource_c34yw"]
 script = ExtResource("1_e6ndi")
 Name = "attribute_strength"
 MaxValue = 10
 BaseValue = 1
 
-[sub_resource type="Resource" id="Resource_xweve"]
+[sub_resource type="Resource" id="Resource_tdapg"]
 script = ExtResource("1_e6ndi")
 Name = "attribute_vigor"
 MaxValue = 10
@@ -40,4 +40,5 @@ BaseValue = 1
 [resource]
 script = ExtResource("3_d5jyk")
 Name = SubResource("Resource_aqyly")
+EntityKind = "human"
 metadata/_custom_type_script = "uid://ctiyfn3vct7m6"

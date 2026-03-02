@@ -27,6 +27,19 @@ namespace Halcyon.Managers
 
         public override void _Ready()
         {
+            // Get hand-placed entities.
+            foreach (Node child in GetChildren())
+            {
+                if(child is Entity entity)
+                {
+                    ENTITIES.TryAdd(entity, null);  // TODO - How to handle controller?
+                }
+                else
+                {
+                    GD.PushWarning($"Non-entity, '{child.Name}' shouldn't be childed to {Name}.");
+                }
+            }
+
             // Create player.
             TrySpawnHuman(Vector2.Zero, out Entity? player);
             PlayerEntity = player;

@@ -1,4 +1,3 @@
-#nullable disable warnings
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,8 +12,23 @@ namespace Halcyon.Entities.States.Machines
         public EntityState CurrentState { get; protected set; }
 
 
+        /// <summary> The machine's starting state. The state it will also default to if something goes wrong. </summary>
+        protected readonly EntityState DEFAULT_STATE;
+
         /// <summary> All the possible states the state machine can transition to. </summary>
         protected readonly HashSet<EntityState> STATES = new HashSet<EntityState>();
+
+
+        /// <summary> A machine to control the various states an entity can exist within and move between. </summary>
+        /// <param name="entity"> A reference to the entity controlled by the machine. </param>
+        public EntityStateMachine(Entity entity)
+        {
+            EntityState defaultState = BuildDefaultState(entity);
+
+            DEFAULT_STATE = defaultState;
+            STATES.Add(defaultState);
+            CurrentState = defaultState;
+        }
 
 
         /// <summary> Attempt to transition from one state to another. </summary>
@@ -35,5 +49,11 @@ namespace Halcyon.Entities.States.Machines
             }
             return isSuccessful;
         }
+
+
+        /// <summary> Build and set the machine's initial / default state. </summary>
+        /// <param name="entity"> A reference to the entity controlled by the machine. </param>
+        /// <returns> The machine's starting state. </returns>
+        protected abstract EntityState BuildDefaultState(Entity entity);
     }
 }
