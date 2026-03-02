@@ -1,0 +1,43 @@
+[gd_resource type="Resource" script_class="ActorData" format=3 uid="uid://dpl8yd6o1uays"]
+
+[ext_resource type="Script" uid="uid://bhh6mqj5pr12y" path="res://Systems/Entities/Data/Stat.cs" id="1_e6ndi"]
+[ext_resource type="Script" uid="uid://v7x86t3saxu2" path="res://Systems/Entities/Data/EntityName.cs" id="2_gtpkd"]
+[ext_resource type="Script" uid="uid://ctiyfn3vct7m6" path="res://Systems/Entities/Data/ActorData.cs" id="3_d5jyk"]
+
+[sub_resource type="Resource" id="Resource_d1ryh"]
+script = ExtResource("1_e6ndi")
+Name = "attribute_dexterity"
+MaxValue = 10
+BaseValue = 1
+
+[sub_resource type="Resource" id="Resource_4po1a"]
+script = ExtResource("1_e6ndi")
+Name = "attribute_intellect"
+MaxValue = 10
+BaseValue = 1
+
+[sub_resource type="Resource" id="Resource_aqyly"]
+script = ExtResource("2_gtpkd")
+
+[sub_resource type="Resource" id="Resource_rctqx"]
+script = ExtResource("1_e6ndi")
+Name = "attribute_presence"
+MaxValue = 10
+BaseValue = 1
+
+[sub_resource type="Resource" id="Resource_ctdr8"]
+script = ExtResource("1_e6ndi")
+Name = "attribute_strength"
+MaxValue = 10
+BaseValue = 1
+
+[sub_resource type="Resource" id="Resource_xweve"]
+script = ExtResource("1_e6ndi")
+Name = "attribute_vigor"
+MaxValue = 10
+BaseValue = 1
+
+[resource]
+script = ExtResource("3_d5jyk")
+Name = SubResource("Resource_aqyly")
+metadata/_custom_type_script = "uid://ctiyfn3vct7m6"

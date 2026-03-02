@@ -13,11 +13,11 @@ namespace Halcyon.Entities.States
         public Func<Boolean> CanTransition { get; protected set; } = () => true;
 
 
-        /// <summary> A reference to the entity. </summary>
-        protected virtual Entity _entity { get; }
-
         /// <summary> The kind of the animations to use for this state. </summary>
         protected virtual AnimationKind _animationKind { get; } = AnimationKind.NONE;
+
+        /// <summary> A reference to the entity manipulated by the state. </summary>
+        protected readonly Entity ENTITY;
 
         /// <summary> A map of the commands to the state they transition into. </summary>
         protected readonly Dictionary<Type, Type> TRANSITIONS = new Dictionary<Type, Type>();
@@ -30,7 +30,7 @@ namespace Halcyon.Entities.States
         /// <param name="entity"> A reference to the entity. </param>
         public EntityState(Entity entity)
         {
-            _entity = entity;
+            ENTITY = entity;
         }
 
 
@@ -68,7 +68,7 @@ namespace Halcyon.Entities.States
 
         /// <summary> Called just before the state transitions. Does a final cleanup. </summary>
         /// <param name="command"> The command triggering the state change. </param>
-        public virtual void Stop(EntityCommand command) { _entity.LayeredSprite.Stop(); }
+        public virtual void Stop(EntityCommand command) { ENTITY.LayeredSprite.Stop(); }
 
         protected Godot.Collections.Array<LayeredAnimation> GetCurrentAnimations()
         {

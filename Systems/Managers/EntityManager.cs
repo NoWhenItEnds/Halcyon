@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using Godot;
 using Halcyon.Entities;
-using Halcyon.Entities.States.Machines;
+using Halcyon.Entities.Data;
 using Halcyon.Utilities.Singletons;
 
 namespace Halcyon.Managers
@@ -14,8 +14,6 @@ namespace Halcyon.Managers
         /// <summary> The prefab used for spawning new actors. </summary>
         [ExportGroup("Resources")]
         [Export] private PackedScene _actorPrefab;
-
-        [Export] private SpriteFrames _doorSprites;
 
 
         /// <summary> The entity currently controlled by the player. </summary>
@@ -30,7 +28,7 @@ namespace Halcyon.Managers
         public override void _Ready()
         {
             // Create player.
-            TrySpawnActor(Vector2.Zero, out ActorEntity? player);
+            TrySpawnHuman(Vector2.Zero, out Entity? player);
             PlayerEntity = player;
 
             Random random = new Random();
@@ -38,7 +36,7 @@ namespace Halcyon.Managers
             for (Int32 i = 0; i < 100; i++)
             {
                 Vector2 position = new Vector2(random.NextSingle() * 1000, random.NextSingle() * 1000);
-                TrySpawnActor(position, out _);
+                TrySpawnHuman(position, out _);
             }
         }
 
@@ -56,20 +54,21 @@ namespace Halcyon.Managers
 
 
 
-        public Boolean TrySpawnActor(Vector2 position, out ActorEntity? entity)
+        public Boolean TrySpawnHuman(Vector2 position, out Entity? entity)
         {
-            entity = _actorPrefab.InstantiateOrNull<ActorEntity>();
+            entity = _actorPrefab.InstantiateOrNull<Entity>();
             EntityController controller = new EntityController(entity);
 
             // Attempt to add the entity to the game world.
             Boolean isSuccess = ENTITIES.TryAdd(entity, controller);
             if (isSuccess)
             {
-                // TODO - Find a better way to handle animation sprite sheets. Use the state machine? How is clothing done?
                 AddChild(entity);
                 entity.GlobalPosition = position;
-                HumanStateMachine stateMachine = new HumanStateMachine(entity);
-                entity.Initialise(stateMachine);
+                ActorData data = new ActorData();
+                data.EntityKind = "human";
+                entity.Data = data;
+                data.Initialise(entity);
             }
 
             return isSuccess;

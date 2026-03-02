@@ -1,5 +1,7 @@
+using System;
 using Godot;
 using Godot.Collections;
+using Halcyon.Entities.States.Machines;
 
 namespace Halcyon.Entities.Data
 {
@@ -40,6 +42,19 @@ namespace Halcyon.Entities.Data
             SpeedStat = new DerivedStat(() => 0, () => 5 + Strength.CurrentValue + Dexterity.CurrentValue);
             StaminaStat = new DerivedStat(() => 0, () => Vigor.CurrentValue + 3);
             EntertainmentStat = new DerivedStat(() => 0, () => 10);  // TODO - Start at max.
+        }
+
+
+        /// <inheritdoc/>
+        protected override EntityStateMachine ParseEntityKind(Entity entity)
+        {
+            switch(EntityKind.ToLower())
+            {
+                case "human":
+                    return new HumanStateMachine(entity);
+                default:
+                    throw new ArgumentNullException($"{GetType()} was unable to parse {EntityKind} into a recognised StateMachine.");
+            }
         }
     }
 }

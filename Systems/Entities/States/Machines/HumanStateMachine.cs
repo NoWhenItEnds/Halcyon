@@ -7,7 +7,7 @@ namespace Halcyon.Entities.States.Machines
     {
         /// <summary> A state machine used for human entities. </summary>
         /// <param name="entity"> A reference to the entity controlled by the state. </param>
-        public HumanStateMachine(ActorEntity entity)
+        public HumanStateMachine(Entity entity)
         {
             // Set the initial state.
             EntityState initialState = new IdlingState(entity)

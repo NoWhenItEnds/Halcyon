@@ -3,7 +3,6 @@ using System;
 using Godot;
 using Halcyon.Entities;
 using Halcyon.Entities.EntityCommands;
-using Halcyon.Entities.States.Machines;
 using Halcyon.Utilities.Singletons;
 
 namespace Halcyon.Managers
@@ -70,7 +69,7 @@ namespace Halcyon.Managers
                 }
             }
 
-            _entityManager.PlayerEntity.GetStateMachine().TryTransitionState(_currentCommand);
+            _entityManager.PlayerEntity.Data.StateMachine.TryTransitionState(_currentCommand);
 
             // TODO - Probably not here.
             _cameraManager.SetPosition(_entityManager.PlayerEntity.GlobalPosition);

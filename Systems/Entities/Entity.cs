@@ -5,28 +5,39 @@ using System.Linq;
 using Godot;
 using Halcyon.Animations;
 using Halcyon.Entities.Data;
-using Halcyon.Entities.States.Machines;
 
 namespace Halcyon.Entities
 {
     /// <summary> An interactable entity within the game world. </summary>
-    public abstract partial class Entity : CharacterBody2D, IEquatable<Entity>
+    public partial class Entity : CharacterBody2D, IEquatable<Entity>
     {
         /// <summary> The node that defines the node's collision. </summary>
         [ExportGroup("Nodes")]
         [Export] public CollisionShape2D Collision { get; private set; }
 
         /// <summary> The sprite representing the entity within the world. </summary>
-        [Export] public AnimatedSprite2D Sprite { get; private set; }
-
         [Export] public LayeredSprite2D LayeredSprite { get; private set; }
 
         /// <summary> The area around the entity in which it can interact with other entities. </summary>
-        [Export] protected Area2D _interactionArea;
+        [Export] private Area2D _interactionArea;
 
         /// <summary> A label displaying the entity's name. </summary>
         /// <remarks To help with debugging. </remarks>
-        [Export] protected Label _nameLabel;
+        [Export] private Label _nameLabel;
+
+
+        /// <summary> The data representing the state of the entity. </summary>
+        [ExportGroup("Settings")]
+        [Export] public EntityData? Data {
+            get => _data;
+            set // TODO - Update EVERYTHING on set!
+            {
+                _data = value;
+            }
+        }
+
+        /// <summary> The data representing the state of the entity. </summary>
+        private EntityData? _data = null;
 
 
         /// <summary> A set of all the entities that the entity is currently within interactable range of. </summary>
@@ -38,12 +49,15 @@ namespace Halcyon.Entities
         public Entity[] GetNearbyEntities() => _nearbyEntities.ToArray();
 
 
-        public abstract void Initialise(EntityStateMachine stateMachine);
-
-
-        public abstract EntityData GetData();
-
-        public abstract EntityStateMachine GetStateMachine();
+        public Boolean TryGetData<T>(out T? data) where T : EntityData
+        {
+            data = null;
+            if(Data != null && Data is T d)
+            {
+                data = d;
+            }
+            return data != null;
+        }
 
 
         /// <summary> When something enters the entity's area of influence, add it to the nearby entities. </summary>
@@ -73,7 +87,14 @@ namespace Halcyon.Entities
         {
             _interactionArea.BodyEntered += OnInteractionAreaEntered;
             _interactionArea.BodyExited += OnInteractionAreaExited;
-            _nameLabel.Text = GetData().Name.ToString();
+
+            // Initialise the data if this node wasn't spawned in (was hand-placed in the editor).
+            // TODO - Only run this if we're not in the editor.
+            if(Data != null)
+            {
+                Data.Initialise(this);
+                _nameLabel.Text = Data.Name.ToString();
+            }
         }
 
 
@@ -81,7 +102,7 @@ namespace Halcyon.Entities
         public override void _PhysicsProcess(Double delta)
         {
             // Update the state machine.
-            GetStateMachine().CurrentState.Update(delta);
+            Data.StateMachine.CurrentState.Update(delta);
         }
 
 
@@ -94,10 +115,10 @@ namespace Halcyon.Entities
 
 
         /// <inheritdoc/>
-        public override Int32 GetHashCode() => HashCode.Combine(GetData().Name);
+        public override Int32 GetHashCode() => HashCode.Combine(Data);
 
 
         /// <inheritdoc/>
-        public Boolean Equals(Entity? other) => other != null ? GetData().Name.Equals(other.GetData().Name) : false;
+        public Boolean Equals(Entity? other) => other != null ? Data.Equals(other.Data) : false;
     }
 }

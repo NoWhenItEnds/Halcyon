@@ -4,8 +4,7 @@
 [ext_resource type="Script" uid="uid://4njdou13jsyc" path="res://Systems/Managers/InputManager.cs" id="2_33ift"]
 [ext_resource type="Script" uid="uid://b3tlj6mxt28qv" path="res://Systems/Managers/ResourceManager.cs" id="2_ubvt2"]
 [ext_resource type="Script" uid="uid://chgnpeipxqoew" path="res://Systems/Managers/EntityManager.cs" id="3_3jj2t"]
-[ext_resource type="PackedScene" uid="uid://xws1hp5pruba" path="res://Content/Prefabs/Entities/Actor.tscn" id="3_13v0n"]
-[ext_resource type="SpriteFrames" uid="uid://re1leyqvjpis" path="res://Content/Resources/SpriteFrames/SpriteFrames_Doors_Placeholder.tres" id="4_13v0n"]
+[ext_resource type="PackedScene" uid="uid://xws1hp5pruba" path="res://Content/Prefabs/Entities/Entity.tscn" id="3_13v0n"]
 [ext_resource type="Script" uid="uid://d3p0v0usaexev" path="res://Systems/Managers/CameraManager.cs" id="5_mtcwf"]
 
 [node name="Game" type="Node" unique_id=1019238872]
@@ -17,7 +16,6 @@ script = ExtResource("2_ubvt2")
 [node name="Entity Manager" type="Node2D" parent="." unique_id=1632928520]
 script = ExtResource("3_3jj2t")
 _actorPrefab = ExtResource("3_13v0n")
-_doorSprites = ExtResource("4_13v0n")
 
 [node name="Input Manager" type="Node" parent="." unique_id=1729517724]
 script = ExtResource("2_33ift")

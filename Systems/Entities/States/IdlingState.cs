@@ -20,11 +20,11 @@ namespace Halcyon.Entities.States
         /// <inheritdoc/>
         public override void Start(EntityCommand command)
         {
-            _entity.Velocity = Vector2.Zero;
+            ENTITY.Velocity = Vector2.Zero;
 
             // Handle animation.
-            _entity.LayeredSprite.Animations = GetCurrentAnimations();
-            _entity.LayeredSprite.Play(command.Direction.ToDirection());
+            ENTITY.LayeredSprite.Animations = GetCurrentAnimations();
+            ENTITY.LayeredSprite.Play(command.Direction.ToDirection());
         }
     }
 }

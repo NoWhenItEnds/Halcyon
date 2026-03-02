@@ -1,5 +1,6 @@
 using Godot;
 using Halcyon.Animations;
+using Halcyon.Entities.Data;
 using Halcyon.Entities.EntityCommands;
 using Halcyon.Utilities;
 using System;
@@ -10,9 +11,6 @@ namespace Halcyon.Entities.States
     public class WalkingState : EntityState
     {
         /// <inheritdoc/>
-        protected override ActorEntity _entity { get; }
-
-        /// <inheritdoc/>
         protected override AnimationKind _animationKind { get; } = AnimationKind.WALKING;
 
 
@@ -22,32 +20,36 @@ namespace Halcyon.Entities.States
 
         /// <summary> The entity is walking across the ground. </summary>
         /// <param name="entity"> A reference to the entity. </param>
-        public WalkingState(ActorEntity entity) : base(entity)
-        {
-            _entity = entity;
-        }
+        public WalkingState(Entity entity) : base(entity) { }
 
 
         /// <inheritdoc/>
         public override void Start(EntityCommand command)
         {
-            Single speed = _entity.GetData().SpeedStat.CurrentValue * MOVE_SPEED;
-            _entity.Velocity = command.Direction * speed;
+            if (ENTITY.TryGetData<ActorData>(out ActorData? data) && data != null)
+            {
+                Single speed = data.SpeedStat.CurrentValue * MOVE_SPEED;
+                ENTITY.Velocity = command.Direction * speed;
 
-            // Handle animation.
-            _entity.LayeredSprite.Animations = GetCurrentAnimations();
-            _entity.LayeredSprite.Play(command.Direction.ToDirection());
+                // Handle animation.
+                ENTITY.LayeredSprite.Animations = GetCurrentAnimations();
+                ENTITY.LayeredSprite.Play(command.Direction.ToDirection());
+            }
+            else
+            {
+                throw new ArgumentNullException($"Despite being a '{ENTITY.GetType()}', the entity doesn't possess '{typeof(ActorData)}' data, which this state, {GetType()}, requires.");
+            }
         }
 
 
         /// <inheritdoc/>
         public override void Update(Double delta)
         {
-            _entity.Velocity *= (Single)delta;
-            Boolean isCollision = _entity.MoveAndSlide();
+            ENTITY.Velocity *= (Single)delta;
+            Boolean isCollision = ENTITY.MoveAndSlide();
             if (isCollision)
             {
-                KinematicCollision2D collision = _entity.GetLastSlideCollision();
+                KinematicCollision2D collision = ENTITY.GetLastSlideCollision();
             }
         }
 
