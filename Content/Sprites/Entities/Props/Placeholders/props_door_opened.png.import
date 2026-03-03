@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://u468yjm8lyq2"
-path="res://.godot/imported/placeholder_door.png-21a3e8ccb83a483975ab545015184239.ctex"
+uid="uid://eqrano17871h"
+path="res://.godot/imported/props_door_opened.png-0d393e1a49be1a59c507f39794bad126.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Content/Sprites/Entities/Props/Placeholders/placeholder_door.png"
-dest_files=["res://.godot/imported/placeholder_door.png-21a3e8ccb83a483975ab545015184239.ctex"]
+source_file="res://Content/Sprites/Entities/Props/Placeholders/props_door_opened.png"
+dest_files=["res://.godot/imported/props_door_opened.png-0d393e1a49be1a59c507f39794bad126.ctex"]
 
 [params]
 

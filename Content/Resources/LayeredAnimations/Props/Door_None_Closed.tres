@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="LayeredAnimation" format=3 uid="uid://bvjjck8a7one0"]
+
+[ext_resource type="Texture2D" uid="uid://8570kwv363yg" path="res://Content/Sprites/Entities/Props/Placeholders/props_door_closed.png" id="1_ip307"]
+[ext_resource type="Script" uid="uid://yak566enobof" path="res://Systems/Animations/LayeredAnimation.cs" id="2_v5kip"]
+
+[resource]
+script = ExtResource("2_v5kip")
+EntityKind = "door"
+Animation = 4
+Layer = 1
+Texture = ExtResource("1_ip307")
+HFrames = 1
+metadata/_custom_type_script = "uid://yak566enobof"

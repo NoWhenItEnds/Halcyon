@@ -7,6 +7,7 @@ namespace Halcyon.Entities.Data
 {
     /// <summary> The persistent data for an actor entity. </summary>
     [GlobalClass]
+    [Tool]
     public partial class ActorData : EntityData
     {
         [ExportGroup("Stats")]
@@ -52,6 +53,8 @@ namespace Halcyon.Entities.Data
             {
                 case "human":
                     return new HumanStateMachine(entity);
+                case "door":    // TODO - Move to different Data.
+                    return new DoorStateMachine(entity);
                 default:
                     throw new ArgumentNullException($"{GetType()} was unable to parse {EntityKind} into a recognised StateMachine.");
             }

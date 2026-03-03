@@ -18,7 +18,6 @@ namespace Halcyon.Animations
             set
             {
                 // Ensure that we first unsubscribe from any previous animations.
-                // TODO - Memory Leaks?
                 foreach (LayeredAnimation animation in _animations)
                 {
                     animation?.Changed -= UpdateAnimations;
@@ -168,6 +167,16 @@ namespace Halcyon.Animations
         }
 
 
+        public override void _Input(InputEvent @event)
+        {
+            if(Input.IsKeyPressed(Key.Space))
+            {
+                Play(Direction.E);  // TODO - Animation Not getting set / found?
+            }
+        }
+
+
+
         /// <summary> Begin playing the current animation. </summary>
         /// <param name="direction"> Which direction the animation should play for. </param>
         public void Play(Direction direction)
@@ -186,7 +195,17 @@ namespace Halcyon.Animations
             _player.Stop();
         }
 
+
+        public override void _ExitTree()
+        {
+            // Ensure, absolutely, that we clean up after ourselves to prevent a memory leak.
+            foreach (LayeredAnimation animation in _animations)
+            {
+                animation?.Changed -= UpdateAnimations;
+            }
+        }
+
+
         // TODO - Should layers be inverted automatically for direction, since that is automatically handled?
-        // TODO - Make a resource wrapper for Texture2D to provide metadata about the image. A library singleton can then be used to load it and look it up.
     }
 }

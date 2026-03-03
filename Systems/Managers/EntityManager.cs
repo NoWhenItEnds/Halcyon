@@ -49,7 +49,7 @@ namespace Halcyon.Managers
             for (Int32 i = 0; i < 100; i++)
             {
                 Vector2 position = new Vector2(random.NextSingle() * 1000, random.NextSingle() * 1000);
-                TrySpawnHuman(position, out _);
+                TrySpawnDoor(position, out _);
             }
         }
 
@@ -80,6 +80,26 @@ namespace Halcyon.Managers
                 entity.GlobalPosition = position;
                 ActorData data = new ActorData();
                 data.EntityKind = "human";
+                entity.Data = data;
+                data.Initialise(entity);
+            }
+
+            return isSuccess;
+        }
+
+
+        public Boolean TrySpawnDoor(Vector2 position, out Entity? entity)
+        {
+            entity = _actorPrefab.InstantiateOrNull<Entity>();
+
+            // Attempt to add the entity to the game world.
+            Boolean isSuccess = ENTITIES.TryAdd(entity, null);
+            if (isSuccess)
+            {
+                AddChild(entity);
+                entity.GlobalPosition = position;
+                ActorData data = new ActorData();
+                data.EntityKind = "door";
                 entity.Data = data;
                 data.Initialise(entity);
             }

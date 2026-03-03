@@ -13,7 +13,7 @@ namespace Halcyon.Entities.EntityCommands
         public Vector2 TargetPosition { get; init; } = Vector2.Zero;
 
         /// <summary> The entity targeted by the command. </summary>
-        public Entity TargetEntity { get; init; }
+        public Entity? TargetEntity { get; init; } = null;
     }
 
 
@@ -25,6 +25,13 @@ namespace Halcyon.Entities.EntityCommands
         public IdleCommand(Vector2 direction)
         {
             Direction = direction;
+        }
+
+
+        /// <summary> A command telling the entity to stand around and look pretty. </summary>
+        public IdleCommand()
+        {
+            Direction = Vector2.Zero;
         }
     }
 

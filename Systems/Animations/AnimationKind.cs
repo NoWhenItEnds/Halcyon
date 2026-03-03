@@ -6,6 +6,8 @@ namespace Halcyon.Animations
         NONE,
         IDLING,
         WALKING,
-        SPRINTING
+        SPRINTING,
+        CLOSED,
+        OPENED
     }
 }

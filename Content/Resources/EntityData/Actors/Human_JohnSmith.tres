@@ -39,6 +39,11 @@ BaseValue = 1
 
 [resource]
 script = ExtResource("3_d5jyk")
+Strength = SubResource("Resource_c34yw")
+Dexterity = SubResource("Resource_e6ndi")
+Vigor = SubResource("Resource_tdapg")
+Intellect = SubResource("Resource_gtpkd")
+Presence = SubResource("Resource_d5jyk")
 Name = SubResource("Resource_aqyly")
 EntityKind = "human"
 metadata/_custom_type_script = "uid://ctiyfn3vct7m6"

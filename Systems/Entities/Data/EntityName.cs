@@ -7,6 +7,7 @@ namespace Halcyon.Entities.Data
 {
     /// <summary> A person's full name with reference to their personal and clan names. </summary>
     /// <remarks Uses: https://github.com/sigpwned/popular-names-by-country-dataset </remarks>
+    [Tool]
     public partial class EntityName : Resource, IEquatable<EntityName>
     {
         /// <summary> An entity's common, personal name. </summary>
@@ -49,7 +50,7 @@ namespace Halcyon.Entities.Data
 
 
     /// <summary> An entity's common, personal name. </summary>
-    public record GivenName : IParseable<GivenName>
+    public record GivenName : IParseable<GivenName> // TODO - Make like Male names and Female equivalent.
     {
         /// <summary> The common Alpha-2 designation of the name's country of origin. </summary>
         public String CountryISO { get; init; } = String.Empty;
@@ -102,7 +103,7 @@ namespace Halcyon.Entities.Data
 
 
     /// <summary> An entity's family / clan name. </summary>
-    public record Surname : IParseable<Surname>
+    public record Surname : IParseable<Surname> // TODO - Make resource editable in inspector. Add ties to clan details.
     {
         /// <summary> The common Alpha-2 designation of the name's country of origin. </summary>
         public String CountryISO { get; init; } = String.Empty;

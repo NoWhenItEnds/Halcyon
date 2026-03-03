@@ -69,7 +69,7 @@ namespace Halcyon.Managers
                 }
             }
 
-            _entityManager.PlayerEntity.Data.StateMachine.TryTransitionState(_currentCommand);
+            _entityManager.PlayerEntity.Data?.StateMachine?.TryTransitionState(_currentCommand);
 
             // TODO - Probably not here.
             _cameraManager.SetPosition(_entityManager.PlayerEntity.GlobalPosition);

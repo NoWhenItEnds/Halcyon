@@ -9,6 +9,7 @@ using Halcyon.Entities.Data;
 namespace Halcyon.Entities
 {
     /// <summary> An interactable entity within the game world. </summary>
+    [Tool]
     public partial class Entity : CharacterBody2D, IEquatable<Entity>
     {
         /// <summary> The node that defines the node's collision. </summary>
@@ -48,15 +49,21 @@ namespace Halcyon.Entities
         /// <returns> A sorted array of all the entities that this entity can currently interact with. </returns>
         public Entity[] GetNearbyEntities() => _nearbyEntities.ToArray();
 
-
-        public Boolean TryGetData<T>(out T? data) where T : EntityData
+        /// <inheritdoc/>
+        public override void _Ready()
         {
-            data = null;
-            if(Data != null && Data is T d)
+            if(!Engine.IsEditorHint())
             {
-                data = d;
+                _interactionArea.BodyEntered += OnInteractionAreaEntered;
+                _interactionArea.BodyExited += OnInteractionAreaExited;
+
+                // Initialise the data if this node wasn't spawned in (was hand-placed in the editor).
+                if (Data != null)
+                {
+                    Console.WriteLine("HERE");
+                    //Data.Initialise(this);
+                }
             }
-            return data != null;
         }
 
 
@@ -82,35 +89,40 @@ namespace Halcyon.Entities
         }
 
 
-        /// <inheritdoc/>
-        public override void _Ready()
+        public Boolean TryGetData<T>(out T? data) where T : EntityData
         {
-            _interactionArea.BodyEntered += OnInteractionAreaEntered;
-            _interactionArea.BodyExited += OnInteractionAreaExited;
-
-            // Initialise the data if this node wasn't spawned in (was hand-placed in the editor).
-            // TODO - Only run this if we're not in the editor.
-            if (Data != null)
+            data = null;
+            if (Data != null && Data is T d)
             {
-                Data.Initialise(this);
-                _nameLabel.Text = Data.Name.ToString();
+                data = d;
             }
+            return data != null;
         }
 
 
         /// <inheritdoc/>
         public override void _PhysicsProcess(Double delta)
         {
-            // Update the state machine.
-            Data.StateMachine.CurrentState.Update(delta);
+            if (!Engine.IsEditorHint())
+            {
+                // Update the state machine.
+                if (Data != null && Data.StateMachine != null)
+                {
+                    Data.StateMachine.CurrentState.Update(delta);
+                    _nameLabel.Text = Data.Name.ToString();
+                }
+            }
         }
 
 
         /// <inheritdoc/>
         public override void _ExitTree()
         {
-            _interactionArea.BodyEntered -= OnInteractionAreaEntered;
-            _interactionArea.BodyExited -= OnInteractionAreaExited;
+            if (!Engine.IsEditorHint())
+            {
+                _interactionArea.BodyEntered -= OnInteractionAreaEntered;
+                _interactionArea.BodyExited -= OnInteractionAreaExited;
+            }
         }
 
 

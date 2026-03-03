@@ -31,6 +31,15 @@ namespace Halcyon.Entities.Data
         /// <param name="entity"> The entity node this data represents. </param>
         public void Initialise(Entity entity)
         {
+            // Need to give Godot time to catch up on initial run.
+            CallDeferred("InitialiseLogic", [entity]);
+        }
+
+
+        /// <summary> The actual logic of the initialisation. We need to wrap this as it needs to be called as a defered function to allow Godot to update. </summary>
+        /// <param name="entity"> The entity node this data represents. </param>
+        protected void InitialiseLogic(Entity entity)
+        {
             StateMachine = ParseEntityKind(entity);
         }
 

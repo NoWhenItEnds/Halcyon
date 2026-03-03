@@ -1,3 +1,4 @@
+using Godot;
 using Halcyon.Entities.EntityCommands;
 
 namespace Halcyon.Entities.States.Machines

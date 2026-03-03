@@ -1,6 +1,7 @@
 using Godot;
 using Halcyon.Animations;
 using Halcyon.Entities.EntityCommands;
+using Halcyon.Utilities;
 
 namespace Halcyon.Entities.States
 {
@@ -8,7 +9,7 @@ namespace Halcyon.Entities.States
     public class ClosedState : EntityState
     {
         /// <inheritdoc/>
-        protected override AnimationKind _animationKind { get; } = AnimationKind.IDLING;
+        protected override AnimationKind _animationKind { get; } = AnimationKind.CLOSED;
 
 
         /// <summary> The entity is closed; whatever that means for its specific situation. </summary>
@@ -20,6 +21,10 @@ namespace Halcyon.Entities.States
         public override void Start(EntityCommand command)
         {
             ENTITY.Velocity = Vector2.Zero;
+
+            // Handle animation.
+            ENTITY.LayeredSprite.Animations = GetCurrentAnimations();
+            ENTITY.LayeredSprite.Play(Direction.NW);    // TODO - More than hard set.
         }
     }
 }

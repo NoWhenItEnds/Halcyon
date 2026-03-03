@@ -7,6 +7,7 @@ namespace Halcyon.Entities.Data
 {
     /// <summary> A class representing a generic statistic. </summary>
     [GlobalClass]
+    [Tool]
     public partial class Stat : Resource, IEquatable<Stat>
     {
         /// <summary> The unique name or identifier for the statistic. </summary>
