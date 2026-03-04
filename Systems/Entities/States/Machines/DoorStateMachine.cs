@@ -10,8 +10,8 @@ namespace Halcyon.Entities.States.Machines
         /// <param name="entity"> A reference to the entity controlled by the machine. </param>
         public DoorStateMachine(Entity entity) : base(entity)
         {
-            STATES.Add(new OpenedState(entity)
-                .WithTransition<UseCommand, ClosedState>());
+            STATES[typeof(OpenedState)] = new OpenedState(entity)
+                .WithTransition<UseCommand, ClosedState>();
         }
 
 

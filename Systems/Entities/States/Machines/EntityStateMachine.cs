@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Halcyon.Entities.EntityCommands;
 
 namespace Halcyon.Entities.States.Machines
@@ -15,8 +14,8 @@ namespace Halcyon.Entities.States.Machines
         /// <summary> The machine's starting state. The state it will also default to if something goes wrong. </summary>
         protected readonly EntityState DEFAULT_STATE;
 
-        /// <summary> All the possible states the state machine can transition to. </summary>
-        protected readonly HashSet<EntityState> STATES = new HashSet<EntityState>();
+        /// <summary> All the possible states the state machine can transition to, keyed by type. </summary>
+        protected readonly Dictionary<Type, EntityState> STATES = new Dictionary<Type, EntityState>();
 
 
         /// <summary> A machine to control the various states an entity can exist within and move between. </summary>
@@ -26,7 +25,7 @@ namespace Halcyon.Entities.States.Machines
             EntityState defaultState = BuildDefaultState(entity);
 
             DEFAULT_STATE = defaultState;
-            STATES.Add(defaultState);
+            STATES[defaultState.GetType()] = defaultState;
             CurrentState = defaultState;
             CurrentState.Start(new IdleCommand(entity));  // Initialise the state machine with an idle command.
         }
@@ -42,8 +41,8 @@ namespace Halcyon.Entities.States.Machines
             if (CurrentState.CanTransition() && CurrentState.TryGetNextState(command, out Type? newState) && newState != null)
             {
                 CurrentState.Stop(command);
-                CurrentState = STATES.FirstOrDefault(x => x.GetType() == newState) ??
-                    throw new ArgumentNullException($"Next transition state doesn't exist on this {GetType()}.", newState.GetType().ToString());
+                CurrentState = STATES.TryGetValue(newState, out EntityState? next) ? next
+                    : throw new InvalidOperationException($"State {newState} is not registered on {GetType()}.");
                 CurrentState.Start(command);
 
                 isSuccessful = true;
