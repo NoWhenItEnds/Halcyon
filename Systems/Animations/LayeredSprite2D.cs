@@ -46,9 +46,8 @@ namespace Halcyon.Animations
         /// <remarks> As this is a tool, direct references to a node will often be lost, so we assume null and reload using a nodepath. </remarks>
         private AnimationPlayer _player;
 
-        /// <summary> A map of the a layer to its kind. </summary>
-        /// <remarks> As this is a tool, direct references to a node will often be lost, so we assume null and reload using a nodepath. </remarks>
-        private Dictionary<LayerKind, Sprite2D?> _spriteLayers = new Dictionary<LayerKind, Sprite2D?>();
+        /// <summary> The sprite sub-nodes available as animation layers, ordered by scene tree position. </summary>
+        private List<Sprite2D> _spriteLayers = new List<Sprite2D>();
 
 
         /// <inheritdoc/>
@@ -71,25 +70,14 @@ namespace Halcyon.Animations
         }
 
 
-        /// <summary> Ensure that the sprite sub-nodes are correctly mapped to the animation layers. </summary>
+        /// <summary> Ensure that the sprite sub-nodes are correctly populated in scene tree order. </summary>
         private void RefreshSprites()
         {
-            // Check that the map has been correctly populated with references to the sprites.
-            foreach (LayerKind kind in Enum.GetValues<LayerKind>())
+            _spriteLayers.Clear();
+            foreach (Node child in GetChildren())
             {
-                if (kind != LayerKind.NONE) // Ensure we don't create a layer for NONE.
-                {
-                    String nodePath = $"Layer - {kind.ToString().ToUpper()}";
-                    Sprite2D? currentLayer = GetNodeOrNull<Sprite2D>(nodePath);
-                    if (currentLayer != null)
-                    {
-                        _spriteLayers.TryAdd(kind, currentLayer);
-                    }
-                    else
-                    {
-                        GD.PushError($"Unable to find a sprite layer in the LayeredSprite2D with the path, '{nodePath}'. You probably want to add it, Fuckwit.");
-                    }
-                }
+                if (child is Sprite2D sprite)
+                    _spriteLayers.Add(sprite);
             }
         }
 
@@ -108,21 +96,23 @@ namespace Halcyon.Animations
             _player.AddAnimationLibrary("current", library);
             Dictionary<Direction, Animation> animationMap = new Dictionary<Direction, Animation>();
 
-            // Pre-build lookup to avoid O(n) scan per layer.
-            Dictionary<LayerKind, LayeredAnimation> animationByLayer = _animations
+            // Sort animations by layer number — only relative order matters.
+            LayeredAnimation[] sortedAnimations = _animations
                 .Where(x => x != null)
-                .ToDictionary(x => x.Layer);
+                .OrderBy(x => x.Layer)
+                .ToArray();
 
             Single secondsPerFrame = 1f / _animationFPS; // How long each frame needs to last to match the desired speed (_animationFPS).
 
-            foreach (KeyValuePair<LayerKind, Sprite2D?> layer in _spriteLayers)
+            for (Int32 i = 0; i < _spriteLayers.Count; i++)
             {
-                animationByLayer.TryGetValue(layer.Key, out LayeredAnimation? animation);
+                Sprite2D sprite = _spriteLayers[i];
+                LayeredAnimation? animation = i < sortedAnimations.Length ? sortedAnimations[i] : null;
                 if (animation != null)
                 {
-                    layer.Value?.Texture = animation.Texture;
-                    layer.Value?.Hframes = animation.HFrames;
-                    layer.Value?.Vframes = animation.VFrameOrder.Count;
+                    sprite.Texture = animation.Texture;
+                    sprite.Hframes = animation.HFrames;
+                    sprite.Vframes = animation.VFrameOrder.Count;
 
                     // Set up the animations for each direction.
                     foreach (Direction direction in animation.VFrameOrder)
@@ -144,23 +134,23 @@ namespace Halcyon.Animations
                         // Set up a new track for each sprite layer on the animation.
                         Animation trackAnimation = library.GetAnimation(animationKey);
                         Int32 trackIndex = trackAnimation.AddTrack(Animation.TrackType.Value);
-                        NodePath frameProperty = new NodePath($"{layer.Value?.GetPath()}:frame_coords");
+                        NodePath frameProperty = new NodePath($"{sprite.GetPath()}:frame_coords");
                         trackAnimation.TrackSetPath(trackIndex, frameProperty);
                         trackAnimation.ValueTrackSetUpdateMode(trackIndex, Animation.UpdateMode.Discrete);
 
                         // Build the keyframes.
                         Int32 vRow = animation.VFrameOrder.IndexOf(direction);
-                        for (Int32 i = 0; i < animation.HFrames; i++)
+                        for (Int32 j = 0; j < animation.HFrames; j++)
                         {
-                            trackAnimation.TrackInsertKey(trackIndex, i * secondsPerFrame, new Vector2(i, vRow));
+                            trackAnimation.TrackInsertKey(trackIndex, j * secondsPerFrame, new Vector2(j, vRow));
                         }
                     }
                 }
                 else
                 {
-                    layer.Value?.Texture = null;
-                    layer.Value?.Hframes = 1;
-                    layer.Value?.Vframes = 1;
+                    sprite.Texture = null;
+                    sprite.Hframes = 1;
+                    sprite.Vframes = 1;
                 }
             }
         }

@@ -3,29 +3,41 @@
 [ext_resource type="Script" uid="uid://wicx646b2jrm" path="res://Systems/Animations/LayeredSprite2D.cs" id="1_m51rl"]
 [ext_resource type="Script" uid="uid://yak566enobof" path="res://Systems/Animations/LayeredAnimation.cs" id="2_hhi8h"]
 
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_m51rl"]
+
 [node name="LayeredSprite2D" type="Node2D" unique_id=1018287596]
 script = ExtResource("1_m51rl")
 Animations = Array[ExtResource("2_hhi8h")]([])
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=566620160]
+libraries/current = SubResource("AnimationLibrary_m51rl")
 
-[node name="Layer - BODY" type="Sprite2D" parent="." unique_id=665205151]
+[node name="Layer - 0" type="Sprite2D" parent="." unique_id=665205151]
 texture_filter = 3
 
-[node name="Layer - FACE" type="Sprite2D" parent="." unique_id=978205530]
+[node name="Layer - 1" type="Sprite2D" parent="." unique_id=978205530]
 texture_filter = 3
 
-[node name="Layer - LOWER" type="Sprite2D" parent="." unique_id=753767672]
+[node name="Layer - 2" type="Sprite2D" parent="." unique_id=753767672]
 texture_filter = 3
 
-[node name="Layer - UPPER" type="Sprite2D" parent="." unique_id=1819076057]
+[node name="Layer - 3" type="Sprite2D" parent="." unique_id=1819076057]
 texture_filter = 3
 
-[node name="Layer - HEAD" type="Sprite2D" parent="." unique_id=2001261188]
+[node name="Layer - 4" type="Sprite2D" parent="." unique_id=2001261188]
 texture_filter = 3
 
-[node name="Layer - ACCESSORY" type="Sprite2D" parent="." unique_id=8748676]
+[node name="Layer - 5" type="Sprite2D" parent="." unique_id=8748676]
 texture_filter = 3
 
-[node name="Layer - COAT" type="Sprite2D" parent="." unique_id=1413618263]
+[node name="Layer - 6" type="Sprite2D" parent="." unique_id=1413618263]
+texture_filter = 3
+
+[node name="Layer - 7" type="Sprite2D" parent="." unique_id=138029118]
+texture_filter = 3
+
+[node name="Layer - 8" type="Sprite2D" parent="." unique_id=2119592495]
+texture_filter = 3
+
+[node name="Layer - 9" type="Sprite2D" parent="." unique_id=695370193]
 texture_filter = 3

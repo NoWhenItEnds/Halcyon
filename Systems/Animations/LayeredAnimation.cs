@@ -21,8 +21,8 @@ namespace Halcyon.Animations
         /// <summary> The kind of animation the resource represents. </summary>
         [Export] public AnimationKind Animation { get; set; } = AnimationKind.NONE;
 
-        /// <summary> The kind of layer the texture occupies. </summary>
-        [Export] public LayerKind Layer
+        /// <summary> The render order of the layer relative to other layers on the same sprite. Lower values render first. </summary>
+        [Export(PropertyHint.Range, "0,10")] public Int32 Layer
         {
             get => _layer;
             set
@@ -31,7 +31,7 @@ namespace Halcyon.Animations
                 EmitChanged();
             }
         }
-        private LayerKind _layer = LayerKind.NONE;
+        private Int32 _layer = 0;
 
         /// <summary> The sprite frames wrapped by the resource object. </summary>
         [Export] public Texture2D Texture
