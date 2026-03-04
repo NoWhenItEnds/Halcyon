@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using Godot;
+using Halcyon.Entities.Data.Components;
 using Halcyon.Entities.States.Machines;
 using Halcyon.Utilities;
 
@@ -29,15 +31,26 @@ namespace Halcyon.Entities.Data
         [Export] public Shape CollisionShape { get; set; } = Shape.NONE;    // TODO - Implement collision shape changes. With Tool-dynamic updates.
 
 
-        /// <summary> The state machine currently controlling the entity. </summary>
-        public EntityStateMachine? StateMachine { get; protected set; } = null;
+        /// <summary> The components that define an entity's advanced functionality. </summary>
+        [ExportGroup("Components")]
+        [Export] public Godot.Collections.Array<DataComponent> Components
+        {
+            get => new Godot.Collections.Array<DataComponent>(_components);
+            set
+            {
+                // TODO - Implement set / onchange.
+            }
+        }
+
+        /// <summary> The components that define an entity's advanced functionality. </summary>
+        private HashSet<DataComponent> _components = new HashSet<DataComponent>();
 
 
         /// <summary> The persistent data for an entity. </summary>
         public EntityData() { }
 
 
-        /// <summary> Initialise the data a runtime, allowing it to construct the correct state machine from its internal values. </summary>
+        /// <summary> Initialise the data at runtime, constructing the correct state machine and assigning it to the entity. </summary>
         /// <param name="entity"> The entity node this data represents. </param>
         public void Initialise(Entity entity)
         {
@@ -46,37 +59,11 @@ namespace Halcyon.Entities.Data
         }
 
 
-        /// <summary> The actual logic of the initialisation. We need to wrap this as it needs to be called as a defered function to allow Godot to update. </summary>
+        /// <summary> The actual logic of the initialisation. We need to wrap this as it needs to be called as a deferred function to allow Godot to update. </summary>
         /// <param name="entity"> The entity node this data represents. </param>
         protected void InitialiseLogic(Entity entity)
         {
-            StateMachine = ParseEntityKind(entity);
-        }
-
-
-        /// <summary> Initialise a new state machine. </summary>
-        /// <typeparam name="T"> The kind of state machine to initialise. </typeparam>
-        /// <param name="entity"> A reference to the entity the state machine represents. </param>
-        /// <exception cref="ArgumentNullException"/>
-        public void SetStateMachine<T>(Entity entity) where T : EntityStateMachine
-        {
-            StateMachine = (T)(Activator.CreateInstance(typeof(T), [entity]) ??
-                throw new ArgumentNullException($"Unable to create state machine of type: '{typeof(T)}'."));
-        }
-
-
-        /// <summary> Try to get the state machine of a specific kind. </summary>
-        /// <typeparam name="T"> The kind of state machine. </typeparam>
-        /// <param name="stateMachine"> The returned state machine instance. </param>
-        /// <returns> Whether the state machine was successfully retrieved. </returns>
-        public Boolean TryGetStateMachine<T>(out T? stateMachine) where T : EntityStateMachine
-        {
-            stateMachine = null;
-            if (StateMachine != null && StateMachine is T machine)
-            {
-                stateMachine = machine;
-            }
-            return stateMachine != null;
+            entity.StateMachine = ParseEntityKind(entity);
         }
 
 

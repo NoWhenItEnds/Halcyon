@@ -6,6 +6,7 @@ using Godot;
 using Halcyon.Animations;
 using Halcyon.Entities.Data;
 using Halcyon.Entities.EntityCommands;
+using Halcyon.Entities.States.Machines;
 
 namespace Halcyon.Entities
 {
@@ -40,6 +41,10 @@ namespace Halcyon.Entities
 
         /// <summary> The data representing the state of the entity. </summary>
         private EntityData? _data = null;
+
+
+        /// <summary> The state machine currently controlling the entity. </summary>
+        public EntityStateMachine? StateMachine { get; set; } = null;
 
 
         /// <summary> A set of all the entities that the entity is currently within interactable range of. </summary>
@@ -92,12 +97,29 @@ namespace Halcyon.Entities
 
         public Boolean TryGetData<T>(out T? data) where T : EntityData
         {
-            data = null;
-            if (Data != null && Data is T d)
-            {
-                data = d;
-            }
+            data = Data as T;
             return data != null;
+        }
+
+
+        /// <summary> Initialise a new state machine. </summary>
+        /// <typeparam name="T"> The kind of state machine to initialise. </typeparam>
+        /// <exception cref="ArgumentNullException"/>
+        public void SetStateMachine<T>() where T : EntityStateMachine
+        {
+            StateMachine = (T)(Activator.CreateInstance(typeof(T), [this]) ??
+                throw new ArgumentNullException($"Unable to create state machine of type: '{typeof(T)}'."));
+        }
+
+
+        /// <summary> Try to get the state machine of a specific kind. </summary>
+        /// <typeparam name="T"> The kind of state machine. </typeparam>
+        /// <param name="stateMachine"> The returned state machine instance. </param>
+        /// <returns> Whether the state machine was successfully retrieved. </returns>
+        public Boolean TryGetStateMachine<T>(out T? stateMachine) where T : EntityStateMachine
+        {
+            stateMachine = StateMachine as T;
+            return stateMachine != null;
         }
 
 
@@ -107,9 +129,9 @@ namespace Halcyon.Entities
         {
             // Ensure that we have data / a state machine set to handle the command.
             ArgumentNullException.ThrowIfNull(Data);
-            ArgumentNullException.ThrowIfNull(Data.StateMachine);
+            ArgumentNullException.ThrowIfNull(StateMachine);
 
-            Data.StateMachine.TryTransitionState(command);
+            StateMachine.TryTransitionState(command);
         }
 
 
@@ -119,9 +141,9 @@ namespace Halcyon.Entities
             if (!Engine.IsEditorHint())
             {
                 // Update the state machine.
-                if (Data != null && Data.StateMachine != null)
+                if (Data != null && StateMachine != null)
                 {
-                    Data.StateMachine.CurrentState.Update(delta);
+                    StateMachine.CurrentState.Update(delta);
                     _nameLabel.Text = Data.Name.ToString();
                 }
             }
