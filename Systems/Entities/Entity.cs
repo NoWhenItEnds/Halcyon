@@ -5,6 +5,7 @@ using System.Linq;
 using Godot;
 using Halcyon.Animations;
 using Halcyon.Entities.Data;
+using Halcyon.Entities.EntityCommands;
 
 namespace Halcyon.Entities
 {
@@ -71,7 +72,7 @@ namespace Halcyon.Entities
         /// <param name="body"> The node entering the area. </param>
         private void OnInteractionAreaEntered(Node2D body)
         {
-            if(body is Entity entity)
+            if(body is Entity entity && entity != this)
             {
                 _nearbyEntities.Add(entity);
             }
@@ -97,6 +98,18 @@ namespace Halcyon.Entities
                 data = d;
             }
             return data != null;
+        }
+
+
+        /// <summary> Handle an incoming command. </summary>
+        /// <param name="command"> The command this entity needs to act upon. </param>
+        public void HandleCommand(EntityCommand command)
+        {
+            // Ensure that we have data / a state machine set to handle the command.
+            ArgumentNullException.ThrowIfNull(Data);
+            ArgumentNullException.ThrowIfNull(Data.StateMachine);
+
+            Data.StateMachine.TryTransitionState(command);
         }
 
 

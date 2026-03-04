@@ -167,16 +167,6 @@ namespace Halcyon.Animations
         }
 
 
-        public override void _Input(InputEvent @event)
-        {
-            if(Input.IsKeyPressed(Key.Space))
-            {
-                Play(Direction.E);  // TODO - Animation Not getting set / found?
-            }
-        }
-
-
-
         /// <summary> Begin playing the current animation. </summary>
         /// <param name="direction"> Which direction the animation should play for. </param>
         public void Play(Direction direction)

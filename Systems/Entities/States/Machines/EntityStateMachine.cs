@@ -28,7 +28,7 @@ namespace Halcyon.Entities.States.Machines
             DEFAULT_STATE = defaultState;
             STATES.Add(defaultState);
             CurrentState = defaultState;
-            CurrentState.Start(new IdleCommand());  // Initialise the state machine with an idle command.
+            CurrentState.Start(new IdleCommand(entity));  // Initialise the state machine with an idle command.
         }
 
 

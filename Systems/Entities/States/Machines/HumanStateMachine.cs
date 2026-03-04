@@ -12,12 +12,19 @@ namespace Halcyon.Entities.States.Machines
             STATES.Add(new WalkingState(entity)
                 .WithTransition<WalkCommand, WalkingState>()
                 .WithTransition<IdleCommand, IdlingState>()
-                .WithTransition<SprintCommand, SprintingState>());
+                .WithTransition<SprintCommand, SprintingState>()
+                .WithTransition<ExamineCommand, ExaminingState>());
 
             STATES.Add(new SprintingState(entity)
                 .WithTransition<SprintCommand, SprintingState>()
                 .WithTransition<IdleCommand, IdlingState>()
-                .WithTransition<WalkCommand, WalkingState>());
+                .WithTransition<WalkCommand, WalkingState>()
+                .WithTransition<ExamineCommand, ExaminingState>());
+
+            STATES.Add(new ExaminingState(entity)
+                .WithTransition<IdleCommand, IdlingState>()
+                .WithTransition<WalkCommand, WalkingState>()
+                .WithTransition<SprintCommand, SprintingState>());
         }
 
 
@@ -26,7 +33,8 @@ namespace Halcyon.Entities.States.Machines
         {
             return new IdlingState(entity)
                 .WithTransition<WalkCommand, WalkingState>()
-                .WithTransition<SprintCommand, SprintingState>();
+                .WithTransition<SprintCommand, SprintingState>()
+                .WithTransition<ExamineCommand, ExaminingState>();
         }
     }
 }

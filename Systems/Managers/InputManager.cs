@@ -16,9 +16,6 @@ namespace Halcyon.Managers
         /// <summary> A reference to the game world's camera manager singleton. </summary>
         private CameraManager _cameraManager;
 
-        /// <summary> The currently queued command for the player entity. </summary>
-        private EntityCommand? _currentCommand = null;
-
         /// <summary> The last direction being input by the player that wasn't zero. </summary>
         private Vector2 _previousDirection = Vector2.Zero;
 
@@ -37,39 +34,28 @@ namespace Halcyon.Managers
         /// <inheritdoc/>
         public override void _PhysicsProcess(Double delta)
         {
+            Entity player = _entityManager.PlayerEntity;
+
             // Get current input direction.
             Vector2 direction = Input.GetVector("action_move_w", "action_move_e", "action_move_n", "action_move_s");
 
-            // Set initial default action and cache direction.
-            if (direction != Vector2.Zero)
-            {
-                _previousDirection = direction;
-                _currentCommand = new WalkCommand(direction);
+            EntityCommand currentCommand = HandleMovement(player, direction);
 
-                // Handle complex actions that require direction.
-                if (Input.IsActionPressed("action_sprint"))
-                {
-                    _currentCommand = new SprintCommand(direction);
-                }
-            }
-            else
+            // First ensure that we have a direction. If not, we will try to use the last recorded direction.
+            if(direction == Vector2.Zero)
             {
-                _currentCommand = new IdleCommand(_previousDirection);
+                direction = _previousDirection;
             }
 
-            // Handle complex actions that DON'T require direction.
+            // Handle complex actions we prioritise above other inputs.
             // Note: these WILL overwrite any other input.
-            if (Input.IsActionPressed("action_interact"))
+            EntityCommand? complexCommand = HandleComplexInput(player, direction);
+            if(complexCommand != null)
             {
-                // TODO - Need to determine HERE what command to use depending upon input.
-                Entity[] entities = _entityManager.PlayerEntity.GetNearbyEntities();
-                if (entities.Length > 0)
-                {
-                    _currentCommand = new ExamineCommand(entities[0]);
-                }
+                currentCommand = complexCommand;
             }
 
-            _entityManager.PlayerEntity.Data?.StateMachine?.TryTransitionState(_currentCommand);
+            _entityManager.PlayerEntity.HandleCommand(currentCommand);
 
             // TODO - Probably not here.
             _cameraManager.SetPosition(_entityManager.PlayerEntity.GlobalPosition);
@@ -81,6 +67,49 @@ namespace Halcyon.Managers
         {
             // Check if using a controller or not.
             _isUsingController = @event is InputEventJoypadButton || @event is InputEventJoypadMotion;
+        }
+
+
+        private EntityCommand HandleMovement(Entity player, Vector2 direction)
+        {
+            // Initial assumption is the player is idling. I.e. not doing anything.
+            EntityCommand command = new IdleCommand(player);
+
+            // If there is a direction, then they're probably trying to move.
+            if (direction != Vector2.Zero)
+            {
+                command = new WalkCommand(player, direction);
+
+                // Handle complex MOVEMENT-based actions.
+                if (Input.IsActionPressed("action_sprint"))
+                {
+                    command = new SprintCommand(player, direction);
+                }
+            }
+
+            return command;
+        }
+
+
+        private EntityCommand? HandleComplexInput(Entity player, Vector2 direction)
+        {
+            EntityCommand? command = null;
+
+            if (Input.IsActionJustPressed("action_interact"))
+            {
+                // TODO - Need to determine HERE what command to use depending upon input.
+                Entity[] entities = _entityManager.PlayerEntity.GetNearbyEntities();
+                foreach (var item in entities)
+                {
+                    GD.Print(item.Data.Name);
+                }
+                if (entities.Length > 0)
+                {
+                    command = new ExamineCommand(player, entities[0]);
+                }
+            }
+
+            return command;
         }
     }
 }
