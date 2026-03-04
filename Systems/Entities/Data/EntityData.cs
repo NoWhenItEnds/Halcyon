@@ -42,7 +42,7 @@ namespace Halcyon.Entities.Data
         public void Initialise(Entity entity)
         {
             // Need to give Godot time to catch up on initial run.
-            CallDeferred("InitialiseLogic", [entity]);
+            CallDeferred(nameof(InitialiseLogic), [entity]);
         }
 
 

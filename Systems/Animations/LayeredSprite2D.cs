@@ -31,7 +31,7 @@ namespace Halcyon.Animations
                     animation?.Changed += UpdateAnimations;
                 }
 
-                CallDeferred("UpdateAnimations");
+                CallDeferred(nameof(UpdateAnimations));
             }
         }
 
@@ -74,12 +74,6 @@ namespace Halcyon.Animations
         /// <summary> Ensure that the sprite sub-nodes are correctly mapped to the animation layers. </summary>
         private void RefreshSprites()
         {
-            // Check that the map has been initialised.
-            if(_spriteLayers == null)
-            {
-                _spriteLayers = new Dictionary<LayerKind, Sprite2D?>();
-            }
-
             // Check that the map has been correctly populated with references to the sprites.
             foreach (LayerKind kind in Enum.GetValues<LayerKind>())
             {
@@ -114,9 +108,16 @@ namespace Halcyon.Animations
             _player.AddAnimationLibrary("current", library);
             Dictionary<Direction, Animation> animationMap = new Dictionary<Direction, Animation>();
 
+            // Pre-build lookup to avoid O(n) scan per layer.
+            Dictionary<LayerKind, LayeredAnimation> animationByLayer = _animations
+                .Where(x => x != null)
+                .ToDictionary(x => x.Layer);
+
+            Single secondsPerFrame = 1f / _animationFPS; // How long each frame needs to last to match the desired speed (_animationFPS).
+
             foreach (KeyValuePair<LayerKind, Sprite2D?> layer in _spriteLayers)
             {
-                LayeredAnimation? animation = _animations.FirstOrDefault(x => x != null && x.Layer == layer.Key) ?? null;
+                animationByLayer.TryGetValue(layer.Key, out LayeredAnimation? animation);
                 if (animation != null)
                 {
                     layer.Value?.Texture = animation.Texture;
@@ -132,7 +133,8 @@ namespace Halcyon.Animations
                         {
                             Animation directionAnimation = new Animation
                             {
-                                LoopMode = Animation.LoopModeEnum.Linear
+                                LoopMode = Animation.LoopModeEnum.Linear,
+                                Length = secondsPerFrame * animation.HFrames
                             };
 
                             library.AddAnimation(animationKey, directionAnimation);
@@ -147,13 +149,10 @@ namespace Halcyon.Animations
                         trackAnimation.ValueTrackSetUpdateMode(trackIndex, Animation.UpdateMode.Discrete);
 
                         // Build the keyframes.
-                        Single secondsPerFrame = 1f / (Single)_animationFPS; // How long each frame of the animation (animation.HFrames) needs to last for for our animation to match the desired speed (_animationFPS).
-                        trackAnimation.Length = secondsPerFrame * animation.HFrames;
+                        Int32 vRow = animation.VFrameOrder.IndexOf(direction);
                         for (Int32 i = 0; i < animation.HFrames; i++)
                         {
-                            // Animate by changing the sprite's frame.
-                            Vector2 trackValue = new Vector2(i, animation.VFrameOrder.IndexOf(direction));
-                            trackAnimation.TrackInsertKey(trackIndex, i * secondsPerFrame, trackValue);
+                            trackAnimation.TrackInsertKey(trackIndex, i * secondsPerFrame, new Vector2(i, vRow));
                         }
                     }
                 }
