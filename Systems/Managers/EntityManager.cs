@@ -68,27 +68,6 @@ namespace Halcyon.Managers
         }
 
 
-        public Boolean TrySpawnEntity<T>(Vector2 position, out Entity? entity) where T : EntityStateMachine
-        {
-            entity = _entityPrefab.InstantiateOrNull<Entity>();
-            EntityController controller = new EntityController(entity);
-
-            // Attempt to add the entity to the game world.
-            Boolean isSuccess = ENTITIES.TryAdd(entity, controller);
-            if (isSuccess)
-            {
-                AddChild(entity);
-                entity.GlobalPosition = position;
-                entity.Data = new EntityData();
-                entity.Data.Components.Add(new StatComponent());
-                //entity.SetStateMachine<T>();
-            }
-
-            return isSuccess;
-        }
-
-
-
         public Boolean TrySpawnHuman(Vector2 position, out Entity? entity)
         {
             entity = _entityPrefab.InstantiateOrNull<Entity>();
@@ -120,7 +99,6 @@ namespace Halcyon.Managers
                 AddChild(entity);
                 entity.GlobalPosition = position;
                 entity.Data = new EntityData();
-                entity.Data.Components.Add(new StatComponent());
                 entity.SetStateMachine<DoorStateMachine>();
             }
 

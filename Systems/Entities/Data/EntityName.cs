@@ -95,8 +95,8 @@ namespace Halcyon.Entities.Data
             {
                 CountryISO = countryIndex != -1 ? data[countryIndex] : String.Empty,
                 Gender = gender,
-                Localised = countryIndex != -1 ? data[localisedIndex] : String.Empty,
-                Romanised = countryIndex != -1 ? data[romanisedIndex] : String.Empty
+                Localised = localisedIndex != -1 ? data[localisedIndex] : String.Empty,
+                Romanised = romanisedIndex != -1 ? data[romanisedIndex] : String.Empty
             };
         }
     }
@@ -129,8 +129,8 @@ namespace Halcyon.Entities.Data
             return new Surname
             {
                 CountryISO = countryIndex != -1 ? data[countryIndex] : String.Empty,
-                Localised = countryIndex != -1 ? data[localisedIndex] : String.Empty,
-                Romanised = countryIndex != -1 ? data[romanisedIndex] : String.Empty
+                Localised = localisedIndex != -1 ? data[localisedIndex] : String.Empty,
+                Romanised = romanisedIndex != -1 ? data[romanisedIndex] : String.Empty
             };
         }
     }

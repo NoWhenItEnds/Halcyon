@@ -150,6 +150,14 @@ namespace Halcyon.Entities
 
 
         /// <inheritdoc/>
-        public Boolean Equals(Entity? other) => other != null ? Data.Equals(other.Data) : false;
+        public Boolean Equals(Entity? other)
+        {
+            Boolean result = false;
+            if(Data != null && other != null && other.Data != null)
+            {
+                result = Data.Equals(other.Data);
+            }
+            return result;
+        }
     }
 }
