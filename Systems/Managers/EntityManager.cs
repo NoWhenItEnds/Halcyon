@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using Godot;
 using Halcyon.Entities;
 using Halcyon.Entities.Data;
+using Halcyon.Entities.Data.Components;
+using Halcyon.Entities.States.Machines;
 using Halcyon.Utilities.Singletons;
 
 namespace Halcyon.Managers
@@ -13,7 +15,7 @@ namespace Halcyon.Managers
     {
         /// <summary> The prefab used for spawning new actors. </summary>
         [ExportGroup("Resources")]
-        [Export] private PackedScene _actorPrefab;
+        [Export] private PackedScene _entityPrefab;
 
 
         /// <summary> The entity currently controlled by the player. </summary>
@@ -66,10 +68,9 @@ namespace Halcyon.Managers
         }
 
 
-
-        public Boolean TrySpawnHuman(Vector2 position, out Entity? entity)
+        public Boolean TrySpawnEntity<T>(Vector2 position, out Entity? entity) where T : EntityStateMachine
         {
-            entity = _actorPrefab.InstantiateOrNull<Entity>();
+            entity = _entityPrefab.InstantiateOrNull<Entity>();
             EntityController controller = new EntityController(entity);
 
             // Attempt to add the entity to the game world.
@@ -78,10 +79,30 @@ namespace Halcyon.Managers
             {
                 AddChild(entity);
                 entity.GlobalPosition = position;
-                ActorData data = new ActorData();
-                data.EntityKind = "human";
-                entity.Data = data;
-                data.Initialise(entity);
+                entity.Data = new EntityData();
+                entity.Data.Components.Add(new StatComponent());
+                //entity.SetStateMachine<T>();
+            }
+
+            return isSuccess;
+        }
+
+
+
+        public Boolean TrySpawnHuman(Vector2 position, out Entity? entity)
+        {
+            entity = _entityPrefab.InstantiateOrNull<Entity>();
+            EntityController controller = new EntityController(entity);
+
+            // Attempt to add the entity to the game world.
+            Boolean isSuccess = ENTITIES.TryAdd(entity, controller);
+            if (isSuccess)
+            {
+                AddChild(entity);
+                entity.GlobalPosition = position;
+                entity.Data = new EntityData();
+                entity.Data.TryAddComponent(new StatComponent());
+                entity.SetStateMachine<HumanStateMachine>();
             }
 
             return isSuccess;
@@ -90,7 +111,7 @@ namespace Halcyon.Managers
 
         public Boolean TrySpawnDoor(Vector2 position, out Entity? entity)
         {
-            entity = _actorPrefab.InstantiateOrNull<Entity>();
+            entity = _entityPrefab.InstantiateOrNull<Entity>();
 
             // Attempt to add the entity to the game world.
             Boolean isSuccess = ENTITIES.TryAdd(entity, null);
@@ -98,10 +119,9 @@ namespace Halcyon.Managers
             {
                 AddChild(entity);
                 entity.GlobalPosition = position;
-                ActorData data = new ActorData();
-                data.EntityKind = "door";
-                entity.Data = data;
-                data.Initialise(entity);
+                entity.Data = new EntityData();
+                entity.Data.Components.Add(new StatComponent());
+                entity.SetStateMachine<DoorStateMachine>();
             }
 
             return isSuccess;

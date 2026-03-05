@@ -1,33 +1,15 @@
+using System;
+using System.Collections.Generic;
+using Godot;
 using Halcyon.Entities.EntityCommands;
 
 namespace Halcyon.Entities.States.Machines
 {
     /// <summary> A state machine used for human entities. </summary>
-    public class HumanStateMachine : EntityStateMachine
+    [GlobalClass]
+    [Tool]
+    public partial class HumanStateMachine : EntityStateMachine
     {
-        /// <summary> A state machine used for human entities. </summary>
-        /// <param name="entity"> A reference to the entity controlled by the machine. </param>
-        public HumanStateMachine(Entity entity) : base(entity)
-        {
-            STATES[typeof(WalkingState)] = new WalkingState(entity)
-                .WithTransition<WalkCommand, WalkingState>()
-                .WithTransition<IdleCommand, IdlingState>()
-                .WithTransition<SprintCommand, SprintingState>()
-                .WithTransition<ExamineCommand, ExaminingState>();
-
-            STATES[typeof(SprintingState)] = new SprintingState(entity)
-                .WithTransition<SprintCommand, SprintingState>()
-                .WithTransition<IdleCommand, IdlingState>()
-                .WithTransition<WalkCommand, WalkingState>()
-                .WithTransition<ExamineCommand, ExaminingState>();
-
-            STATES[typeof(ExaminingState)] = new ExaminingState(entity)
-                .WithTransition<IdleCommand, IdlingState>()
-                .WithTransition<WalkCommand, WalkingState>()
-                .WithTransition<SprintCommand, SprintingState>();
-        }
-
-
         /// <inheritdoc/>
         protected override EntityState BuildDefaultState(Entity entity)
         {
@@ -35,6 +17,32 @@ namespace Halcyon.Entities.States.Machines
                 .WithTransition<WalkCommand, WalkingState>()
                 .WithTransition<SprintCommand, SprintingState>()
                 .WithTransition<ExamineCommand, ExaminingState>();
+        }
+
+
+        /// <inheritdoc/>
+        protected override Dictionary<Type, EntityState> BuildStates(Entity entity)
+        {
+            Dictionary<Type, EntityState> states = new Dictionary<Type, EntityState>();
+
+            states[typeof(WalkingState)] = new WalkingState(entity)
+                .WithTransition<WalkCommand, WalkingState>()
+                .WithTransition<IdleCommand, IdlingState>()
+                .WithTransition<SprintCommand, SprintingState>()
+                .WithTransition<ExamineCommand, ExaminingState>();
+
+            states[typeof(SprintingState)] = new SprintingState(entity)
+                .WithTransition<SprintCommand, SprintingState>()
+                .WithTransition<IdleCommand, IdlingState>()
+                .WithTransition<WalkCommand, WalkingState>()
+                .WithTransition<ExamineCommand, ExaminingState>();
+
+            states[typeof(ExaminingState)] = new ExaminingState(entity)
+                .WithTransition<IdleCommand, IdlingState>()
+                .WithTransition<WalkCommand, WalkingState>()
+                .WithTransition<SprintCommand, SprintingState>();
+
+            return states;
         }
     }
 }

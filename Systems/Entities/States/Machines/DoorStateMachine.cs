@@ -1,25 +1,29 @@
-using Godot;
+using System;
+using System.Collections.Generic;
 using Halcyon.Entities.EntityCommands;
 
 namespace Halcyon.Entities.States.Machines
 {
     /// <summary> A state machine used for doors of all kinds. </summary>
-    public class DoorStateMachine : EntityStateMachine
+    public partial class DoorStateMachine : EntityStateMachine
     {
-        /// <summary> A state machine used for doors of all kinds. </summary>
-        /// <param name="entity"> A reference to the entity controlled by the machine. </param>
-        public DoorStateMachine(Entity entity) : base(entity)
-        {
-            STATES[typeof(OpenedState)] = new OpenedState(entity)
-                .WithTransition<UseCommand, ClosedState>();
-        }
-
-
         /// <inheritdoc/>
         protected override EntityState BuildDefaultState(Entity entity)
         {
             return new ClosedState(entity)
                 .WithTransition<UseCommand, OpenedState>();
+        }
+
+
+        /// <inheritdoc/>
+        protected override Dictionary<Type, EntityState> BuildStates(Entity entity)
+        {
+            Dictionary<Type, EntityState> states = new Dictionary<Type, EntityState>();
+
+            states[typeof(OpenedState)] = new OpenedState(entity)
+                .WithTransition<UseCommand, ClosedState>();
+
+            return states;
         }
     }
 }

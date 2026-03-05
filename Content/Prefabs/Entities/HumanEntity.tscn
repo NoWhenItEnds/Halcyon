@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://b2bmqyq7hdcq8"]
+
+[ext_resource type="PackedScene" uid="uid://xws1hp5pruba" path="res://Content/Prefabs/Entities/Entity.tscn" id="1_tg8h0"]
+[ext_resource type="Script" uid="uid://d2xxsiesej1p4" path="res://Systems/Entities/States/Machines/HumanStateMachine.cs" id="2_87hp6"]
+
+[node name="HumanEntity" unique_id=140002473 node_paths=PackedStringArray("StateMachine") instance=ExtResource("1_tg8h0")]
+StateMachine = NodePath("HumanStateMachine")
+
+[node name="HumanStateMachine" type="Node" parent="." index="0" unique_id=1730405734]
+script = ExtResource("2_87hp6")
+metadata/_custom_type_script = "uid://d2xxsiesej1p4"

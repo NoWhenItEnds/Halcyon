@@ -14,8 +14,11 @@ namespace Halcyon.Entities
     [Tool]
     public partial class Entity : CharacterBody2D, IEquatable<Entity>
     {
-        /// <summary> The node that defines the node's collision. </summary>
+        /// <summary> The state machine currently controlling the entity. </summary>
         [ExportGroup("Nodes")]
+        [Export] public EntityStateMachine? StateMachine { get; private set; } = null;
+
+        /// <summary> The node that defines the node's collision. </summary>
         [Export] public CollisionShape2D Collision { get; private set; }
 
         /// <summary> The sprite representing the entity within the world. </summary>
@@ -31,7 +34,7 @@ namespace Halcyon.Entities
 
         /// <summary> The data representing the state of the entity. </summary>
         [ExportGroup("Settings")]
-        [Export] public EntityData? Data {
+        [Export] public EntityData Data {
             get => _data;
             set // TODO - Update EVERYTHING on set!
             {
@@ -41,10 +44,6 @@ namespace Halcyon.Entities
 
         /// <summary> The data representing the state of the entity. </summary>
         private EntityData? _data = null;
-
-
-        /// <summary> The state machine currently controlling the entity. </summary>
-        public EntityStateMachine? StateMachine { get; set; } = null;
 
 
         /// <summary> A set of all the entities that the entity is currently within interactable range of. </summary>
@@ -62,13 +61,6 @@ namespace Halcyon.Entities
             {
                 _interactionArea.BodyEntered += OnInteractionAreaEntered;
                 _interactionArea.BodyExited += OnInteractionAreaExited;
-
-                // Initialise the data if this node wasn't spawned in (was hand-placed in the editor).
-                if (Data != null)
-                {
-                    Console.WriteLine("HERE");
-                    //Data.Initialise(this);
-                }
             }
         }
 
@@ -95,20 +87,14 @@ namespace Halcyon.Entities
         }
 
 
-        public Boolean TryGetData<T>(out T? data) where T : EntityData
+        /// <summary> Set the state machine controlling this entity, replacing any existing one. </summary>
+        /// <typeparam name="T"> The kind of state machine to use. </typeparam>
+        public void SetStateMachine<T>() where T : EntityStateMachine, new()
         {
-            data = Data as T;
-            return data != null;
-        }
-
-
-        /// <summary> Initialise a new state machine. </summary>
-        /// <typeparam name="T"> The kind of state machine to initialise. </typeparam>
-        /// <exception cref="ArgumentNullException"/>
-        public void SetStateMachine<T>() where T : EntityStateMachine
-        {
-            StateMachine = (T)(Activator.CreateInstance(typeof(T), [this]) ??
-                throw new ArgumentNullException($"Unable to create state machine of type: '{typeof(T)}'."));
+            StateMachine?.QueueFree();
+            T newMachine = new T();
+            AddChild(newMachine);
+            StateMachine = newMachine;
         }
 
 
@@ -140,10 +126,8 @@ namespace Halcyon.Entities
         {
             if (!Engine.IsEditorHint())
             {
-                // Update the state machine.
-                if (Data != null && StateMachine != null)
+                if(Data != null)
                 {
-                    StateMachine.CurrentState.Update(delta);
                     _nameLabel.Text = Data.Name.ToString();
                 }
             }

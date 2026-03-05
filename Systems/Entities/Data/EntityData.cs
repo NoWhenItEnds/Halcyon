@@ -1,14 +1,15 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Godot;
 using Halcyon.Entities.Data.Components;
-using Halcyon.Entities.States.Machines;
-using Halcyon.Utilities;
 
 namespace Halcyon.Entities.Data
 {
     /// <summary> The persistent data for an entity. </summary>
-    public abstract partial class EntityData : Resource, IEquatable<EntityData>
+    [GlobalClass]
+    [Tool]
+    public partial class EntityData : Resource, IEquatable<EntityData>
     {
         /// <summary> The entity's personal name. </summary>
         [ExportGroup("General")]
@@ -17,28 +18,16 @@ namespace Halcyon.Entities.Data
         /// <summary> The current gender / sex of the entity. </summary>
         [Export] public EntityGender Gender { get; set; } = EntityGender.NONE;
 
-        /// <summary> The identifying race / type of the entity. </summary>
-        /// <example> human / door / chest </example>
-        [Export] public String EntityKind { get; set; } = String.Empty;
-
-
-        /// <summary> The dimensions of the collision shape, in pixels. </summary>
-        /// <remarks> For a circle, this is the radius. </remarks>
-        [ExportGroup("Collision")]
-        [Export] public Vector2 CollisionSize { get; set; } = Vector2.Zero; // TODO - Have based upon entity size?
-
-        /// <summary> The collision's shape. </summary>
-        [Export] public Shape CollisionShape { get; set; } = Shape.NONE;    // TODO - Implement collision shape changes. With Tool-dynamic updates.
-
 
         /// <summary> The components that define an entity's advanced functionality. </summary>
         [ExportGroup("Components")]
         [Export] public Godot.Collections.Array<DataComponent> Components
         {
             get => new Godot.Collections.Array<DataComponent>(_components);
-            set
+            private set
             {
-                // TODO - Implement set / onchange.
+                _components = value.ToHashSet();
+                EmitChanged();
             }
         }
 
@@ -50,28 +39,26 @@ namespace Halcyon.Entities.Data
         public EntityData() { }
 
 
-        /// <summary> Initialise the data at runtime, constructing the correct state machine and assigning it to the entity. </summary>
-        /// <param name="entity"> The entity node this data represents. </param>
-        public void Initialise(Entity entity)
+        public Boolean TryAddComponent(DataComponent component)
         {
-            // Need to give Godot time to catch up on initial run.
-            CallDeferred(nameof(InitialiseLogic), [entity]);
+            Boolean result = _components.Add(component);
+            if(result)
+            {
+                EmitChanged();
+            }
+            return result;
         }
 
 
-        /// <summary> The actual logic of the initialisation. We need to wrap this as it needs to be called as a deferred function to allow Godot to update. </summary>
-        /// <param name="entity"> The entity node this data represents. </param>
-        protected void InitialiseLogic(Entity entity)
+        /// <summary> Attempt to get a particular component from the data. </summary>
+        /// <typeparam name="T"> The type of component to search for. </typeparam>
+        /// <param name="component"> The returned component, or a null if one wasn't found. </param>
+        /// <returns> Whether there is a component of the desired type. </returns>
+        public Boolean TryGetComponent<T>(out T? component) where T : DataComponent
         {
-            entity.StateMachine = ParseEntityKind(entity);
+            component = _components.OfType<T>().FirstOrDefault() ?? null;
+            return component != null;
         }
-
-
-        /// <summary> Attempt to parse the entity kind into the correct state machine. Will return an exception if this isn't possible. </summary>
-        /// <param name="entity"> A reference to the entity the state machine represents. </param>
-        /// <returns> The parsed state machine. </returns>
-        /// <exception cref="ArgumentNullException"/>
-        protected abstract EntityStateMachine ParseEntityKind(Entity entity);
 
 
         /// <inheritdoc/>

@@ -1,6 +1,6 @@
 using Godot;
 using Halcyon.Animations;
-using Halcyon.Entities.Data;
+using Halcyon.Entities.Data.Components;
 using Halcyon.Entities.EntityCommands;
 using Halcyon.Utilities;
 using System;
@@ -26,9 +26,9 @@ namespace Halcyon.Entities.States
         /// <inheritdoc/>
         public override void Start(EntityCommand command)
         {
-            if(ENTITY.TryGetData<ActorData>(out ActorData? data) && data != null)
+            if (ENTITY.Data.TryGetComponent<StatComponent>(out StatComponent? statComponent) && statComponent != null)
             {
-                Single speed = data.SpeedStat.CurrentValue * MOVE_SPEED;
+                Single speed = statComponent.SpeedStat.CurrentValue * MOVE_SPEED;
                 ENTITY.Velocity = command.Direction * speed;
 
                 // Handle animation.
@@ -37,7 +37,7 @@ namespace Halcyon.Entities.States
             }
             else
             {
-                throw new ArgumentNullException($"Despite being a '{ENTITY.GetType()}', the entity doesn't possess '{typeof(ActorData)}' data, which this state, {GetType()}, requires.");
+                throw new ArgumentNullException($"Entity, '{ENTITY.Data.Name}', doesn't possess '{typeof(StatComponent)}' component, which this state, {GetType()}, requires.");
             }
         }
 
