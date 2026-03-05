@@ -117,7 +117,16 @@ namespace Halcyon.Entities
             ArgumentNullException.ThrowIfNull(Data);
             ArgumentNullException.ThrowIfNull(StateMachine);
 
-            StateMachine.TryTransitionState(command);
+            Boolean didTransition = StateMachine.TryTransitionState(command);
+
+            if(didTransition) // If the transition was successful...
+            {
+                // Propagate the command to the targeted entity, if there is one, and if they aren't the same as the actor.
+                if (command.TargetEntity != null && command.TargetEntity != this)
+                {
+                    command.TargetEntity.HandleCommand(command);
+                }
+            }
         }
 
 

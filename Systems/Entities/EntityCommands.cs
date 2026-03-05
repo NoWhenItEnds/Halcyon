@@ -12,7 +12,7 @@ namespace Halcyon.Entities.EntityCommands
         public readonly Vector2 Direction = Vector2.Zero;
 
         /// <summary> The global position targeted by the command. </summary>
-        public readonly Vector2 TargetPosition = Vector2.Zero;  // TODO - Implement.
+        public readonly Vector2? TargetPosition = null;  // TODO - Implement.
 
         /// <summary> The entity targeted by the command. </summary>
         public readonly Entity? TargetEntity = null;

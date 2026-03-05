@@ -13,10 +13,6 @@ namespace Halcyon.Entities.States
         protected override AnimationKind _animationKind { get; } = AnimationKind.IDLING;
 
 
-        /// <summary> How quickly the entity decelerates to a stop, in units per second per second. </summary>
-        private readonly Single DECELERATION = 512f;
-
-
         /// <summary> The entity is standing idle, waiting for an action. </summary>
         /// <param name="entity"> A reference to the entity. </param>
         public IdlingState(Entity entity) : base(entity) { }
@@ -34,7 +30,7 @@ namespace Halcyon.Entities.States
         /// <inheritdoc/>
         public override void Update(Double delta)
         {
-            ENTITY.Velocity = ENTITY.Velocity.MoveToward(Vector2.Zero, DECELERATION * (Single)delta);
+            ENTITY.Velocity = Vector2.Zero;
             Boolean isCollision = ENTITY.MoveAndSlide();
             if (isCollision)
             {

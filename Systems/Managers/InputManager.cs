@@ -99,13 +99,10 @@ namespace Halcyon.Managers
             {
                 // TODO - Need to determine HERE what command to use depending upon input.
                 Entity[] entities = _entityManager.PlayerEntity.GetNearbyEntities();
-                foreach (var item in entities)
-                {
-                    GD.Print(item.Data.Name);
-                }
                 if (entities.Length > 0)
                 {
-                    command = new ExamineCommand(player, entities[0]);
+                    //command = new ExamineCommand(player, entities[0]);
+                    command = new UseCommand(player, entities[0]);
                 }
             }
 

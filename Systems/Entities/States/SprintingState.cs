@@ -16,9 +16,7 @@ namespace Halcyon.Entities.States
 
         /// <summary> How fast the maximum sprinting movement speed is. </summary>
         private readonly Single MOVE_SPEED = 32f;
-
-        /// <summary> How quickly the entity accelerates to sprinting speed, in units per second per second. </summary>
-        private readonly Single ACCELERATION = 512f;
+        
 
         /// <summary> The velocity applied each frame while sprinting. </summary>
         private Vector2 _targetVelocity = Vector2.Zero;
@@ -51,7 +49,7 @@ namespace Halcyon.Entities.States
         /// <inheritdoc/>
         public override void Update(Double delta)
         {
-            ENTITY.Velocity = ENTITY.Velocity.MoveToward(_targetVelocity, ACCELERATION * (Single)delta);
+            ENTITY.Velocity = _targetVelocity;
             Boolean isCollision = ENTITY.MoveAndSlide();
             if (isCollision)
             {
