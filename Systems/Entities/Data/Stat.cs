@@ -81,7 +81,7 @@ namespace Halcyon.Entities.Data
         public event Action<Int32> ValueChanged = delegate { };
 
         /// <summary> An amount, from 0.0 - 1.0 the statistic is between its min and max value. </summary>
-        public Single Percent => (CurrentValue - MinValue) / (MaxValue - MinValue);
+        public Single Percent => MaxValue != MinValue ? (Single)(CurrentValue - MinValue) / (MaxValue - MinValue) : 0f;
 
 
         /// <summary> The modifiers currently being applied to the stat. </summary>
@@ -100,9 +100,10 @@ namespace Halcyon.Entities.Data
         public Stat(String name, Int32 baseValue, Int32 minValue, Int32 maxValue)
         {
             Name = name;
-            MinValue = minValue;
-            MaxValue = maxValue;
-            BaseValue = baseValue;
+            // We assign backing fields directly to avoid the property setters triggering before the object is fully initialised.
+            _minValue = minValue;
+            _maxValue = maxValue;
+            BaseValue = Math.Clamp(baseValue, minValue, maxValue);
         }
 
 
@@ -258,7 +259,7 @@ namespace Halcyon.Entities.Data
                     result = currentValue * Value;
                     break;
                 case StatOperation.DIVIDE:
-                    result = currentValue / Value;
+                    result = Value != 0 ? currentValue / Value : currentValue;  // Prevent zero division by returning the original value.
                     break;
                 default:
                     break;

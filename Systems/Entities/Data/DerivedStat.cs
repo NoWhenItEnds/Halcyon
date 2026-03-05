@@ -42,8 +42,12 @@ namespace Halcyon.Entities.Data
             }
             set
             {
-                _currentValue = Math.Clamp(value, MinValue, MaxValue);
-                ValueChanged?.Invoke(_currentValue);
+                Int32 clamped = Math.Clamp(value, MinValue, MaxValue);
+                if (clamped != _currentValue)
+                {
+                    _currentValue = clamped;
+                    ValueChanged?.Invoke(_currentValue);
+                }
             }
         }
 
@@ -51,7 +55,7 @@ namespace Halcyon.Entities.Data
         public event Action<Int32> ValueChanged = delegate { };
 
         /// <summary> An amount, from 0.0 - 1.0 the statistic is between its min and max value. </summary>
-        public Single Percent => (CurrentValue - MinValue) / (MaxValue - MinValue);
+        public Single Percent => MaxValue != MinValue ? (Single)(CurrentValue - MinValue) / (MaxValue - MinValue) : 0f;
 
 
         /// <summary> A statistic whose values are based upon those of another. </summary>

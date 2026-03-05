@@ -15,7 +15,10 @@ namespace Halcyon.Entities.States
 
 
         /// <summary> How fast the walking movement speed is. </summary>
-        private readonly Single MOVE_SPEED = 500f;
+        private readonly Single MOVE_SPEED = 25f;
+
+        /// <summary> The velocity applied each frame while walking. </summary>
+        private Vector2 _targetVelocity = Vector2.Zero;
 
 
         /// <summary> The entity is walking across the ground. </summary>
@@ -29,7 +32,7 @@ namespace Halcyon.Entities.States
             if (ENTITY.Data.TryGetComponent<StatComponent>(out StatComponent? statComponent) && statComponent != null)
             {
                 Single speed = statComponent.SpeedStat.CurrentValue * MOVE_SPEED;
-                ENTITY.Velocity = command.Direction * speed;
+                _targetVelocity = command.Direction * speed;
 
                 // Handle animation.
                 ENTITY.LayeredSprite.Animations = GetCurrentAnimations();
@@ -45,7 +48,7 @@ namespace Halcyon.Entities.States
         /// <inheritdoc/>
         public override void Update(Double delta)
         {
-            ENTITY.Velocity *= (Single)delta;
+            ENTITY.Velocity = _targetVelocity;
             Boolean isCollision = ENTITY.MoveAndSlide();
             if (isCollision)
             {

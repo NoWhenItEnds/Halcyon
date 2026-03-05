@@ -23,14 +23,9 @@ namespace Halcyon.Utilities.Extensions
                 throw new ArgumentNullException(nameof(source));
             }
 
-            // Check if the collection is empty before attempting to get a random index
-            if (!source.Any())
-            {
-                return default(T);
-            }
-
-            Int32 index = RANDOM.Next(0, source.Count());
-            return source.ElementAt(index);
+            // Materialise once so we don't enumerate separately.
+            IList<T> list = source as IList<T> ?? source.ToList();
+            return list.Count > 0 ? list[RANDOM.Next(list.Count)] : default(T);
         }
     }
 }

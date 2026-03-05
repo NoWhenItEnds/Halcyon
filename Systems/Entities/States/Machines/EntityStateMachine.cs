@@ -38,7 +38,7 @@ namespace Halcyon.Entities.States.Machines
                 {
                     if (!STATES.TryAdd(state.Key, state.Value))
                     {
-                        GD.PushError($"Unable to add state with the key '{state.Key.GetType()}' to the state machine for {_entity.GetType()}.");
+                        GD.PushError($"Unable to add state with the key '{state.Key}' to the state machine for {_entity.GetType()}.");
                     }
                 }
 
