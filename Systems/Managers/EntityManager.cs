@@ -84,7 +84,6 @@ namespace Halcyon.Managers
                 entity.Data.TryAddComponent(new SpeedComponent());
                 entity.Data.TryAddComponent(new StaminaComponent());
                 entity.Data.TryAddComponent(new EntertainmentComponent());
-                entity.Data.ResolveComponents();
                 entity.SetStateMachine<HumanStateMachine>();
             }
 
