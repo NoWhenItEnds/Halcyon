@@ -1,3 +1,4 @@
+#nullable disable warnings
 using Godot;
 using Godot.Collections;
 
@@ -38,9 +39,12 @@ namespace Halcyon.Entities.Data.Components
         /// <summary> The persistent data for an entity's stats / skills. </summary>
         public StatComponent() : base()
         {
-            SpeedStat = new DerivedStat(() => 0, () => 5 + Strength.CurrentValue + Dexterity.CurrentValue);
-            StaminaStat = new DerivedStat(() => 0, () => Vigor.CurrentValue + 3);
-            EntertainmentStat = new DerivedStat(() => 0, () => 10);  // TODO - Start at max.
+            if(!Engine.IsEditorHint())
+            {
+                SpeedStat = new DerivedStat(() => 0, () => 5 + Strength.CurrentValue + Dexterity.CurrentValue);
+                StaminaStat = new DerivedStat(() => 0, () => Vigor.CurrentValue + 3);
+                EntertainmentStat = new DerivedStat(() => 0, () => 10);  // TODO - Start at max.
+            }
         }
     }
 }

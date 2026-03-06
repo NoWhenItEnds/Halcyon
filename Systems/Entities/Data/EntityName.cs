@@ -18,7 +18,7 @@ namespace Halcyon.Entities.Data
 
 
         /// <inheritdoc/>
-        public override String ToString() => $"{FirstName.Romanised} {LastName.Romanised}";
+        public override String ToString() => $"{FirstName.Male} {LastName.Romanised}";
 
 
         /// <summary> An empty, default name. </summary>
@@ -30,7 +30,7 @@ namespace Halcyon.Entities.Data
         /// <returns> The generated name. </returns>
         public static EntityName Random(EntityGender gender)
         {
-            GivenName[] firstNames = CsvExtensions.LoadData<GivenName>("res://Content/Data/Names/ActorFirstNames.csv");
+            GivenName[] firstNames = CsvExtensions.LoadData<GivenName>("res://Content/Data/Names/FirstNames.csv");
             Surname[] lastNames = CsvExtensions.LoadData<Surname>("res://Content/Data/Names/ActorLastNames.csv");
 
             return new EntityName
@@ -52,17 +52,11 @@ namespace Halcyon.Entities.Data
     /// <summary> An entity's common, personal name. </summary>
     public record GivenName : IParseable<GivenName> // TODO - Make like Male names and Female equivalent.
     {
-        /// <summary> The common Alpha-2 designation of the name's country of origin. </summary>
-        public String CountryISO { get; init; } = String.Empty;
+        /// <summary> The name's male-equivalent. </summary>
+        public String Male { get; init; } = String.Empty;
 
-        /// <summary> The name as it appears in its local language, potentially using non-Latin characters. </summary>
-        public String Localised { get; init; } = String.Empty;
-
-        /// <summary> The name as it appears in in English, should only use Latin characters. </summary>
-        public String Romanised { get; init; } = String.Empty;
-
-        /// <summary> The name's gender. </summary>
-        public EntityGender Gender { get; init; } = EntityGender.NONE;
+        /// <summary> The name's female-equivalent. </summary>
+        public String Female { get; init; } = String.Empty;
 
 
         /// <summary> An empty, default name. </summary>
@@ -72,31 +66,16 @@ namespace Halcyon.Entities.Data
         /// <inheritdoc/>
         public static GivenName Parse(String[] header, String[] data)
         {
-            Int32 countryIndex = header.IndexOf("Country");
-            Int32 genderIndex = header.IndexOf("Gender");
-            Int32 localisedIndex = header.IndexOf("Localized Name");
-            Int32 romanisedIndex = header.IndexOf("Romanized Name");
+            Int32 maleIndex = header.IndexOf("Male Name");
+            Int32 femaleIndex = header.IndexOf("Female Name");
 
-            EntityGender gender = EntityGender.NONE;
-            if (genderIndex != -1)
-            {
-                switch (data[genderIndex])
-                {
-                    case "M":
-                        gender = EntityGender.MALE;
-                        break;
-                    case "F":
-                        gender = EntityGender.FEMALE;
-                        break;
-                }
-            }
+            String nameName = maleIndex != -1 ? data[maleIndex] : String.Empty;
+            String femaleName = femaleIndex != -1 ? data[femaleIndex] : String.Empty;
 
             return new GivenName
             {
-                CountryISO = countryIndex != -1 ? data[countryIndex] : String.Empty,
-                Gender = gender,
-                Localised = localisedIndex != -1 ? data[localisedIndex] : String.Empty,
-                Romanised = romanisedIndex != -1 ? data[romanisedIndex] : String.Empty
+                Male = nameName,
+                Female = femaleName
             };
         }
     }
