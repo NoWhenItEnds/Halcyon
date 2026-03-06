@@ -10,7 +10,7 @@ namespace Halcyon.Entities.States.Machines
         /// <inheritdoc/>
         protected override EntityState BuildDefaultState(Entity entity)
         {
-            return new ClosedState(entity)
+            return new ClosedState(this, entity)
                 .WithTransition<UseCommand, OpenedState>();
         }
 
@@ -20,7 +20,7 @@ namespace Halcyon.Entities.States.Machines
         {
             Dictionary<Type, EntityState> states = new Dictionary<Type, EntityState>();
 
-            states[typeof(OpenedState)] = new OpenedState(entity)
+            states[typeof(OpenedState)] = new OpenedState(this, entity)
                 .WithTransition<UseCommand, ClosedState>();
 
             return states;

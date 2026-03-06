@@ -13,7 +13,7 @@ namespace Halcyon.Entities.States.Machines
         /// <inheritdoc/>
         protected override EntityState BuildDefaultState(Entity entity)
         {
-            return new IdlingState(entity)
+            return new IdlingState(this, entity)
                 .WithTransition<WalkCommand, WalkingState>()
                 .WithTransition<SprintCommand, SprintingState>()
                 .WithTransition<ExamineCommand, ExaminingState>()
@@ -26,24 +26,24 @@ namespace Halcyon.Entities.States.Machines
         {
             Dictionary<Type, EntityState> states = new Dictionary<Type, EntityState>();
 
-            states[typeof(WalkingState)] = new WalkingState(entity)
+            states[typeof(WalkingState)] = new WalkingState(this, entity)
                 .WithTransition<WalkCommand, WalkingState>()
                 .WithTransition<IdleCommand, IdlingState>()
                 .WithTransition<SprintCommand, SprintingState>()
                 .WithTransition<ExamineCommand, ExaminingState>()
                 .WithTransition<UseCommand, InteractingState>();
 
-            states[typeof(SprintingState)] = new SprintingState(entity)
+            states[typeof(SprintingState)] = new SprintingState(this, entity)
                 .WithTransition<SprintCommand, SprintingState>()
                 .WithTransition<IdleCommand, IdlingState>()
                 .WithTransition<WalkCommand, WalkingState>()
                 .WithTransition<ExamineCommand, ExaminingState>()
                 .WithTransition<UseCommand, InteractingState>();
 
-            states[typeof(ExaminingState)] = new ExaminingState(entity)
+            states[typeof(ExaminingState)] = new ExaminingState(this, entity)
                 .WithTransition<IdleCommand, IdlingState>();
 
-            states[typeof(InteractingState)] = new InteractingState(entity)
+            states[typeof(InteractingState)] = new InteractingState(this, entity)
                 .WithTransition<IdleCommand, IdlingState>();
 
             return states;

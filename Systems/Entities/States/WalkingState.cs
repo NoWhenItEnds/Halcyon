@@ -1,6 +1,7 @@
 using Godot;
 using Halcyon.Entities.Data.Components;
 using Halcyon.Entities.EntityCommands;
+using Halcyon.Entities.States.Machines;
 using Halcyon.Utilities;
 using System;
 
@@ -18,8 +19,9 @@ namespace Halcyon.Entities.States
 
 
         /// <summary> The entity is walking across the ground. </summary>
+        /// <param name="stateMachine"> A reference to the owning state machine. </param>
         /// <param name="entity"> A reference to the entity. </param>
-        public WalkingState(Entity entity) : base(entity) { }
+        public WalkingState(EntityStateMachine stateMachine, Entity entity) : base(stateMachine, entity) { }
 
 
         /// <inheritdoc/>

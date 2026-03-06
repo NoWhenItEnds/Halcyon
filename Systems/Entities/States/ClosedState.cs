@@ -1,5 +1,6 @@
 using Godot;
 using Halcyon.Entities.EntityCommands;
+using Halcyon.Entities.States.Machines;
 using Halcyon.Utilities;
 
 namespace Halcyon.Entities.States
@@ -8,8 +9,9 @@ namespace Halcyon.Entities.States
     public class ClosedState : EntityState
     {
         /// <summary> The entity is closed; whatever that means for its specific situation. </summary>
+        /// <param name="stateMachine"> A reference to the owning state machine. </param>
         /// <param name="entity"> A reference to the entity. </param>
-        public ClosedState(Entity entity) : base(entity) { }
+        public ClosedState(EntityStateMachine stateMachine, Entity entity) : base(stateMachine, entity) { }
 
 
         /// <inheritdoc/>

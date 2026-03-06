@@ -1,5 +1,6 @@
 using Godot;
 using Halcyon.Entities.EntityCommands;
+using Halcyon.Entities.States.Machines;
 using Halcyon.Utilities;
 
 namespace Halcyon.Entities.States
@@ -8,8 +9,9 @@ namespace Halcyon.Entities.States
     public class ExaminingState : EntityState
     {
         /// <summary> The entity is in the process of examining another entity. </summary>
+        /// <param name="stateMachine"> A reference to the owning state machine. </param>
         /// <param name="entity"> A reference to the entity. </param>
-        public ExaminingState(Entity entity) : base(entity) { }
+        public ExaminingState(EntityStateMachine stateMachine, Entity entity) : base(stateMachine, entity) { }
 
 
         /// <inheritdoc/>

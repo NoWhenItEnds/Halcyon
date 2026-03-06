@@ -1,5 +1,6 @@
 using Godot;
 using Halcyon.Entities.EntityCommands;
+using Halcyon.Entities.States.Machines;
 using Halcyon.Utilities;
 using System;
 
@@ -9,8 +10,9 @@ namespace Halcyon.Entities.States
     public class IdlingState : EntityState
     {
         /// <summary> The entity is standing idle, waiting for an action. </summary>
+        /// <param name="stateMachine"> A reference to the owning state machine. </param>
         /// <param name="entity"> A reference to the entity. </param>
-        public IdlingState(Entity entity) : base(entity) { }
+        public IdlingState(EntityStateMachine stateMachine, Entity entity) : base(stateMachine, entity) { }
 
 
         /// <inheritdoc/>

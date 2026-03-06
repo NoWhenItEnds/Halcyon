@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Halcyon.Animations;
 using Halcyon.Entities.EntityCommands;
+using Halcyon.Entities.States.Machines;
 
 namespace Halcyon.Entities.States
 {
@@ -12,6 +13,9 @@ namespace Halcyon.Entities.States
         /// <summary> Whether the state can currently transition. </summary>
         public Func<Boolean> CanTransition { get; protected set; } = () => true;
 
+
+        /// <summary> A reference to the state machine that owns this state. </summary>
+        protected readonly EntityStateMachine STATE_MACHINE;
 
         /// <summary> A reference to the entity manipulated by the state. </summary>
         protected readonly Entity ENTITY;
@@ -24,9 +28,11 @@ namespace Halcyon.Entities.States
 
 
         /// <summary> The basic data object representing an entity's potential state. </summary>
+        /// <param name="stateMachine"> A reference to the owning state machine. </param>
         /// <param name="entity"> A reference to the entity. </param>
-        public EntityState(Entity entity)
+        public EntityState(EntityStateMachine stateMachine, Entity entity)
         {
+            STATE_MACHINE = stateMachine;
             ENTITY = entity;
         }
 
@@ -69,8 +75,8 @@ namespace Halcyon.Entities.States
 
         protected Godot.Collections.Array<LayeredAnimation> GetCurrentAnimations()
         {
-            // TODO - Implement.
-            IEnumerable<LayeredAnimation> animations = RESOURCE_MANAGER.LayeredAnimations.Where(x => x.EntityState == GetType().Name);
+            IEnumerable<LayeredAnimation> animations = RESOURCE_MANAGER.LayeredAnimations.Where(x =>
+                x.StateMachine == STATE_MACHINE.GetType().Name && x.EntityState == GetType().Name);
             return new Godot.Collections.Array<LayeredAnimation>(animations);
         }
 
