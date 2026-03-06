@@ -1,4 +1,3 @@
-#nullable disable warnings
 using Godot;
 
 namespace Halcyon.Entities.Data.Components
@@ -9,17 +8,10 @@ namespace Halcyon.Entities.Data.Components
     public partial class EntertainmentComponent : DataComponent
     {
         /// <summary> How entertained / satisfied the entity is. </summary>
-        public DerivedStat EntertainmentStat { get; private set; }
+        public Stat Entertainment { get; private set; } = new Stat("entertainment", 10, 0, 10);
 
 
         /// <summary> The persistent data for an entity's entertainment / satisfaction. </summary>
         public EntertainmentComponent() : base() { }
-
-
-        /// <inheritdoc/>
-        public override void Initialise(EntityData data)
-        {
-            EntertainmentStat = new DerivedStat(() => 0, () => 10);
-        }
     }
 }

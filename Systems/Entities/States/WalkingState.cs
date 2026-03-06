@@ -10,7 +10,7 @@ namespace Halcyon.Entities.States
     /// <summary> The entity is walking across the ground. </summary>
     public class WalkingState : EntityState
     {
-        /// <summary> How fast the maximum walking movement speed is. </summary>
+        /// <summary> How fast, in pixels, each point of speed is worth. </summary>
         private readonly Single MOVE_SPEED = 16f;
 
 
@@ -29,7 +29,7 @@ namespace Halcyon.Entities.States
         {
             if (ENTITY.Data.TryGetComponent<SpeedComponent>(out SpeedComponent? speedComponent) && speedComponent != null)
             {
-                Single speed = speedComponent.SpeedStat.CurrentValue * MOVE_SPEED;
+                Single speed = speedComponent.Speed.CurrentValue * MOVE_SPEED;
                 _targetVelocity = command.Direction * speed;
 
                 // Handle animation.

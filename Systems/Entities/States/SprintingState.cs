@@ -10,9 +10,9 @@ namespace Halcyon.Entities.States
     /// <summary> The entity is running, potentially for their life. </summary>
     public class SprintingState : EntityState
     {
-        /// <summary> How fast the maximum sprinting movement speed is. </summary>
+        /// <summary> How fast, in pixels, each point of speed is worth. </summary>
         private readonly Single MOVE_SPEED = 32f;
-        
+
 
         /// <summary> The velocity applied each frame while sprinting. </summary>
         private Vector2 _targetVelocity = Vector2.Zero;
@@ -29,7 +29,7 @@ namespace Halcyon.Entities.States
         {
             if (ENTITY.Data.TryGetComponent<SpeedComponent>(out SpeedComponent? speedComponent) && speedComponent != null)
             {
-                Single speed = speedComponent.SpeedStat.CurrentValue * MOVE_SPEED;
+                Single speed = speedComponent.Speed.CurrentValue * MOVE_SPEED;
                 _targetVelocity = command.Direction * speed;
 
                 // Handle animation.

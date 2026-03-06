@@ -10,7 +10,7 @@ namespace Halcyon.Entities.Data.Components
     public partial class SpeedComponent : DataComponent
     {
         /// <summary> How fast the character moves as a result of their physical attributes. </summary>
-        public DerivedStat SpeedStat { get; private set; }
+        public DerivedStat Speed { get; private set; }
 
 
         /// <summary> The persistent data for an entity's movement speed. </summary>
@@ -22,7 +22,7 @@ namespace Halcyon.Entities.Data.Components
         {
             if (data.TryGetComponent<StatComponent>(out StatComponent? stats) && stats != null)
             {
-                SpeedStat = new DerivedStat(() => 0, () => 5 + stats.Strength.CurrentValue + stats.Dexterity.CurrentValue);
+                Speed = new DerivedStat(() => 0, () => 5 + stats.Strength.CurrentValue + stats.Dexterity.CurrentValue);
             }
             else
             {
