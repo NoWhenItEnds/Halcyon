@@ -5,7 +5,7 @@
 
 [resource]
 script = ExtResource("2_n1ny8")
-EntityKind = "human"
+StateMachine = "HumanStateMachine"
 Animation = 2
 Texture = ExtResource("1_hxjrh")
 metadata/_custom_type_script = "uid://yak566enobof"

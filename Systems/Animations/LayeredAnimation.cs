@@ -1,8 +1,11 @@
 #nullable disable warnings
 using Godot;
+using Godot.Collections;
 using Halcyon.Entities.Data;
+using Halcyon.Entities.States.Machines;
 using Halcyon.Utilities;
 using System;
+using System.Linq;
 
 namespace Halcyon.Animations
 {
@@ -11,9 +14,8 @@ namespace Halcyon.Animations
     [Tool]
     public partial class LayeredAnimation : Resource
     {
-        /// <summary> The identifying race / type of the entity in the animation. </summary>
-        /// <example> human / door / chest </example>
-        [Export] public String EntityKind { get; set; } = String.Empty;
+        /// <summary> The state machine type this animation is associated with. </summary>
+        [Export] public String StateMachine { get; set; } = String.Empty;
 
         /// <summary> The gender of the entity in the animation. </summary>
         [Export] public EntityGender Gender { get; set; } = EntityGender.NONE;
@@ -83,5 +85,17 @@ namespace Halcyon.Animations
 
         /// <summary> A correctly formatted texture with metadata to be used on a layered sprite. </summary>
         public LayeredAnimation() { }
+
+
+        /// <inheritdoc/>
+        public override void _ValidateProperty(Dictionary property)
+        {
+            if (property["name"].AsStringName() == "StateMachine")
+            {
+                String names = String.Join(",", Enumeration.GetAll<StateMachineType>().Select(s => s.Name));
+                property["hint"] = (Int32)PropertyHint.Enum;
+                property["hint_string"] = names;
+            }
+        }
     }
 }

@@ -5,7 +5,7 @@
 
 [resource]
 script = ExtResource("1_57jtn")
-EntityKind = "human"
+StateMachine = "HumanStateMachine"
 Animation = 1
 Texture = ExtResource("1_5mrni")
 HFrames = 12

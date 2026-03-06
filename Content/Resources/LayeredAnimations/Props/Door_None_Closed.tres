@@ -5,7 +5,7 @@
 
 [resource]
 script = ExtResource("2_v5kip")
-EntityKind = "door"
+StateMachine = "DoorStateMachine"
 Animation = 4
 Texture = ExtResource("1_ip307")
 HFrames = 1
