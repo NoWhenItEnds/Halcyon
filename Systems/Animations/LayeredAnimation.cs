@@ -12,7 +12,7 @@ namespace Halcyon.Animations
     /// <summary> A correctly formatted texture with metadata to be used on a layered sprite. </summary>
     [GlobalClass]
     [Tool]
-    public partial class LayeredAnimation : Resource
+    public partial class LayeredAnimation : Resource, IEquatable<LayeredAnimation>
     {
         /// <summary> The state machine type this animation is associated with. </summary>
         [Export] public String StateMachine { get; set; } = String.Empty;
@@ -105,5 +105,13 @@ namespace Halcyon.Animations
                 property["hint_string"] = names;
             }
         }
+
+
+        /// <inheritdoc/>
+        public override int GetHashCode() => HashCode.Combine(StateMachine, EntityState, Gender);
+
+
+        /// <inheritdoc/>
+        public Boolean Equals(LayeredAnimation? other) => other != null ? StateMachine.Equals(other.StateMachine) && EntityState.Equals(other.EntityState) && Gender.Equals(other.Gender) : false;
     }
 }
