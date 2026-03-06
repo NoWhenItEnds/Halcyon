@@ -1,4 +1,5 @@
 #nullable disable warnings
+using System;
 using Godot;
 
 namespace Halcyon.Entities.Data.Components
@@ -22,6 +23,10 @@ namespace Halcyon.Entities.Data.Components
             if (data.TryGetComponent<StatComponent>(out StatComponent? stats) && stats != null)
             {
                 StaminaStat = new DerivedStat(() => 0, () => stats.Vigor.CurrentValue + 3);
+            }
+            else
+            {
+                throw new ArgumentException($"'{GetType()}' requires '{typeof(StatComponent)}' to be present.");
             }
         }
     }
