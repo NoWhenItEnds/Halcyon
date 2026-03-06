@@ -1,5 +1,4 @@
 using Godot;
-using Halcyon.Animations;
 using Halcyon.Entities.Data.Components;
 using Halcyon.Entities.EntityCommands;
 using Halcyon.Utilities;
@@ -10,10 +9,6 @@ namespace Halcyon.Entities.States
     /// <summary> The entity is walking across the ground. </summary>
     public class WalkingState : EntityState
     {
-        /// <inheritdoc/>
-        protected override AnimationKind _animationKind { get; } = AnimationKind.WALKING;
-
-
         /// <summary> How fast the maximum walking movement speed is. </summary>
         private readonly Single MOVE_SPEED = 16f;
 

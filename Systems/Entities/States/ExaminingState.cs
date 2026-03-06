@@ -1,5 +1,4 @@
 using Godot;
-using Halcyon.Animations;
 using Halcyon.Entities.EntityCommands;
 using Halcyon.Utilities;
 
@@ -8,10 +7,6 @@ namespace Halcyon.Entities.States
     /// <summary> The entity is in the process of examining another entity. </summary>
     public class ExaminingState : EntityState
     {
-        /// <inheritdoc/>
-        protected override AnimationKind _animationKind { get; } = AnimationKind.IDLING;
-
-
         /// <summary> The entity is in the process of examining another entity. </summary>
         /// <param name="entity"> A reference to the entity. </param>
         public ExaminingState(Entity entity) : base(entity) { }

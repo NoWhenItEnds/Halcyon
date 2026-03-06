@@ -6,7 +6,7 @@
 [resource]
 script = ExtResource("1_57jtn")
 StateMachine = "HumanStateMachine"
-Animation = 1
+EntityState = "IdlingState"
 Texture = ExtResource("1_5mrni")
 HFrames = 12
 metadata/_custom_type_script = "uid://yak566enobof"

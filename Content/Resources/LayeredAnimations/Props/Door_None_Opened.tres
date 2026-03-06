@@ -6,7 +6,7 @@
 [resource]
 script = ExtResource("1_t5ut0")
 StateMachine = "DoorStateMachine"
-Animation = 5
+EntityState = "OpenedState"
 Texture = ExtResource("1_p4ctx")
 HFrames = 1
 metadata/_custom_type_script = "uid://yak566enobof"

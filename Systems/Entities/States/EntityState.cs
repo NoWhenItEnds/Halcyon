@@ -13,9 +13,6 @@ namespace Halcyon.Entities.States
         public Func<Boolean> CanTransition { get; protected set; } = () => true;
 
 
-        /// <summary> The kind of the animations to use for this state. </summary>
-        protected virtual AnimationKind _animationKind { get; } = AnimationKind.NONE;
-
         /// <summary> A reference to the entity manipulated by the state. </summary>
         protected readonly Entity ENTITY;
 
@@ -73,7 +70,7 @@ namespace Halcyon.Entities.States
         protected Godot.Collections.Array<LayeredAnimation> GetCurrentAnimations()
         {
             // TODO - Implement.
-            IEnumerable<LayeredAnimation> animations = RESOURCE_MANAGER.LayeredAnimations.Where(x => x.Animation == _animationKind);
+            IEnumerable<LayeredAnimation> animations = RESOURCE_MANAGER.LayeredAnimations.Where(x => x.EntityState == GetType().Name);
             return new Godot.Collections.Array<LayeredAnimation>(animations);
         }
 

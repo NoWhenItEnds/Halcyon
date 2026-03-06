@@ -6,6 +6,6 @@
 [resource]
 script = ExtResource("2_n1ny8")
 StateMachine = "HumanStateMachine"
-Animation = 2
+EntityState = "WalkingState"
 Texture = ExtResource("1_hxjrh")
 metadata/_custom_type_script = "uid://yak566enobof"

@@ -1,5 +1,4 @@
 using Godot;
-using Halcyon.Animations;
 using Halcyon.Entities.Data.Components;
 using Halcyon.Entities.EntityCommands;
 using Halcyon.Utilities;
@@ -10,10 +9,6 @@ namespace Halcyon.Entities.States
     /// <summary> The entity is running, potentially for their life. </summary>
     public class SprintingState : EntityState
     {
-        /// <inheritdoc/>
-        protected override AnimationKind _animationKind { get; } = AnimationKind.SPRINTING;
-
-
         /// <summary> How fast the maximum sprinting movement speed is. </summary>
         private readonly Single MOVE_SPEED = 32f;
         

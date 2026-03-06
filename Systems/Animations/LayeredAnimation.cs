@@ -17,11 +17,12 @@ namespace Halcyon.Animations
         /// <summary> The state machine type this animation is associated with. </summary>
         [Export] public String StateMachine { get; set; } = String.Empty;
 
+        /// <summary> The entity state this animation is associated with. </summary>
+        [Export] public String EntityState { get; set; } = String.Empty;
+
         /// <summary> The gender of the entity in the animation. </summary>
         [Export] public EntityGender Gender { get; set; } = EntityGender.NONE;
 
-        /// <summary> The kind of animation the resource represents. </summary>
-        [Export] public AnimationKind Animation { get; set; } = AnimationKind.NONE;
 
         /// <summary> The render order of the layer relative to other layers on the same sprite. Lower values render first. </summary>
         [Export(PropertyHint.Range, "0,10")] public Int32 Layer
@@ -93,6 +94,13 @@ namespace Halcyon.Animations
             if (property["name"].AsStringName() == "StateMachine")
             {
                 String names = String.Join(",", Enumeration.GetAll<StateMachineType>().Select(s => s.Name));
+                property["hint"] = (Int32)PropertyHint.Enum;
+                property["hint_string"] = names;
+            }
+
+            if (property["name"].AsStringName() == "EntityState")
+            {
+                String names = String.Join(",", Enumeration.GetAll<EntityStateType>().Select(s => s.Name));
                 property["hint"] = (Int32)PropertyHint.Enum;
                 property["hint_string"] = names;
             }
