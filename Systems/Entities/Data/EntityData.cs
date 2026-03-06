@@ -50,6 +50,19 @@ namespace Halcyon.Entities.Data
         }
 
 
+        /// <summary> Initialises all components, resolving any cross-component dependencies. </summary>
+        public void ResolveComponents()
+        {
+            if (!Engine.IsEditorHint())
+            {
+                foreach (DataComponent component in _components)
+                {
+                    component.Initialise(this);
+                }
+            }
+        }
+
+
         /// <summary> Attempt to get a particular component from the data. </summary>
         /// <typeparam name="T"> The type of component to search for. </typeparam>
         /// <param name="component"> The returned component, or a null if one wasn't found. </param>

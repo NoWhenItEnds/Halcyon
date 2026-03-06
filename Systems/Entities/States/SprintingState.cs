@@ -27,9 +27,9 @@ namespace Halcyon.Entities.States
         /// <inheritdoc/>
         public override void Start(EntityCommand command)
         {
-            if (ENTITY.Data.TryGetComponent<StatComponent>(out StatComponent? statComponent) && statComponent != null)
+            if (ENTITY.Data.TryGetComponent<SpeedComponent>(out SpeedComponent? speedComponent) && speedComponent != null)
             {
-                Single speed = statComponent.SpeedStat.CurrentValue * MOVE_SPEED;
+                Single speed = speedComponent.SpeedStat.CurrentValue * MOVE_SPEED;
                 _targetVelocity = command.Direction * speed;
 
                 // Handle animation.
@@ -38,7 +38,7 @@ namespace Halcyon.Entities.States
             }
             else
             {
-                throw new ArgumentNullException($"Entity, '{ENTITY.Data.Name}', doesn't possess '{typeof(StatComponent)}' component, which this state, {GetType()}, requires.");
+                throw new ArgumentNullException($"Entity, '{ENTITY.Data.Name}', doesn't possess '{typeof(SpeedComponent)}' component, which this state, {GetType()}, requires.");
             }
         }
 

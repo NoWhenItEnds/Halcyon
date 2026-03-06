@@ -26,25 +26,7 @@ namespace Halcyon.Entities.Data.Components
         [Export] public Array<Stat> Skills { get; private set; } = new Array<Stat>();
 
 
-        /// <summary> How fast the character moves as a result of their physical attributes. </summary>
-        public DerivedStat SpeedStat { get; private set; }
-
-        /// <summary> The entity's physical stamina. Drained by performing physically demanding activities. </summary>
-        public DerivedStat StaminaStat { get; private set; }
-
-        /// <summary> How entertained / satisfied the entity is. </summary>
-        public DerivedStat EntertainmentStat { get; private set; }
-
-
         /// <summary> The persistent data for an entity's stats / skills. </summary>
-        public StatComponent() : base()
-        {
-            if(!Engine.IsEditorHint())
-            {
-                SpeedStat = new DerivedStat(() => 0, () => 5 + Strength.CurrentValue + Dexterity.CurrentValue);
-                StaminaStat = new DerivedStat(() => 0, () => Vigor.CurrentValue + 3);
-                EntertainmentStat = new DerivedStat(() => 0, () => 10);  // TODO - Start at max.
-            }
-        }
+        public StatComponent() : base() { }
     }
 }
