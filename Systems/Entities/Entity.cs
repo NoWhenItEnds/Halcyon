@@ -38,6 +38,7 @@ namespace Halcyon.Entities
             get => _data;
             set // TODO - Update EVERYTHING on set!
             {
+                _data?.CleanupComponents();
                 _data = value;
             }
         }
@@ -148,6 +149,7 @@ namespace Halcyon.Entities
         {
             if (!Engine.IsEditorHint())
             {
+                _data?.CleanupComponents();
                 _interactionArea.BodyEntered -= OnInteractionAreaEntered;
                 _interactionArea.BodyExited -= OnInteractionAreaExited;
             }
