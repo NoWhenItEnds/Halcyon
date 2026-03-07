@@ -62,7 +62,7 @@ namespace Halcyon.Entities.Data
                 // Note: Ordering is important, so components requiring other components should be AFTER their dependency.
                 foreach (DataComponent component in _components)
                 {
-                    component.Initialise(this);
+                    component?.Initialise(this);
                 }
             }
         }
@@ -71,9 +71,12 @@ namespace Halcyon.Entities.Data
         /// <summary> Cleans up all components, unsubscribing from events and releasing references. </summary>
         public void CleanupComponents()
         {
-            foreach (DataComponent component in _components.Reverse())
+            if (!Engine.IsEditorHint())
             {
-                component.Cleanup();
+                foreach (DataComponent component in _components.Reverse())
+                {
+                    component?.Cleanup();
+                }
             }
         }
 

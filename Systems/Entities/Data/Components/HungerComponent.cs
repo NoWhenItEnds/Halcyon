@@ -23,18 +23,17 @@ namespace Halcyon.Entities.Data.Components
 
 
         /// <summary> The persistent data for how hungry, whatever that means for an entity, an entity is. </summary>
-        public HungerComponent() : base()
-        {
-            if(!Engine.IsEditorHint())
-            {
-                GameManager.Instance.TimeChanged += OnTimeChanged;
-            }
-        }
+        public HungerComponent() : base() { }
 
 
         /// <inheritdoc/>
         public override void Initialise(EntityData data)
         {
+            if (GameManager.Instance != null)
+            {
+                GameManager.Instance.TimeChanged += OnTimeChanged;
+            }
+
             if (data.TryGetComponent<StatComponent>(out StatComponent? stats) && stats != null)
             {
                 _vigorProperty = stats.Vigor;
@@ -51,7 +50,10 @@ namespace Halcyon.Entities.Data.Components
         /// <inheritdoc/>
         public override void Cleanup()
         {
-            GameManager.Instance.TimeChanged -= OnTimeChanged;
+            if (GameManager.Instance != null)
+            {
+                GameManager.Instance.TimeChanged -= OnTimeChanged;
+            }
 
             if (_vigorProperty != null)
             {

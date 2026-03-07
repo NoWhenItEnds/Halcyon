@@ -23,18 +23,17 @@ namespace Halcyon.Entities.Data.Components
 
 
         /// <summary> The persistent data for an entity's entertainment / satisfaction. </summary>
-        public EntertainmentComponent() : base()
-        {
-            if (!Engine.IsEditorHint())
-            {
-                GameManager.Instance.TimeChanged += OnTimeChanged;
-            }
-        }
+        public EntertainmentComponent() : base() { }
 
 
         /// <inheritdoc/>
         public override void Initialise(EntityData data)
         {
+            if (GameManager.Instance != null)
+            {
+                GameManager.Instance.TimeChanged += OnTimeChanged;
+            }
+
             if (data.TryGetComponent<StatComponent>(out StatComponent? stats) && stats != null)
             {
                 _intellectProperty = stats.Intellect;
@@ -51,7 +50,10 @@ namespace Halcyon.Entities.Data.Components
         /// <inheritdoc/>
         public override void Cleanup()
         {
-            GameManager.Instance.TimeChanged -= OnTimeChanged;
+            if (GameManager.Instance != null)
+            {
+                GameManager.Instance.TimeChanged -= OnTimeChanged;
+            }
 
             if (_intellectProperty != null)
             {
