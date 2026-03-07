@@ -6,8 +6,6 @@
 [ext_resource type="Script" uid="uid://chgnpeipxqoew" path="res://Systems/Managers/EntityManager.cs" id="3_3jj2t"]
 [ext_resource type="PackedScene" uid="uid://xws1hp5pruba" path="res://Content/Prefabs/Entities/Entity.tscn" id="3_13v0n"]
 [ext_resource type="Script" uid="uid://d3p0v0usaexev" path="res://Systems/Managers/CameraManager.cs" id="5_mtcwf"]
-[ext_resource type="PackedScene" uid="uid://b2bmqyq7hdcq8" path="res://Content/Prefabs/Entities/HumanEntity.tscn" id="5_ubvt2"]
-[ext_resource type="Resource" uid="uid://b8vbblgfyyrp0" path="res://Content/Resources/EntityData/Actors/Actor_JohnSmith.tres" id="6_lxji3"]
 
 [node name="Game" type="Node" unique_id=1019238872]
 script = ExtResource("1_k1v7w")
@@ -18,10 +16,6 @@ script = ExtResource("2_ubvt2")
 [node name="Entity Manager" type="Node2D" parent="." unique_id=1632928520]
 script = ExtResource("3_3jj2t")
 _entityPrefab = ExtResource("3_13v0n")
-
-[node name="HumanEntity" parent="Entity Manager" unique_id=140002473 instance=ExtResource("5_ubvt2")]
-position = Vector2(-37, -36)
-Data = ExtResource("6_lxji3")
 
 [node name="Input Manager" type="Node" parent="." unique_id=1729517724]
 script = ExtResource("2_33ift")

@@ -20,10 +20,11 @@ namespace Halcyon.Entities.Data
             {
 
                 _minValue = value;
-                if (BaseValue < _minValue)
+                if (_baseValue < _minValue)
                 {
-                    BaseValue = _minValue;
+                    _baseValue = _minValue;
                 }
+                RecalculateCurrentValue();
             }
         }
 
@@ -41,10 +42,11 @@ namespace Halcyon.Entities.Data
             set
             {
                 _maxValue = value;
-                if (BaseValue > _maxValue)
+                if (_baseValue > _maxValue)
                 {
-                    BaseValue = _maxValue;
+                    _baseValue = _maxValue;
                 }
+                RecalculateCurrentValue();
             }
         }
 
@@ -84,7 +86,7 @@ namespace Halcyon.Entities.Data
         protected override void RecalculateCurrentValue()
         {
             Single oldCurrent = CurrentValue;
-            CurrentValue = Math.Clamp(BaseValue, MinValue, MaxValue);
+            CurrentValue = Math.Clamp(BaseValue, Math.Min(MinValue, MaxValue), Math.Max(MinValue, MaxValue));
 
             foreach (PropertyModifier modifier in _modifiers.OrderBy(x => x.Priority))
             {

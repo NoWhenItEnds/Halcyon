@@ -1,7 +1,7 @@
 using System;
 using Godot;
+using Halcyon.Utilities;
 using Halcyon.Utilities.Singletons;
-using Warlord.Utilities;
 
 namespace Halcyon.Managers
 {

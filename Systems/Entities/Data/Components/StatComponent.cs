@@ -11,15 +11,15 @@ namespace Halcyon.Entities.Data.Components
     {
         [ExportGroup("Stats")]
         [ExportSubgroup("Attributes")]
-        [Export] public ClampedProperty Strength { get; private set; } = new ClampedProperty("strength", 1, 0, 10);
+        [Export] public ClampedProperty Strength { get; private set; } = new ClampedProperty("strength", 0, 10, 1);
 
-        [Export] public ClampedProperty Dexterity { get; private set; } = new ClampedProperty("dexterity", 1, 0, 10);
+        [Export] public ClampedProperty Dexterity { get; private set; } = new ClampedProperty("dexterity", 0, 10, 1);
 
-        [Export] public ClampedProperty Vigor { get; private set; } = new ClampedProperty("vigor", 1, 0, 10);
+        [Export] public ClampedProperty Vigor { get; private set; } = new ClampedProperty("vigor", 0, 10, 1);
 
-        [Export] public ClampedProperty Intellect { get; private set; } = new ClampedProperty("intellect", 1, 0, 10);
+        [Export] public ClampedProperty Intellect { get; private set; } = new ClampedProperty("intellect", 0, 10, 1);
 
-        [Export] public ClampedProperty Presence { get; private set; } = new ClampedProperty("presence", 1, 0, 10);
+        [Export] public ClampedProperty Presence { get; private set; } = new ClampedProperty("presence", 0, 10, 1);
 
 
         [ExportSubgroup("Skills")]

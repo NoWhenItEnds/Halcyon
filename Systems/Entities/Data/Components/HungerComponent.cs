@@ -1,7 +1,7 @@
 using System;
 using Godot;
 using Halcyon.Managers;
-using Warlord.Utilities;
+using Halcyon.Utilities;
 
 namespace Halcyon.Entities.Data.Components
 {
@@ -11,7 +11,7 @@ namespace Halcyon.Entities.Data.Components
     public partial class HungerComponent : DataComponent
     {
         /// <summary> How 'satisfied', whatever that means for a given entity, the entity is. </summary>
-        [Export] public ClampedProperty Value { get; private set; } = new ClampedProperty("hunger_value", 100, 0, 100);
+        [Export] public ClampedProperty Value { get; private set; } = new ClampedProperty("hunger_value", 0, 100);
 
         /// <summary> How skilled the entity is at resisting hunger 'damage'. </summary>
         /// <remarks> This is based upon the entity's vigor attribute, and shouldn't apply to regaining hunger. </remarks>
@@ -61,6 +61,8 @@ namespace Halcyon.Entities.Data.Components
         }
 
 
+        /// <summary> Update the current hunger value when the game time advances. </summary>
+        /// <param name="currentTime"> The current game time. </param>
         private void OnTimeChanged(DateTime currentTime)
         {
             Int32 successes = GameManager.Instance.DiceRandom.StandardTest((Int32)Defence.CurrentValue);
@@ -76,6 +78,8 @@ namespace Halcyon.Entities.Data.Components
         }
 
 
+        /// <summary> Update the hunger defence value if vigor changes. </summary>
+        /// <param name="newValue"> The new vigor value. </param>
         private void OnVigorChange(Single newValue)
         {
             Defence.BaseValue = newValue + 5;

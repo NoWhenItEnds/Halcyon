@@ -29,7 +29,7 @@ namespace Halcyon.Entities.States
         {
             if (ENTITY.Data.TryGetComponent<SpeedComponent>(out SpeedComponent? speedComponent) && speedComponent != null)
             {
-                Single speed = speedComponent.Speed.CurrentValue * MOVE_SPEED;
+                Single speed = speedComponent.Value.CurrentValue * MOVE_SPEED;
                 _targetVelocity = command.Direction * speed;
 
                 // Handle animation.

@@ -1,6 +1,6 @@
 using System;
 
-namespace Warlord.Utilities
+namespace Halcyon.Utilities
 {
     /// <summary> An implementation of random simulating a dice pool. </summary>
     public class DiceRandom

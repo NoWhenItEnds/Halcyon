@@ -36,10 +36,11 @@ namespace Halcyon.Entities
         [ExportGroup("Settings")]
         [Export] public EntityData Data {
             get => _data;
-            set // TODO - Update EVERYTHING on set!
+            set
             {
                 _data?.CleanupComponents();
                 _data = value;
+                _data?.InitialiseComponents();
             }
         }
 

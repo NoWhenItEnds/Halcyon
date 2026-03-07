@@ -28,7 +28,7 @@ namespace Halcyon.Entities.Data
             {
                 CleanupComponents();
                 _components = value.ToHashSet();
-                ResolveComponents();
+                InitialiseComponents();
                 EmitChanged();
             }
         }
@@ -47,7 +47,7 @@ namespace Halcyon.Entities.Data
             Boolean result = _components.Add(component);
             if(result)
             {
-                ResolveComponents();
+                InitialiseComponents();
                 EmitChanged();
             }
             return result;
@@ -55,7 +55,7 @@ namespace Halcyon.Entities.Data
 
 
         /// <summary> Initialises all components, resolving any cross-component dependencies. </summary>
-        private void ResolveComponents()
+        public void InitialiseComponents()
         {
             if (!Engine.IsEditorHint())
             {
