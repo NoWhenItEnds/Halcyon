@@ -10,7 +10,7 @@ namespace Halcyon.Entities.Data.Components
     public partial class StaminaComponent : DataComponent
     {
         /// <summary> The entity's physical stamina. Drained by performing physically demanding activities. </summary>
-        public DerivedStat Stamina { get; private set; }
+        public ClampedProperty Stamina { get; private set; }
 
 
         /// <summary> The persistent data for an entity's physical stamina. </summary>
@@ -22,7 +22,7 @@ namespace Halcyon.Entities.Data.Components
         {
             if (data.TryGetComponent<StatComponent>(out StatComponent? stats) && stats != null)
             {
-                Stamina = new DerivedStat(() => 0, () => stats.Vigor.CurrentValue + 3);
+                Stamina = new ClampedProperty(0, () => stats.Vigor.CurrentValue + 3);
             }
             else
             {

@@ -77,5 +77,37 @@ namespace Warlord.Utilities
             Int32 otherSuccesses = StandardTest(otherPoolSize, otherTargetNumber, doesExplode: false);
             return StandardTest(poolSize, targetNumber, doesExplode) - otherSuccesses;
         }
+
+
+        /// <summary> Evaluate a number of successes into a readable result type. </summary>
+        /// <param name="successes"> The number of successes in a dice roll. </param>
+        /// <returns> The resolved dice result type. </returns>
+        public static DiceResultType EvaluateResult(Int32 successes)
+        {
+            DiceResultType result = DiceResultType.NONE;
+            if(successes > 4)
+            {
+                result = DiceResultType.EXCEPTIONAL_SUCCESS;
+            }
+            else if(successes > 0 && successes <= 4)
+            {
+                result = DiceResultType.SUCCESS;
+            }
+            else
+            {
+                result = DiceResultType.FAILURE;
+            }
+            return result;
+        }
+    }
+
+
+    /// <summary> The kinds of results a dice roll can evaluate to. </summary>
+    public enum DiceResultType
+    {
+        NONE,
+        FAILURE,
+        SUCCESS,
+        EXCEPTIONAL_SUCCESS
     }
 }
