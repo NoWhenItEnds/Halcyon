@@ -5,6 +5,7 @@ using System.Linq;
 using Godot;
 using Halcyon.Animations;
 using Halcyon.Entities.Data;
+using Halcyon.Entities.Data.Components;
 using Halcyon.Entities.EntityCommands;
 using Halcyon.Entities.States.Machines;
 
@@ -30,6 +31,10 @@ namespace Halcyon.Entities
         /// <summary> A label displaying the entity's name. </summary>
         /// <remarks To help with debugging. </remarks>
         [Export] private Label _nameLabel;
+
+        /// <summary> A label displaying the additional information. </summary>
+        /// <remarks To help with debugging. </remarks>
+        [Export] private Label _informationLabel;
 
 
         /// <summary> The data representing the state of the entity. </summary>
@@ -140,6 +145,11 @@ namespace Halcyon.Entities
                 if(Data != null)
                 {
                     _nameLabel.Text = Data.Name.ToString();
+
+                    if(_data.TryGetComponent<HungerComponent>(out HungerComponent? hunger))
+                    {
+                        _informationLabel.Text = $"HUG: {hunger.Value.CurrentValue} / {hunger.Value.MaxValue} ({hunger.Value.Percent})";
+                    }
                 }
             }
         }

@@ -102,7 +102,7 @@ namespace Halcyon.Managers
                 if (entities.Length > 0)
                 {
                     //command = new ExamineCommand(player, entities[0]);
-                    command = new UseCommand(player, entities[0]);
+                    command = new ConsumeCommand(player, entities[0]);
                 }
             }
 

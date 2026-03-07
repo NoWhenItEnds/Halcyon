@@ -17,7 +17,7 @@ namespace Halcyon.Entities.States.Machines
                 .WithTransition<WalkCommand, WalkingState>()
                 .WithTransition<SprintCommand, SprintingState>()
                 .WithTransition<ExamineCommand, ExaminingState>()
-                .WithTransition<UseCommand, InteractingState>();
+                .WithTransition<ConsumeCommand, ConsumingState>();
         }
 
 
@@ -30,20 +30,18 @@ namespace Halcyon.Entities.States.Machines
                 .WithTransition<WalkCommand, WalkingState>()
                 .WithTransition<IdleCommand, IdlingState>()
                 .WithTransition<SprintCommand, SprintingState>()
-                .WithTransition<ExamineCommand, ExaminingState>()
-                .WithTransition<UseCommand, InteractingState>();
+                .WithTransition<ExamineCommand, ExaminingState>();
 
             states[typeof(SprintingState)] = new SprintingState(this, entity)
                 .WithTransition<SprintCommand, SprintingState>()
                 .WithTransition<IdleCommand, IdlingState>()
                 .WithTransition<WalkCommand, WalkingState>()
-                .WithTransition<ExamineCommand, ExaminingState>()
-                .WithTransition<UseCommand, InteractingState>();
+                .WithTransition<ExamineCommand, ExaminingState>();
 
             states[typeof(ExaminingState)] = new ExaminingState(this, entity)
                 .WithTransition<IdleCommand, IdlingState>();
 
-            states[typeof(InteractingState)] = new InteractingState(this, entity)
+            states[typeof(ConsumingState)] = new ConsumingState(this, entity)
                 .WithTransition<IdleCommand, IdlingState>();
 
             return states;

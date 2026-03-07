@@ -78,7 +78,7 @@ namespace Halcyon.Entities.Data
         {
             _minValue = minValue;
             _maxValue = maxValue;
-            CurrentValue = initialValue;
+            BaseValue = initialValue;
         }
 
 

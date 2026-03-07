@@ -51,7 +51,7 @@ namespace Halcyon.Managers
             for (Int32 i = 0; i < 100; i++)
             {
                 Vector2 position = new Vector2(random.NextSingle() * 1000, random.NextSingle() * 1000);
-                TrySpawnDoor(position, out _);
+                TrySpawnHuman(position, out _);
             }
         }
 
@@ -84,6 +84,7 @@ namespace Halcyon.Managers
                 entity.Data.TryAddComponent(new SpeedComponent());
                 entity.Data.TryAddComponent(new StaminaComponent());
                 entity.Data.TryAddComponent(new EntertainmentComponent());
+                entity.Data.TryAddComponent(new HungerComponent());
                 entity.SetStateMachine<HumanStateMachine>();
             }
 

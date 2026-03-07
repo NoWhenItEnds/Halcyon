@@ -51,10 +51,9 @@ namespace Halcyon.Animations
 
 
         /// <inheritdoc/>
-        public override void _EnterTree()
+        public override void _Ready()
         {
-            RefreshAnimationPlayer();
-            RefreshSprites();
+            UpdateAnimations();
         }
 
 
@@ -77,7 +76,9 @@ namespace Halcyon.Animations
             foreach (Node child in GetChildren())
             {
                 if (child is Sprite2D sprite)
+                {
                     _spriteLayers.Add(sprite);
+                }
             }
         }
 
@@ -85,6 +86,8 @@ namespace Halcyon.Animations
         /// <summary> Update the animation player and layered sprites with the new LayeredAnimation(s). </summary>
         private void UpdateAnimations()
         {
+            if (!IsInsideTree()) return;    // Guard clause to prevent running in editor.
+
             RefreshAnimationPlayer();
             RefreshSprites();
 
