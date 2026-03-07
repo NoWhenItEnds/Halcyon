@@ -18,12 +18,16 @@ namespace Halcyon.Entities.Data.Components
         [Export] public Property Defence { get; private set; } = new Property("hunger_defence", 0);
 
 
+        /// <summary> A reference to the entity's vigor property. </summary>
+        private Property? _vigorProperty = null;
+
+
         /// <summary> The persistent data for how hungry, whatever that means for an entity, an entity is. </summary>
         public HungerComponent() : base()
         {
             if(!Engine.IsEditorHint())
             {
-                GameManager.Instance.TimeChanged += OnTimeChanged;  // TODO - How unsubscribe.
+                GameManager.Instance.TimeChanged += OnTimeChanged;
             }
         }
 
@@ -33,12 +37,26 @@ namespace Halcyon.Entities.Data.Components
         {
             if (data.TryGetComponent<StatComponent>(out StatComponent? stats) && stats != null)
             {
-                stats.Vigor.ValueChanged += OnVigorChange;
-                OnVigorChange(stats.Vigor.CurrentValue);    // TODO - How to unsub.
+                _vigorProperty = stats.Vigor;
+                _vigorProperty.ValueChanged += OnVigorChange;
+                OnVigorChange(_vigorProperty.CurrentValue);
             }
             else
             {
                 throw new ArgumentException($"'{GetType()}' requires '{typeof(StatComponent)}' to be present.");
+            }
+        }
+
+
+        /// <inheritdoc/>
+        public override void Cleanup()
+        {
+            GameManager.Instance.TimeChanged -= OnTimeChanged;
+
+            if (_vigorProperty != null)
+            {
+                _vigorProperty.ValueChanged -= OnVigorChange;
+                _vigorProperty = null;
             }
         }
 

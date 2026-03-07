@@ -12,6 +12,11 @@ namespace Halcyon.Entities.Data.Components
         public virtual void Initialise(EntityData data) { }
 
 
+        /// <summary> Clean up the component on it's destruction. </summary>
+        /// <remarks> Resources don't have ExitTree(), so the parent needs to handle the cleanup. </remarks>
+        public virtual void Cleanup() { }
+
+
         /// <inheritdoc/>
         public override Int32 GetHashCode() => HashCode.Combine(GetType());
 
