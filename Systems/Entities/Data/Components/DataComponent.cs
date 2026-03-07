@@ -12,7 +12,7 @@ namespace Halcyon.Entities.Data.Components
         public virtual void Initialise(EntityData data) { }
 
 
-        /// <summary> Clean up the component on it's destruction. </summary>
+        /// <summary> Clean up the component to prevent memory leaks or unexpected state-changes. </summary>
         /// <remarks> Resources don't have ExitTree(), so the parent needs to handle the cleanup. </remarks>
         public virtual void Cleanup() { }
 

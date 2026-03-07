@@ -26,6 +26,7 @@ namespace Halcyon.Entities.Data
             get => new Godot.Collections.Array<DataComponent>(_components);
             private set
             {
+                CleanupComponents();
                 _components = value.ToHashSet();
                 ResolveComponents();
                 EmitChanged();
@@ -42,6 +43,7 @@ namespace Halcyon.Entities.Data
 
         public Boolean TryAddComponent(DataComponent component)
         {
+            CleanupComponents();
             Boolean result = _components.Add(component);
             if(result)
             {
@@ -62,6 +64,16 @@ namespace Halcyon.Entities.Data
                 {
                     component.Initialise(this);
                 }
+            }
+        }
+
+
+        /// <summary> Cleans up all components, unsubscribing from events and releasing references. </summary>
+        public void CleanupComponents()
+        {
+            foreach (DataComponent component in _components.Reverse())
+            {
+                component.Cleanup();
             }
         }
 
