@@ -8,7 +8,7 @@ namespace Halcyon.Entities.Data.Components
     public partial class EntertainmentComponent : DataComponent
     {
         /// <summary> How entertained / satisfied the entity is. </summary>
-        public Stat Entertainment { get; private set; } = new Stat("entertainment", 10, 0, 10);
+        public Stat Entertainment { get; private set; } = new Stat("entertainment", 100, 0, 100);
 
 
         /// <summary> The persistent data for an entity's entertainment / satisfaction. </summary>
