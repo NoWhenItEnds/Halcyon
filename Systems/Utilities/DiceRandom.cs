@@ -42,11 +42,13 @@ namespace Warlord.Utilities
         public Int32 StandardTest(Int32 poolSize, Int32 targetNumber = 8, Int32 successThreshold = 1, Boolean doesExplode = true)
         {
             ArgumentOutOfRangeException.ThrowIfNegativeOrZero(poolSize);
-            ArgumentOutOfRangeException.ThrowIfNegativeOrZero(successThreshold);
-            ArgumentOutOfRangeException.ThrowIfGreaterThan(successThreshold, 10);
+            ArgumentOutOfRangeException.ThrowIfNegative(successThreshold);
+            ArgumentOutOfRangeException.ThrowIfLessThan(targetNumber, 1);
+            ArgumentOutOfRangeException.ThrowIfGreaterThan(targetNumber, 10);
 
             Int32 successes = 0;
-            for (Int32 i = 0; i < poolSize; i++)
+            Int32 totalRolls = poolSize;
+            for (Int32 i = 0; i < totalRolls; i++)
             {
                 Int32 result = RANDOM.Next(1, 11);
                 if (result >= targetNumber)
@@ -56,7 +58,7 @@ namespace Warlord.Utilities
 
                 if (doesExplode && result == 10)
                 {
-                    poolSize++;
+                    totalRolls++;
                 }
             }
 
@@ -67,15 +69,15 @@ namespace Warlord.Utilities
         /// <summary> Perform a contested test against another. The target number is the result of the contesting result. </summary>
         /// <param name="poolSize"> The number of dice in the initiator's pool. </param>
         /// <param name="otherPoolSize"> The number of dice in the defender's pool. </param>
-        /// <param name="successThreshold"> The minimum number on a ten-sided dice the initiator's roll needs to equal or succeed to be considered a success. </param>
-        /// <param name="otherSuccessThreshold"> The minimum number on a ten-sided dice the defender's roll needs to equal or succeed to be considered a success. </param>
+        /// <param name="targetNumber"> The minimum number on a ten-sided dice the initiator's roll needs to equal or exceed to be considered a success. </param>
+        /// <param name="otherTargetNumber"> The minimum number on a ten-sided dice the defender's roll needs to equal or exceed to be considered a success. </param>
         /// <param name="doesExplode"> Whether the initiator rerolls on a ten. </param>
-        /// <returns> How many successes above, or below the target number. A zero indicates a success, with no extra successes. </returns>
+        /// <returns> How many successes above, or below the defender's successes. A zero indicates a success, with no extra successes.. </returns>
         /// <exception cref="ArgumentOutOfRangeException"/>
         public Int32 ContestedTest(Int32 poolSize, Int32 otherPoolSize, Int32 targetNumber = 8, Int32 otherTargetNumber = 8, Boolean doesExplode = true)
         {
-            Int32 otherResult = StandardTest(otherPoolSize, otherTargetNumber, doesExplode: false);
-            return StandardTest(poolSize, targetNumber, otherResult, doesExplode);
+            Int32 otherSuccesses = StandardTest(otherPoolSize, otherTargetNumber, 0, doesExplode: false);
+            return StandardTest(poolSize, targetNumber, otherSuccesses, doesExplode);
         }
     }
 }
