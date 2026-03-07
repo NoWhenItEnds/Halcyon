@@ -1,6 +1,7 @@
 using System;
 using Godot;
 using Halcyon.Utilities.Singletons;
+using Warlord.Utilities;
 
 namespace Halcyon.Managers
 {
@@ -15,6 +16,8 @@ namespace Halcyon.Managers
         /// <summary> The current time within the game world. </summary>
         /// <remarks> Ideally we'd have this set through the editor. For now, we cannot. </remarks>
         public DateTime CurrentTime { get; private set; } = new DateTime(2000, 1, 1, 0, 0, 0);
+
+        public DiceRandom DiceRandom { get; private set; } = new DiceRandom();
 
         /// <summary> Triggered every minute of game time. Indicates that the time has changed a 'significant' amount. </summary>
         public event Action<DateTime> TimeChanged = delegate { };
