@@ -3,6 +3,7 @@ using System;
 using Godot;
 using Halcyon.Entities;
 using Halcyon.Entities.EntityCommands;
+using Halcyon.Entities.Interactions;
 using Halcyon.Utilities.Singletons;
 
 namespace Halcyon.Managers
@@ -101,8 +102,12 @@ namespace Halcyon.Managers
                 Entity[] entities = _entityManager.PlayerEntity.GetNearbyEntities();
                 if (entities.Length > 0)
                 {
-                    //command = new ExamineCommand(player, entities[0]);
-                    command = new ConsumeCommand(player, entities[0]);
+                    Entity target = entities[0];
+                    EatingInteraction interaction = new EatingInteraction(player, target);
+                    if (interaction.CanBegin())
+                    {
+                        command = new InteractCommand(player, target, interaction);
+                    }
                 }
             }
 

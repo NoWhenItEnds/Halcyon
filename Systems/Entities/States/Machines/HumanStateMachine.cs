@@ -17,7 +17,7 @@ namespace Halcyon.Entities.States.Machines
                 .WithTransition<WalkCommand, WalkingState>()
                 .WithTransition<SprintCommand, SprintingState>()
                 .WithTransition<ExamineCommand, ExaminingState>()
-                .WithTransition<ConsumeCommand, ConsumingState>();
+                .WithTransition<InteractCommand, InteractingState>();
         }
 
 
@@ -41,7 +41,7 @@ namespace Halcyon.Entities.States.Machines
             states[typeof(ExaminingState)] = new ExaminingState(this, entity)
                 .WithTransition<IdleCommand, IdlingState>();
 
-            states[typeof(ConsumingState)] = new ConsumingState(this, entity)
+            states[typeof(InteractingState)] = new InteractingState(this, entity)
                 .WithTransition<IdleCommand, IdlingState>();
 
             return states;

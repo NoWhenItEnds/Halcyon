@@ -126,12 +126,18 @@ namespace Halcyon.Entities
 
             Boolean didTransition = StateMachine.TryTransitionState(command);
 
-            if(didTransition) // If the transition was successful...
+            if(didTransition)
             {
                 // Propagate the command to the targeted entity, if there is one, and if they aren't the same as the actor.
                 if (command.TargetEntity != null && command.TargetEntity != this)
                 {
                     command.TargetEntity.HandleCommand(command);
+
+                    // If both participants have entered their interacting states, begin the interaction.
+                    if (command is InteractCommand interact)
+                    {
+                        interact.Interaction.Begin();
+                    }
                 }
             }
         }

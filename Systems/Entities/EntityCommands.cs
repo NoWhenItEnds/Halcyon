@@ -84,8 +84,19 @@ namespace Halcyon.Entities.EntityCommands
     public class UseCommand(Entity actingEntity, Entity targetEntity) : EntityCommand(actingEntity, targetEntity) { }
 
 
-    /// <summary> A command telling the entity to devour, whether by eating or drinking, a nearby entity. </summary>
-    /// <param name="actingEntity"> The entity that is performing the command. </param>
-    /// <param name="targetEntity"> The entity targeted by the command. </param>
-    public class ConsumeCommand(Entity actingEntity, Entity targetEntity) : EntityCommand(actingEntity, targetEntity) { }
+    /// <summary> A command that initiates a two-entity interaction. </summary>
+    public class InteractCommand : EntityCommand
+    {
+        /// <summary> The interaction driving both participants. </summary>
+        public readonly Interactions.Interaction Interaction;
+
+        /// <summary> A command that initiates a two-entity interaction. </summary>
+        /// <param name="actor"> The entity performing the interaction. </param>
+        /// <param name="target"> The entity being acted upon. </param>
+        /// <param name="interaction"> The interaction driving both participants. </param>
+        public InteractCommand(Entity actor, Entity target, Interactions.Interaction interaction) : base(actor, target)
+        {
+            Interaction = interaction;
+        }
+    }
 }

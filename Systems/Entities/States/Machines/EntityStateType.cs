@@ -10,7 +10,7 @@ namespace Halcyon.Entities.States.Machines
         public static readonly EntityStateType Walking = new EntityStateType(nameof(WalkingState));
         public static readonly EntityStateType Sprinting = new EntityStateType(nameof(SprintingState));
         public static readonly EntityStateType Examining = new EntityStateType(nameof(ExaminingState));
-        public static readonly EntityStateType Consuming = new EntityStateType(nameof(ConsumingState));
+        public static readonly EntityStateType Interacting = new EntityStateType(nameof(InteractingState));
         public static readonly EntityStateType Closed = new EntityStateType(nameof(ClosedState));
         public static readonly EntityStateType Opened = new EntityStateType(nameof(OpenedState));
 
