@@ -49,9 +49,9 @@ namespace Halcyon.Entities.States
                     {
                         ActiveInteraction.End();
 
-                        // Release the target first, then self.
-                        ActiveInteraction.TargetEntity.HandleCommand(new IdleCommand(ActiveInteraction.TargetEntity));
-                        RequestTransition(new IdleCommand(ENTITY));
+                        // Return both participants to their default states.
+                        ActiveInteraction.TargetEntity.StateMachine?.RequestDefaultTransition();
+                        STATE_MACHINE.RequestDefaultTransition();
                     }
                 }
             }

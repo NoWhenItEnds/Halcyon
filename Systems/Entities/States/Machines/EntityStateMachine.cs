@@ -94,6 +94,22 @@ namespace Halcyon.Entities.States.Machines
         protected abstract Dictionary<Type, EntityState> BuildStates(Entity entity);
 
 
+        /// <summary> Request that the machine transitions back to its default state. The transition is deferred to avoid reentrancy. </summary>
+        public void RequestDefaultTransition()
+        {
+            Callable.From(() =>
+            {
+                if (CurrentState.CanTransition())
+                {
+                    CurrentState.Stop();
+                    CurrentState.TriggeringCommand = null;
+                    CurrentState = _defaultState;
+                    CurrentState.Start(new IdleCommand(_entity));
+                }
+            }).CallDeferred();
+        }
+
+
         /// <summary> Start the machine's initial state with the correct command. </summary>
         /// <remarks We need to have this separate as it needs to be deferred to allow Godot time to initialise the resources this depends upon. </remarks>
         protected virtual void InitialiseInitialState()
