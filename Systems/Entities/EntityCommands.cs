@@ -81,6 +81,7 @@ namespace Halcyon.Entities.EntityCommands
     /// <summary> A general command telling the entity to 'use' a nearby entity. </summary>
     /// <param name="actingEntity"> The entity that is performing the command. </param>
     /// <param name="targetEntity"> The entity targeted by the command. </param>
+    /// <remarks> This should be used for single, instant interactions. For sustained, two-party interactions, use the interact command instead. </remarks>
     public class UseCommand(Entity actingEntity, Entity targetEntity) : EntityCommand(actingEntity, targetEntity) { }
 
 
