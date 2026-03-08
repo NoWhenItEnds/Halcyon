@@ -6,22 +6,22 @@ namespace Halcyon.Entities.Interactions
     public abstract class Interaction
     {
         /// <summary> The entity performing the interaction. </summary>
-        public Entity Actor { get; }
+        public Entity ActingEntity { get; }
 
         /// <summary> The entity being acted upon. </summary>
-        public Entity Target { get; }
+        public Entity TargetEntity { get; }
 
         /// <summary> Whether the interaction has finished. </summary>
         public Boolean IsComplete { get; protected set; } = false;
 
 
         /// <summary> Represents a two-entity interaction that drives the behaviour of both participants. </summary>
-        /// <param name="actor"> The entity performing the interaction. </param>
-        /// <param name="target"> The entity being acted upon. </param>
-        protected Interaction(Entity actor, Entity target)
+        /// <param name="actingEntity"> The entity performing the interaction. </param>
+        /// <param name="targetEntity"> The entity being acted upon. </param>
+        protected Interaction(Entity actingEntity, Entity targetEntity)
         {
-            Actor = actor;
-            Target = target;
+            ActingEntity = actingEntity;
+            TargetEntity = targetEntity;
         }
 
 

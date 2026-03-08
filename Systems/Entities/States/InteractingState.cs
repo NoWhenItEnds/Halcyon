@@ -41,7 +41,7 @@ namespace Halcyon.Entities.States
             if (ActiveInteraction != null)
             {
                 // Only the actor ticks the interaction to maintain a single source of truth. This prevents the acted upon to also tick.
-                if (ENTITY == ActiveInteraction.Actor)
+                if (ENTITY == ActiveInteraction.ActingEntity)
                 {
                     ActiveInteraction.Update(delta);
 
@@ -50,7 +50,7 @@ namespace Halcyon.Entities.States
                         ActiveInteraction.End();
 
                         // Release the target first, then self.
-                        ActiveInteraction.Target.HandleCommand(new IdleCommand(ActiveInteraction.Target));
+                        ActiveInteraction.TargetEntity.HandleCommand(new IdleCommand(ActiveInteraction.TargetEntity));
                         RequestTransition(new IdleCommand(ENTITY));
                     }
                 }

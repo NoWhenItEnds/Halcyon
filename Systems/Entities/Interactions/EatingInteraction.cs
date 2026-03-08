@@ -30,8 +30,8 @@ namespace Halcyon.Entities.Interactions
         /// <inheritdoc/>
         public override Boolean CanBegin()
         {
-            Boolean actorCanEat = Actor.Data != null && Actor.Data.TryGetComponent<HungerComponent>(out _hunger);
-            Boolean targetIsEdible = Target.Data != null && Target.Data.TryGetComponent<EdibleComponent>(out _edible);
+            Boolean actorCanEat = ActingEntity.Data != null && ActingEntity.Data.TryGetComponent<HungerComponent>(out _hunger);
+            Boolean targetIsEdible = TargetEntity.Data != null && TargetEntity.Data.TryGetComponent<EdibleComponent>(out _edible);
             return actorCanEat && targetIsEdible;
         }
 
@@ -40,7 +40,7 @@ namespace Halcyon.Entities.Interactions
         public override void Begin()
         {
             _timeRemaining = CONSUMPTION_TIME;
-            GD.Print($"{Actor.Data.Name} starts eating {Target.Data.Name}!");
+            GD.Print($"{ActingEntity.Data.Name} starts eating {TargetEntity.Data.Name}!");
         }
 
 
@@ -63,7 +63,7 @@ namespace Halcyon.Entities.Interactions
         /// <inheritdoc/>
         public override void End()
         {
-            GD.Print($"{Actor.Data.Name} finished eating {Target.Data.Name}!");
+            GD.Print($"{ActingEntity.Data.Name} finished eating {TargetEntity.Data.Name}!");
         }
     }
 }

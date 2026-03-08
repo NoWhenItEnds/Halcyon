@@ -91,10 +91,10 @@ namespace Halcyon.Entities.EntityCommands
         public readonly Interactions.Interaction Interaction;
 
         /// <summary> A command that initiates a two-entity interaction. </summary>
-        /// <param name="actor"> The entity performing the interaction. </param>
-        /// <param name="target"> The entity being acted upon. </param>
+        /// <param name="actingEntity"> The entity performing the interaction. </param>
+        /// <param name="targetEntity"> The entity being acted upon. </param>
         /// <param name="interaction"> The interaction driving both participants. </param>
-        public InteractCommand(Entity actor, Entity target, Interactions.Interaction interaction) : base(actor, target)
+        public InteractCommand(Entity actingEntity, Entity targetEntity, Interactions.Interaction interaction) : base(actingEntity, targetEntity)
         {
             Interaction = interaction;
         }
