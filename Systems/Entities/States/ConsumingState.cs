@@ -29,6 +29,7 @@ namespace Halcyon.Entities.States
             if(command.TargetEntity != null && ENTITY == command.TargetEntity)
             {
                 GD.Print($"{command.TargetEntity.Data.Name} is consumed by {command.ActingEntity.Data.Name}!");
+                RequestTransition(new IdleCommand(command.TargetEntity));
             }
         }
     }

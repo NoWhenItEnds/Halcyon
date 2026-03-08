@@ -73,6 +73,12 @@ namespace Halcyon.Entities.States
         /// <param name="command"> The command triggering the state change. </param>
         public virtual void Stop(EntityCommand command) { ENTITY.LayeredSprite.Stop(); }
 
+
+        /// <summary> Request the state machine to transition to another state. The transition is deferred to avoid reentrant transitions. </summary>
+        /// <param name="command"> The command triggering the state change. </param>
+        protected void RequestTransition(EntityCommand command) => Godot.Callable.From(() => STATE_MACHINE.TryTransitionState(command)).CallDeferred();
+
+
         protected Godot.Collections.Array<LayeredAnimation> GetCurrentAnimations()
         {
             IEnumerable<LayeredAnimation> animations = RESOURCE_MANAGER.LayeredAnimations.Where(x =>
