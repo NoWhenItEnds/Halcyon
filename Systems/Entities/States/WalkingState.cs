@@ -56,6 +56,6 @@ namespace Halcyon.Entities.States
 
 
         /// <inheritdoc/>
-        public override void Stop(EntityCommand command) { }
+        public override void Stop() { }
     }
 }

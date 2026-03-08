@@ -67,9 +67,13 @@ namespace Halcyon.Entities.States.Machines
             Boolean isSuccessful = false;
             if (CurrentState.CanTransition() && CurrentState.TryGetNextState(command, out Type? newState) && newState != null)
             {
-                CurrentState.Stop(command);
+                CurrentState.Stop();
+                CurrentState.TriggeringCommand = null;
+
                 CurrentState = STATES.TryGetValue(newState, out EntityState? next) ? next
                     : throw new InvalidOperationException($"State {newState} is not registered on {GetType()}.");
+
+                CurrentState.TriggeringCommand = command;
                 CurrentState.Start(command);
 
                 isSuccessful = true;

@@ -10,8 +10,9 @@ namespace Halcyon.Entities.States
     /// <summary> The basic data object representing an entity's potential state. </summary>
     public abstract class EntityState : IEquatable<EntityState>
     {
-        /// <summary> Whether the state can currently transition. </summary>
-        public Func<Boolean> CanTransition { get; protected set; } = () => true;
+        /// <summary> The initial command that triggered the state. </summary>
+        /// <remarks> This is set by the state machine. A little bit of a double up, but it means that we don't need to keep setting it on every state. </remarks>
+        public EntityCommand? TriggeringCommand { get; set; } = null;
 
 
         /// <summary> A reference to the state machine that owns this state. </summary>
@@ -59,6 +60,10 @@ namespace Halcyon.Entities.States
         }
 
 
+        /// <summary> Sees if the state can currently transition. </summary>
+        public virtual Boolean CanTransition() => true;
+
+
         /// <summary> Initialise the entity state. Called once when the state is created. </summary>
         /// <param name="command"> The command triggering the state change. </param>
         public virtual void Start(EntityCommand command) { }
@@ -70,8 +75,10 @@ namespace Halcyon.Entities.States
 
 
         /// <summary> Called just before the state transitions. Does a final cleanup. </summary>
-        /// <param name="command"> The command triggering the state change. </param>
-        public virtual void Stop(EntityCommand command) { ENTITY.LayeredSprite.Stop(); }
+        public virtual void Stop()
+        {
+            ENTITY.LayeredSprite.Stop();    // TODO - Not sure about this.
+        }
 
 
         /// <summary> Request the state machine to transition to another state. The transition is deferred to avoid reentrant transitions. </summary>
