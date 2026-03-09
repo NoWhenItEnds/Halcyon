@@ -131,7 +131,7 @@ namespace Halcyon.Entities
                 // Propagate the command to the targeted entity, if there is one, and if they aren't the same as the actor.
                 if (command.TargetEntity != null && command.TargetEntity != this)
                 {
-                    command.TargetEntity.HandleCommand(command);
+                    command.TargetEntity.HandleCommand(command);    // TODO - Remove with use command? That is the only reason this is here...
 
                     // If both participants have entered their interacting states, begin the interaction.
                     if (command is InteractCommand interact)
